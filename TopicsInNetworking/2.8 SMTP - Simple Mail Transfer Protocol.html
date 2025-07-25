@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SMTP</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>2.8</small> SMTP - Simple Mail Transfer Protocol</h1>
+    <div class="divider2"></div>
+
+    <p>
+        SMTP "<strong>Simple Mail Transfer Protocol</strong>" is a protocol used for transmitting electronic mail
+        (email) over a network.
+    </p>
+    <ul>
+        <li>SMTP is a <strong>mail delivery</strong> protocol, not a <strong>mail retrieval</strong> protocol. It
+            delivers an email to an email provider's mail server, but separate protocols (<a href="IMAP and POP3.html"
+                class="custom-link">IMAP and POP3</a>) are used to retrieve that email from the mail server so the
+            recipient can read it.</li>
+    </ul>
+
+
+    <blockquote>SMTP typically uses port 25</blockquote>
+
+
+    <div class="divider1"></div>
+
+    <h3>What is a "Mail Server"?</h3>
+    <p>A mail server is a software program that sends and receives email. Often, it is used as a blanket term for both
+        <strong>Mail Transfer Agents</strong> (MTA) and <strong>Mail Delivery Agents</strong> (MDA), each of which
+        perform a slightly different function.
+    </p>
+
+    <div class="divider2"></div>
+    <h4>MTAs</h4>
+    <p>Mail Transfer Agents are software responsible for the <em>transmission</em> of emails to their appropriate
+        destinations using the SMTP protocol. The destinations being the mail servers to which the client sent an email,
+        for example if a client <code>user1@gmail.com</code> sends an email to <code>user2@outlook.com</code>, the
+        <code>gmail.com</code> MTA would be responsible for that delivery.
+    </p>
+
+
+    <blockquote>Common MTAs include Postfix, Sendmail, Exim, or Microsoft Exchange</blockquote>
+
+
+    <div class="divider2"></div>
+    <h4>MDAs</h4>
+    <p>An Mail User Agent is just the email client that a person uses to send, read, and manage emails.
+    </p>
+
+    <blockquote>Common MUAs include Outlook, Thunderbird, and Apple Mail.</blockquote>
+
+    <div class="divider2"></div>
+
+    <h4>MUAs</h4>
+    <p>Mail Delivery Agents are responsible for the delivery of emails from the destination mail server to the
+        destination client. For example, an email for <code>user2@outlook.com</code> would end up on the
+        <code>outlook.com</code> mail server. Using the MDA software on that mail server, the email would be delivered
+        to <code>user2</code> using the IMAP or POP3 protocols.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h2>Understanding SMTP</h2>
+    <p>
+        When a user sends an email, their email client (the software they use, like Outlook or Gmail’s web interface) is
+        configured to talk to an SMTP server. This SMTP server is just a mail server running software called an MTA
+        (Mail Transfer Agent), such as Postfix or Exim, which handles the sending and relaying of mail.
+    </p>
+    <p>
+        The email client sends the message to the SMTP server using the SMTP protocol. From there, the MTA decides how
+        to deliver it.
+    </p>
+    If <code>user1@gmail.com</code> sends an email to <code>user2@gmail.com</code> for example, Gmail’s SMTP server sees
+    that both addresses belong to the same domain. The MTA doesn’t need to contact any other servers; it just routes the
+    message internally so it ends up in user2’s Gmail inbox.</p>
+
+    <p>
+        If <code>user1@gmail.com</code> sends an email to <code>user2@outlook.com</code>, the process starts the same
+        way, with the email client
+        passing the message to Gmail’s SMTP server. But since the recipient is on a different domain, Gmail’s MTA must
+        figure out where to send it. To do that, it looks up the DNS MX (Mail Exchange) records for outlook.com, which
+        tell it the IP addresses of Outlook’s mail servers. Gmail’s MTA then connects to Outlook’s MTA over SMTP and
+        transfers the email so Outlook can deliver it to user2.
+    </p>
+    <p>
+        In both cases, SMTP is the protocol used to transfer the email: first from the client to the sending mail
+        server, and then (if needed) between mail servers when the message crosses domains.
+    </p>
+    <br>
+    <img src="images/2.8.2.png" width="800">
+    <br>
+
+    <div class="divider1"></div>
+
+    <h3>Key points</h3>
+    <ul>
+        <li>SMTP connections can be encrypted using TLS or SSL.</li>
+        <li>When you use gmail.com via a browser, you would be utilizing an API to which you send the components of the
+            email, and the backend server would perform the SMTP process on your behalf (unlike a traditional mail
+            client).</li>
+    </ul>
+
+    <div class="divider1"></div>
+    <h3>Example Scenario</h3>
+    <p>Let's say <strong>Alice</strong> is sending an email to <strong>Bob</strong>. Alice's email is
+        <code>alice@example.com</code>, and Bob's email is <code>bob@example.org</code>.
+    </p>
+
+    <h4>Client to SMTP server</h4>
+    <ol>
+        <li><strong>Email Composition</strong>:
+            <ul>
+                <li>Alice opens her email client (eg, Outlook or Gmail) and composes an email addressed to
+                    <code>bob@example.org</code>.
+                </li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>Connecting to the SMTP Server</strong>:
+            <ul>
+                <li>Alice's email client connects to her email provider's SMTP server, which could be
+                    <code>smtp.example.com</code>.
+                </li>
+                <li>The client establishes a TCP connection to the SMTP server, typically on <strong>port 587</strong>
+                    (for STARTTLS) or <strong>port 465</strong> (for implicit TLS). Port 25 is used mainly for
+                    <strong>server-to-server</strong> relay, not for client submission.
+                </li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>SMTP Handshake and Authentication</strong>:
+            <ul>
+                <li>The client initiates the session by sending an <code>EHLO</code> command (the modern form of
+                    <code>HELO</code>) to identify itself and discover the server’s supported features.
+                </li>
+                <li>The SMTP server responds with <code>250 OK</code> messages, advertising its capabilities.
+                </li>
+                <li>The client usually authenticates (eg, using <code>AUTH LOGIN</code>) before being allowed to send
+                    mail.
+                </li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>Sender and Recipient Specification</strong>:
+            <ul>
+                <li>The client specifies the <strong>sender's email</strong> using the <code>MAIL FROM</code> command:
+                    <pre><code>MAIL FROM:&lt;alice@example.com&gt;</code></pre>
+                </li>
+                <li>The SMTP server acknowledges this with a <code>250 OK</code> response.</li>
+                <li>Next, the client specifies the <strong>recipient's email</strong> using the <code>RCPT TO</code>
+                    command:
+                    <pre><code>RCPT TO:&lt;bob@example.org&gt;</code></pre>
+                </li>
+                <li>The SMTP server verifies if it can accept mail for <code>example.org</code> and responds with
+                    <code>250 OK</code> if valid.</li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>Transmitting the Message Content</strong>:
+            <ul>
+                <li>The client issues the <code>DATA</code> command, telling the server that the message body will
+                    follow.</li>
+                <li>The SMTP server replies with:
+                    <code>354 Start mail input; end with &lt;CRLF&gt;.&lt;CRLF&gt;</code>
+                </li>
+                <li>The client sends:
+                    <ul>
+                        <li><strong>Email headers</strong> (like <code>From</code>, <code>To</code>,
+                            <code>Subject</code>, <code>Date</code>)</li>
+                        <li><strong>Email body</strong> (the actual message Alice wrote)</li>
+                    </ul>
+                </li>
+                <li>The message ends with a line containing just a single period (<code>.</code>), signaling the end of
+                    data.</li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>End of Session</strong>:
+            <ul>
+                <li>After the email is successfully sent, the client sends the <code>QUIT</code> command.</li>
+                <li>The SMTP server responds with a <code>221</code> message, closing the connection.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="divider2"></div>
+    <h4>SMTP server to destination</h4>
+    <p>At this point, Alice's email provider's SMTP server has accepted her email and will try to deliver it to Bob's
+        domain (<code>example.org</code>).</p>
+    <ol>
+        <li><strong>Domain Lookup and Relay</strong>:
+            <ul>
+                <li>The SMTP server at <code>example.com</code> queries DNS for the <strong>MX record</strong> of
+                    <code>example.org</code>.
+                </li>
+                <li>The MX record might point to <code>mail.example.org</code>, the mail server for Bob's domain.</li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>Connecting to the Recipient's SMTP Server</strong>:
+            <ul>
+                <li>The <code>example.com</code> server connects to <code>mail.example.org</code> via SMTP, usually on
+                    <strong>port 25</strong>.
+                </li>
+                <li>It performs the standard <code>EHLO</code>, <code>MAIL FROM</code>, <code>RCPT TO</code>, and
+                    <code>DATA</code> sequence to deliver the message.</li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>Storing the Email</strong>:
+            <ul>
+                <li>Once <code>mail.example.org</code> accepts the message, it stores it in Bob's mailbox on the server.
+                </li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>Bob Retrieves the Email</strong>:
+            <ul>
+                <li>Bob's email client connects to <code>mail.example.org</code> using <strong>IMAP</strong> (or
+                    <strong>POP3</strong>) to fetch his messages.</li>
+                <li>Bob can now view Alice’s email in his email client.</li>
+            </ul>
+        </li>
+    </ol>
+
+
+
+    <div class="divider1"></div>
+
+    <a href="2.7 SSH - Secure Shell.html" class="prev-button">Previous</a>
+    <a href="2.9 IMAP and POP3.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

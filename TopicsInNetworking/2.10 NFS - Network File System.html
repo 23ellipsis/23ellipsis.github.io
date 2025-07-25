@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NFS</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>2.10</small> NFS - Network File System</h1>
+    <div class="divider2"></div>
+
+
+    <p>
+        The NFS "<strong>Network File System</strong>" protocol allows remote hosts to mount file systems over a network
+        and interact with them as though they are locally mounted.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>How NFS Works</h3>
+    <p>
+        The <strong>Server</strong> is the machine that shares directories and files over the network.
+    </p>
+    <p>
+        The <strong>Client</strong> is the machine that mounts these shared directories, allowing access to remote
+        files.
+    </p>
+    <p>
+        The client uses the NFS protocol to send requests to the server for file operations such as
+        <em>read</em>, <em>write</em>, <em>open</em>, and <em>close</em> on remote files.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>Key Concepts</h3>
+    <h4>Mounting</h4>
+    <p>
+        Mounting is the process where the client attaches a remote filesystem (from the server)
+        to a directory on its local system. Once mounted, users and applications can access the remote files
+        as if they were local.
+    </p>
+
+    <h4>Statelessness</h4>
+    <p>
+        Traditional NFS versions, such as <strong>NFSv3</strong>, are stateless, meaning the server does not
+        maintain any client session information. Each client request includes all necessary information
+        to complete the operation.
+    </p>
+
+    <h4>RPC (Remote Procedure Call)</h4>
+    <p>
+        NFS relies on RPC for communication. RPC is a protocol that allows a client to invoke procedures on the server
+        over the network as though they were local function calls.
+    </p>
+    <blockquote>
+        The idea is that NFS itself doesn’t read or write files directly; it acts as a bridge between the client and the
+        server’s local file system. When an application on the client accesses a file on an NFS mount, the NFS client
+        converts the request (like READ or WRITE) into an RPC call and sends it over the network, for it to be handled
+        by the RPC and NFS services on the server side.
+    </blockquote>
+
+
+    <div class="divider1"></div>
+
+    <h3>rpcbind</h3>
+    <p><strong>rpcbind</strong> is a service used in UNIX/Linux systems that helps clients find the correct port number
+        for RPC-based
+        services, like NFS.</p>
+
+    <ul>
+        <li>Many network services, including NFS in versions before NFSv4, don’t listen on fixed, well-known ports.
+            Instead, they can run on random (dynamic) ports assigned at runtime.</li>
+        <li>
+            Because clients need to know which port number to connect to, there must be a way to discover this port.
+        </li>
+        <li>
+            The <code>rpcbind</code> service always listens on port <code>111</code>.
+        </li>
+        <li>
+            When RPC services like NFS start, they register themselves with the rpcbind service. They tell rpcbind:
+            "Here's my program number, I'm listening on port number X".
+        </li>
+        <li>
+            Now when the client wants to connect to an RPC service (for example <code>mountd</code>), it first contacts
+            rpcbind on port 111 and asks "which port is this service using" to which rpcbind replies.
+        </li>
+
+    </ul>
+    <div class="divider1"></div>
+
+    <h3>NFS Versions</h3>
+    <p>
+        <strong>NFS version 3</strong> (NFSv3) supports safe asynchronous writes and is more robust at error handling
+        than the previous NFSv2. It also supports 64-bit file sizes and offsets, allowing clients to access more than 2
+        GB of file data.
+    </p>
+    <p>
+        <strong>NFS version 4</strong> (NFSv4) works through firewalls and over the Internet, no longer requires an
+        <code>rpcbind</code> service, supports ACLs, and utilizes stateful operations.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h2><em>some</em> required services for running an NFS server</h2>
+    <p>
+        All NFS versions rely on <em>Remote Procedure Calls</em> between clients and servers as discussed earlier. RPC
+        services are often
+        controlled by the <code>rpcbind</code> service.
+    </p>
+    <p>
+        To share or mount NFS file systems, the following services work together depending on which version of NFS is
+        implemented:
+    </p>
+
+    <h4>nfs</h4>
+    <p>
+        <code>systemctl start nfs</code> starts the NFS server and the appropriate RPC processes to service requests for
+        shared NFS file systems.
+    </p>
+
+    <h4>rpcbind</h4>
+    <p>
+        <code>rpcbind</code> accepts port reservations from local RPC services. These ports are then made available (or
+        advertised) so the corresponding remote RPC services can access them. <code>rpcbind</code> responds to requests
+        for RPC services and sets up connections to the requested RPC service. This is not used with NFSv4.
+    </p>
+
+    <div class="divider1"></div>
+
+    <a href="2.9 IMAP and POP3.html" class="prev-button">Previous</a>
+    <a href="2.11 SNMP - Simple Network Management Protocol.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

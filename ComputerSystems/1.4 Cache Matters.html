@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cache Memory Notes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="divider1"></div>
+
+  <h1><small>1.4</small> Cache Matters</h1>
+  <div class="divider2"></div>
+  <p>
+    The system spends a lot of time moving information from one place to another
+    (fetching data from disk, to main memory, to register file, to CPU and repeat).
+    Because of this, a major goal for system designers should be to make these
+    operations as fast as possible.
+  </p>
+
+  <div class="divider1"></div>
+
+  <span class="note">Takeaway Concept</span>
+  <blockquote>
+    Because of <em>physical laws</em>, larger storage devices are slower than smaller ones.
+    Reading from a register is much faster than reading from the main memory, but the
+    register file is much smaller in size compared to the main memory.
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <h3>Solution?</h3>
+  <p>
+    The CPU operates at a much higher speed than the main memory, and because of that,
+    system designers include much faster but smaller storage devices called
+    <strong>Cache Memories</strong> that serve as temporary staging areas for information
+    that the processor is likely to need in the near future.
+  </p>
+
+  <img src="images/1.4.png" width="500" alt="Cache Memory Diagram">
+
+  <p>
+    Cache memory exists in different layers: an L1 cache is the smallest but fastest,
+    larger L2 cache is slower and so on. Cache is implemented with a hardware technology
+    known as <strong>Static Random Access Memory</strong> (SRAM) discussed earlier.
+  </p>
+
+  <div class="divider1"></div>
+  <a href="1.3 The Hardware Organization of a System.html" class="prev-button">Previous</a>
+  <a href="1.5 Storage Devices From a Hierarchy.html" class="next-button">Next</a>
+
+  <br>
+  <br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+</body>
+
+</html>

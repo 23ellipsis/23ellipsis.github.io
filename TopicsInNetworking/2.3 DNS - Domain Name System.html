@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DNS</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>2.3</small> DNS - Domain Name System</h1>
+    <div class="divider2"></div>
+
+    <p>
+        <strong>"Domain Name System"</strong> is a networking system used to resolve <strong>domain names</strong> to 
+        <a href="05 - IPV4 Addressing.html" class="custom-link">IP Addresses</a>.
+    </p>
+
+    <ul>
+        <li>When you open your browser, you typically would type in the name of the website you want to visit <em>(it's easier for us to memorize domain names than IP addresses)</em>.</li>
+        <li>Computers however cannot locate resources based on the domain name, so it has to be "translated" into the appropriate IP address of the server you're trying to reach.</li>
+        <li>This is done using DNS.</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <span class="note">FQDN</span>
+    <blockquote>
+        A FQDN "Fully Qualified Domain Name" is an absolute name that specifies its location in relation to the <em>absolute root</em> of the domain name system.
+        This means that it specifies each parent domain including the TLD. A proper FQDN ends with a dot, indicating the root of the DNS hierarchy. An example of a FQDN is <code>mail.google.com.</code></p>
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <h3>Terminology</h3>
+    <h4>Nameserver</h4>
+    <p>A Name Server is the computer designated to translate <strong>domain names</strong> into <strong>IP addresses</strong>.</p>
+    <ul>
+        <li>One name server may redirect requests to other name servers (because the number of domains is too much for one server to handle).</li>
+        <li>Name servers can be <strong>"authoritative"</strong>, meaning, they give answers to queries about domains under their own control. Otherwise, they can point to other servers or serve cached copies of other name servers' data <em>(making them non-authoritative in this case)</em>.</li>
+    </ul>
+
+        <div class="divider2"></div>
+    <h4>Zone File</h4>
+    <p>A Zone File is a text file that contains the mappings between <strong>domain names</strong> and <strong>IP addresses</strong>.</p>
+    <ul>
+        <li>They reside in Name Servers (obviously).</li>
+    </ul>
+
+
+     <span class="note">"Zone" VS "Zone File"</span>
+    <blockquote>
+        A DNS <em>zone file</em> is a <em>text file</em> that describes a DNS zone. A DNS <em>zone</em> is a <em>subset</em>, often a single domain, of the hierarchical domain name structure of the DNS. For example, <code>example.com</code> can be a zone
+    </blockquote>
+
+      <div class="divider2"></div>
+    <h4>Record</h4>
+    <p>A Record is a single mapping between a <strong>resource</strong> and a <strong>name</strong>.</p>
+    <h5>There are different types of records:</h5>
+    
+    <ol>
+        <li><strong>A and AAAA Records</strong>:
+        These are used to map a domain name to an <strong>IPv4 Address</strong> (A) or <strong>IPv6 Address</strong> (AAAA). 
+        This is how an A or AAAA record may look like:
+        <pre><code>host     IN      A       IPv4_address
+host     IN      AAAA    IPv6_address</code></pre></li>
+        
+        <li><strong>CNAME Records (Canonical Name Records)</strong>
+        These map one domain to another, allowing multiple domain names to point to the same IP address.
+        <pre><code>www.example.com -> example.com</code></pre></li>
+        
+        <li><strong>MX Records (Mail Exchange Records)</strong>
+        These specify the <strong>mail server</strong> responsible for receiving email on behalf of the domain.
+        <pre><code>example.com -> mail.example.com (priority 10)</code></pre></li>
+        
+        <li><strong>TXT Records</strong>
+        They hold text information for various purposes, often used for verification.
+        <pre><code>example.com -> "v=spf1 include:_spf.google.com ~all"</code></pre></li>
+        
+        <li><strong>NS Records (Name Server Records)</strong>
+        They specify the authoritative name servers for a domain.
+        <pre><code>example.com -> ns1.example.com</code></pre></li>
+        
+        <li><strong>PTR Records (Pointer Records)</strong>
+        They map an IP address to a domain name (reverse DNS lookup).
+        <pre><code>192.0.2.1 -> example.com</code></pre></li>
+    </ol>
+
+    <div class="divider1"></div>
+
+    <h3>SOA records</h3>
+    <p>The <strong>Start of Authority</strong>, or SOA record is a mandatory record in all zone files. It must be the first real record in a file (although <code>$ORIGIN</code> or <code>$TTL</code> specifications may appear above).</p>
+
+     <div class="divider2"></div>
+    <span class="note">$ORIGIN</span>
+    <blockquote>
+        The zone's <code>$ORIGIN</code> is a parameter equal to the zone's highest level of authority by default.
+        So if a zone file is used to configure the "<code>example.com.</code>" domain, the <code>$ORIGIN</code> would be set to <code>example.com.</code>. This is used to avoid repeating the domain name in the records, so for example instead of mapping <code>www.example.com.</code> to an IP address, you'd be mapping <code>www</code> to an IP address (which belongs to <code>example.com.</code> as specified in <code>$ORIGIN</code>)<br>
+        Similarly, the <code>$TTL</code> configures the "time to live" of the information it provides. It is basically a timer. A caching name server can use previously queried results to answer questions until the TTL value runs out.
+    </blockquote>
+     <div class="divider2"></div>
+
+    <p>The start of authority record looks something like this:</p>
+    <pre><code>domain.com.  IN SOA   ns1.domain.com. admin.domain.com. (
+                          12083           ; serial number
+                          3h              ; refresh interval
+                          30m             ; retry interval
+                          3w              ; expiry period
+                          1h              ; negative TTL
+                          )</code></pre>
+
+    <p>Let's explain what each part is for:</p>
+    <ul>
+        <li><strong><code>domain.com.</code></strong>: This is the root of the zone. This specifies that the zone file is for the <code>domain.com.</code> domain. Often, you'll see this replaced with <code>@</code>, which is just a placeholder that substitutes the contents of the <code>$ORIGIN</code> variable we learned about above.</li><br>
+        
+        <li><strong>IN SOA</strong>: The "IN" portion means internet (and will be present in many records). The SOA is the indicator of the type of the record, which is a Start of Authority record.</li><br>
+        
+        <li><strong><code>ns1.domain.com.</code></strong>: This defines the primary name server for this domain. Name servers can either be primary or secondary, and if dynamic DNS is configured one server needs to be a "primary", which goes here. If you haven't configured dynamic DNS, then this is just one of your primary name servers.</li><br>
+        
+        <li><strong><code>admin.domain.com.</code></strong>: This is the email address of the administrator for this zone. The "@" is replaced with a dot in the email address.</li><br>
+        
+        <li><strong>12083</strong>: This is the serial number for the zone file. Every time you edit a zone file, you must increment this number for the zone file to propagate correctly. Secondary servers will check if the primary server's serial number for a zone is larger than the one they have on their system. If it is, it requests the new zone file, if not, it continues serving the original file.</li><br>
+        
+        <li><strong>3h</strong>: This is the refresh interval for the zone. This is the amount of time that the secondary will wait before polling the primary for zone file changes.</li><br>
+        
+        <li><strong>30m</strong>: This is the retry interval for this zone. If the secondary cannot connect to the primary when the refresh period is up, it will wait this amount of time and retry to poll the primary.</li><br>
+        
+        <li><strong>3w</strong>: This is the expiry period. If a secondary name server has not been able to contact the primary for this amount of time, it no longer returns responses as an authoritative source for this zone.</li><br>
+        
+        <li><strong>1h</strong>: This is the amount of time that the name server will cache a name error if it cannot find the requested name in this file.</li>
+    </ul>
+
+    <div class="divider2"></div>
+    <span class="note">SOA Records</span>
+    <blockquote>
+        SOA records are only present in primary name servers as they define the authoritative configurations of the name server (from which secondary name servers will request records).</p>
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <h3>The DNS process</h3>
+    <p>When you type in a domain name in your browser (eg www.google.com), the following process occurs so that you can fetch the IP address of that domain:</p>
+    
+    <h4>1. Checking user's cache</h4>
+    <p>Your computer first checks its local <strong>DNS cache</strong> to see if it already knows the IP address of the domain. The cache is kept in the <code>/etc/hosts</code> file on Linux and in the browser.</p>
+    
+    <h4>2. Reaching out to the Recursive Resolver</h4>
+    <p>If the address is not in the local cache, your computer sends a <strong>DNS query</strong> to a <strong>DNS Recursive Resolver</strong>.</p>
+    <ul>
+        <li>This resolver is typically provided by your <strong>Internet Service Provider</strong> (ISP) or a third-party DNS service <em>(like Google DNS or Cloudflare)</em>.</li>
+        <li>This resolver will handle the necessary <strong>DNS queries</strong> for you.</li>
+    </ul>
+    <p>To see what Resolver your device is using, you can check the <code>/etc/resolv.conf</code> file in Linux, or run the command <code>ipconfig /all</code> in windows.</p>
+    
+    <h4>3. Reaching out to a Root Server</h4>
+    <p>Your Resolver would first check its own cache, and if it can't find the corresponding IP address, it would reach out to a <strong>Root Server</strong>.</p>
+    <p>There are currently 13 Root Servers in operation, they're controlled by various organizations and granted authority by the ICANN.</p>
+    <p>The <strong>Root Servers</strong> only route the query to the appropriate <strong>TLD Server</strong> <em>"Top Level Domain Server"</em>.</p>
+    <ul>
+        <li>So for example, if you're reaching out for <code>www.example.com</code>, your query gets routed to the <code>.com</code> TLD Server.</li>
+    </ul>
+    <p>These Root Servers are <strong>mirrored</strong>, meaning, each one of them has duplicates that are spread across different locations, and all of these duplicates share the same IP address. So when some request gets sent to one of them, it gets routed to the nearest mirror (this improves speed).</p>
+    
+    <h4>4. Reaching out to the TLD Server</h4>
+    <p>After the <strong>Recursive Resolver</strong> receives the IP address of the appropriate <strong>TLD server</strong> (from the <strong>Root Server</strong>), it reaches out to it.</p>
+    <ul>
+        <li>The Top Level Domain is the most general part of the domain, for example <code>.com</code>, <code>.org</code>, <code>.edu</code> are TLDs.</li>
+    </ul>
+    <p>The TLD Server returns the authoritative Name Server for <code>example.com</code>, which would hold the records related to that domain.</p>
+    
+    <h4>5. Reaching out to the Authoritative Name Server</h4>
+    <p>The authoritative Name Server would be responsible for locating the <strong>subdomains</strong> of <code>example.com</code>, in this case, we would be querying it for <code>www.example.com.</code></p>
+    
+    <h4>6. Returning the result</h4>
+    <p>After the recursive resolver fetches the IP address of <code>www.example.com</code> from the authoritative name server, it caches it for future queries, then it returns it to our computer.</p>
+
+    <div class="divider1"></div>
+
+    <img src="images/2.3.1.png" width="750" alt="DNS Process Diagram" />
+
+    <div class="divider1"></div>
+
+
+    <a href="2.2 TCP - Transmission Control Protocol.html" class="prev-button">Previous</a>
+    <a href="2.4 FTP - File Transfer Protocol.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

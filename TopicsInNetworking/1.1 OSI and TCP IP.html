@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OSI and TCP/IP</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="divider1"></div>
+  <h1><small>1.1</small> OSI and TCP/IP</h1>
+  <div class="divider2"></div>
+
+  <p><strong>Networking Models</strong> categorize and provide structure for networking protocols and standards.</p>
+  <p><strong>Protocols</strong> are sets of rules that define how network devices and software should work together.</p>
+  
+
+  <div class="divider1"></div>
+
+  
+  <h2>The OSI Model:</h2>
+  <p><strong>OSI</strong> (<em>Open Systems Interconnection</em>) is a conceptual model that categorizes and standardizes the different functions in a network.</p>
+
+  <img src="images/1.1.1.png" width="500" alt="OSI Model Layers" />
+
+  <p>
+    As data moves through the OSI stack, it gets <strong>encapsulated</strong> with each layer adding something to the original data. By the time it reaches the physical layer, it's now either electric signals sent over wires or radio waves for wireless connections, and it gets <strong>de-encapsulated</strong> as it moves up the stack on the receiving side.
+  </p>
+
+  <div class="divider1"></div>
+  <h4>Two types of interactions happen:</h4>
+  <ul>
+    <li><strong>Adjacent-Layer Interactions</strong>: interactions between layers during encapsulation/de-encapsulation.<br /><em>e.g. interaction between the application and presentation layers as data gets encapsulated.</em></li>
+    <li><strong>Same-Layer Interactions</strong>: interactions between the same layer on different devices.<br /><em>e.g. application layer communication between devices.</em></li>
+  </ul>
+
+  <div class="divider1"></div>
+
+  <h3>Breakdown of each layer:</h3>
+
+  <ol>
+    <li>
+      <strong>Application:</strong>
+      <ul>
+        <li>Closest layer to the end user.</li>
+        <li>Interacts with software applications (e.g., web browsers).</li>
+        <li>Protocols: HTTP, FTP.</li>
+        <li>Functions include identifying communication partners and synchronizing communication.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Presentation:</strong>
+      <ul>
+        <li>Translates data to appropriate format (e.g., application to network format during encapsulation).</li>
+        <li>Handles encryption and decryption.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Session:</strong>
+      <ul>
+        <li>Controls dialogues (sessions) between hosts.</li>
+        <li>Establishes, manages, and terminates connections between local and remote applications.</li>
+        <li><strong>Top three OSI layers prepare data before it moves to the next layer.</strong></li>
+      </ul>
+    </li>
+    <li>
+      <strong>Transport:</strong>
+      <ul>
+        <li>Segments and reassembles data between hosts.</li>
+        <li>Breaks large data units into smaller segments for transmission.</li>
+        <li>Provides host-to-host (end-to-end) communication.</li>
+        <li><strong>Adds L4 header; data is now called a <em>Segment</em>.</strong></li>
+      </ul>
+    </li>
+    <li>
+      <strong>Network:</strong>
+      <ul>
+        <li>Connects hosts across different networks (e.g., beyond LAN).</li>
+        <li>Provides logical addressing (IP addresses).</li>
+        <li>Handles path selection between source and destination.</li>
+        <li>Routers operate at this layer.</li>
+        <li><strong>Adds L3 header; data is now called a <em>Packet</em>.</strong></li>
+      </ul>
+    </li>
+    <li>
+      <strong>Data Link:</strong>
+      <ul>
+        <li>Connects hosts on the same network.</li>
+        <li>Defines data format for transmission on physical medium.</li>
+        <li>Uses Layer 2 addressing (MAC addresses).</li>
+        <li>Switches operate here.</li>
+        <li><strong>Adds L2 header and trailer; data is now called a <em>Frame</em>.</strong></li>
+      </ul>
+    </li>
+    <li>
+      <strong>Physical:</strong>
+      <ul>
+        <li>Handles physical characteristics of transmission medium.</li>
+        <li>Converts digital bits into electrical or radio signals.</li>
+        <li>Includes cables and interfaces.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="divider1"></div>
+
+  <h3>PDUs</h3>
+  <p>
+    PDUs (Protocol Data Units) refer to the specific format of data transmitted at each OSI layer. Each layer's PDU contains data, control info, and headers needed for communication.
+  </p>
+
+  <img src="images/1.1.2.png" width="600" alt="PDUs per OSI Layer" />
+
+  <div class="divider1"></div>
+
+  <h2>The TCP/IP Suite:</h2>
+  <p>
+    TCP/IP has a similar structure to the OSI model, but with fewer layers. It is the model in use on modern networks.
+  </p>
+
+  <img src="images/1.1.3.png" width="600" alt="TCP/IP Model" />
+
+  <div class="divider1"></div>
+
+  <h3>An example of the encapsulation process:</h3>
+
+  <ol>
+    <li>The Application, Presentation, and Session layers prepare the data.</li>
+    <li>The Transport layer segments the data and adds a L4 header.</li>
+    <li>The Network layer adds a L3 header (IP address).</li>
+    <li>The Data Link layer adds a L2 header and trailer (MAC address).</li>
+    <li>Data gets sent over the Physical layer to a router.</li>
+    <li>The router operates at Layer 3, so it de-encapsulates the data twice until it reaches the L3 header to check source and destination IP addresses.</li>
+    <li>It encapsulates the data again and sends it onward.</li>
+    <li>Once data arrives at the destination, it gets de-encapsulated.</li>
+  </ol>
+
+  <img src="images/1.1.4.png" width="600" alt="Encapsulation Process" />
+
+  <div class="divider1"></div>
+  <a href="../index.html" class="prev-button">Previous</a>
+  <a href="1.2 Ethernet LAN switching.html" class="next-button">Next</a>
+  <br>
+
+  <br>
+  <br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+</body>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SNMP</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>2.11</small> SNMP - Simple Network Management Protocol</h1>
+    <div class="divider2"></div>
+
+    <p>
+        SNMP "<strong>Simple Network Management Protocol</strong>" is an application-layer protocol for monitoring and
+        managing network devices on a local area network (LAN) or wide area network (WAN).
+    </p>
+    <p>
+        The purpose of SNMP is to provide network devices, such as routers, servers and printers, with a common language
+        for sharing information with a Network Management System (<strong>NMS</strong>).
+    </p>
+
+    <div class="divider2"></div>
+    <span class="note">Network Management Systems</span>
+    <blockquote>
+        A <strong>Network Management System</strong> (NMS) is a software tool used to monitor, manage, and optimize the
+        performance, configuration, and security of computer networks. NMSs provide centralized management by monitoring
+        network devices like routers, switches, and servers, and they offer real-time performance data, fault detection,
+        and alerting.
+        NMSs use protocols like <strong>SNMP</strong> and <strong>NetFlow</strong> to collect data. Popular NMS
+        softwares include SolarWinds Network Performance Monitor, Nagios, PRTG Network Monitor, Zabbix, and ManageEngine
+        OpManager.
+    </blockquote>
+
+    <br>
+    <img src="images/2.11.1.png" width="500" alt="Network Management System Diagram" />
+
+    <div class="divider1"></div>
+
+    <h2>Main components of SNMP</h2>
+
+    <h3>1. SNMP agent</h3>
+    <p>
+        The SNMP agent is the networking device (like a router or a switch) that has SNMP enabled.
+    </p>
+    <ul>
+        <li>The SNMP agent has multiple <strong>Objects</strong> that can be interacted with, for example: a router
+            might have objects for its <code>name</code>, <code>uptime</code>, <code>interfaces</code> and
+            <code>routing table</code>.
+        </li>
+        <li>Each object is assigned an <strong>Object Identifier</strong> (OID), which is essentially a sequence of
+            numbers used to identify that object.</li>
+    </ul>
+    <img src="images/2.11.2.png" width="400" alt="SNMP OID Example" />
+    <ul>
+        <li>These OIDs are stored in a file called a <strong>Management Information Base</strong> (MIB).</li>
+        <li>The MIB follows a <em>tree structure</em> where each level in the hierarchy represents a more specific
+            category, leading down to individual data points (or "managed objects") that describe various aspects of a
+            device.</li>
+    </ul>
+
+    <div class="divider2"></div>
+    <h3>2. The NMS</h3>
+    <p>
+        The Network Management System is a software that accepts and processes SNMP messages.
+    </p>
+
+
+    <blockquote>SNMP usually runs over UDP port 161</blockquote>
+
+
+    <div class="divider1"></div>
+
+    <h2>MIBs and OIDs</h2>
+    <img src="images/2.11.3.png" width="550" alt="MIB Tree Structure" />
+    <p>
+        This is an MIB "Management Information Base" where multiple objects are organized into a tree structure. The OID
+        (Object ID)
+        for the object <code>ip</code> for example is <code>.1.3.6.1.1.1.4</code>
+    </p>
+
+    <div class="divider1"></div>
+
+    <h2>Example Scenario</h2>
+    <ol>
+        <li>We have a router which we want to configure such that it becomes an SNMP agent, which will enable it to
+            communicate with our NMS.</li>
+        <li>Inside the router's console, we do the following: <code>Router(config)# snmp-server</code>, which enables
+            the SNMP server on the agent.</li>
+        <li>We then set the <strong>community string</strong>, which is similar to a password. If the agent receives a
+            command (from the NMS) with the correct community string, the agent will respond to it.</li>
+        <li>We can then configure our NMS to use the community string we've set on the agent so that it can send
+            <code>GET</code> or <code>SET</code> requests, which will enable us to manage the agent.
+        </li>
+    </ol>
+
+    <div class="divider1"></div>
+
+    <a href="2.10 NFS - Network File System.html" class="prev-button">Previous</a>
+    <a href="next-page.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

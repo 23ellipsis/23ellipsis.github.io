@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SMB</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>2.5</small> SMB - Server Message Block</h1>
+    <div class="divider2"></div>
+
+    <p>
+        <strong>SMB</strong> stands for "Server Message Block". It is an application layer protocol that is mainly used
+        for providing shared access to things like files and printers on the network.
+        For instance, whenever you send a print request to the printer that is present inside you LAN, SMB can be used
+        to send the print request. It is based on the <strong>request-response model</strong>.
+    </p>
+    <div class="divider2"></div>
+
+    <h4>SMB can be:</h4>
+    <ul>
+        <li>Run directly over <strong>TCP</strong> port <strong>445</strong>: On Windows SMB can run directly over
+            TCP/IP without the need for Netbios, using services like MICROSOFT-DS that allow direct hosting of SMB via
+            port 445.</li>
+        <li>Run via <strong>NetBIOS API</strong> which in turn can run in several different ways — on
+            <strong>UDP</strong> ports <strong>137</strong>, <strong>138</strong> or <strong>TCP</strong> port
+            <strong>139</strong>.</li>
+    </ul>
+
+    <div class="divider2"></div>
+    <blockquote>
+        <p>In a nutshell:<br>
+            445 → SMB over TCP/IP<br>
+            139 → SMB over Netbios (TCP)<br>
+            137/138 → SMB over Netbios (UDP)</p>
+    </blockquote>
+
+    <div class="divider1"></div>
+
+
+    <h3>NetBIOS</h3>
+
+    <p>NetBIOS is an acronym that stands for <strong>Network Basic Input Output System</strong>. It might seem like a
+        protocol but <em>isn't</em> one, it is an API that provides <strong>session layer services</strong> that allow
+        applications on different computers to communicate over a LAN.
+        In modern networks NetBIOS runs over TCP/IP via the <strong>NetBIOS over TCP/IP</strong> or commonly known as
+        <strong>NBT</strong> protocol. This results in each computer on the network having a NetBIOS name along with the
+        IP Address corresponding to the host name.</p>
+    <p><em>netbios is rarely used with SMB today as it can just run directly over TCP port 445</em></p>
+
+
+
+    <div class="divider1"></div>
+
+    <h4>Netbios can provide three services:</h4>
+    <ol>
+        <li><strong>NetBIOS Name Service (NetBIOS-NS)</strong>
+            <ul>
+                <li><strong>Purpose:</strong> Handles name registration and resolution, similar to how DNS operates.
+                    Before initiating a session, an application must register its NetBIOS name using this service.</li>
+                <li><strong>Ports:</strong>
+                    <ul>
+                        <li><strong>UDP 137</strong>: Primary port for NetBIOS name service.</li>
+                        <li><strong>TCP 137</strong>: Rarely used, but can occasionally be seen for name services.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>NetBIOS Datagram Service (NetBIOS-DGM)</strong>
+            <ul>
+                <li><strong>Purpose:</strong> Provides connectionless communication for broadcasting messages across the
+                    network. Since it's connectionless, applications are responsible for error detection and data
+                    recovery.</li>
+                <li><strong>Port:</strong>
+                    <ul>
+                        <li><strong>UDP 138</strong>: Used for sending datagram messages.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>NetBIOS Session Service (NetBIOS-SSN)</strong>
+            <ul>
+                <li><strong>Purpose:</strong> Facilitates connection-oriented communication between devices. Unlike the
+                    datagram service, this provides built-in error detection and recovery mechanisms.</li>
+                <li><strong>Port:</strong>
+                    <ul>
+                        <li><strong>TCP 139</strong>: Used to establish and manage NetBIOS sessions.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="divider1"></div>
+
+    <h2>SMB Versions</h2>
+    <ul>
+        <li><strong>SMB1</strong> was the first implementation of SMB. It used 16-bit packet and small data buffers,
+            which greatly limited performance, <strong>it did not have any encryption for data in transit
+                whatsoever</strong>, which is why it is so insecure. In addition to this, it is highly susceptible to
+            MITM (man-in-the-middle) attacks.</li>
+            <br>
+        <li><strong>SMB2</strong> improved performance by increasing packets to 32-bit and 128-bit for files,
+            furthermore unnecessary data that was transmitted when performing operating via SMB was substantially
+            reduced. Security was improved to prevent MITM attacks through packet signing <strong>although still no
+                built-in encryption support</strong>.</li>
+                <br>
+        <li><strong>SMB3</strong> added more performance and security enhancements such as multichannel and
+            <strong>end-to-end encryption using AES</strong> were introduced in, as well as functionality to enforce
+            secure connections with newer clients.</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h3>How does SMB work?</h3>
+    <ol>
+        <li><strong>SMB client request</strong> – Through the SMB protocol, the client device sends a <em>request</em>
+            to the <em>SMB server</em>, seeking to access shared resources.</li>
+            <br>
+        <li><strong>Authentication</strong> – After establishing a <em>session</em> with the server, the client
+            transmits its identification credentials to the server. The server then verifies whether the client is
+            authorized to access the requested resources.</li>
+            <br>
+        <li><strong>Resource access</strong> – Upon successful authentication, the client gains the ability to transfer,
+            read, and write data to shared files, access shared devices, and execute tasks on them.</li>
+            <br>
+        <li><strong>Session termination</strong> – When the client has completed its tasks, it can terminate the SMB
+            communication, releasing the resources on both the client and server sides.</li>
+    </ol>
+
+
+    <div class="divider1"></div>
+
+    <h3>How SMB Works with NetBIOS</h3>
+    <p>
+    On its own, NetBIOS doesn’t know about IP addresses or the Internet.
+    Instead, it uses NetBIOS names (like <code>MYPC</code>) to identify computers.
+
+    To actually move data across networks, NetBIOS was later made to run over TCP/IP, which is called NBT (NetBIOS over TCP/IP) as discussed earlier.
+
+</p>
+<br>
+<strong>When SMB was first implemented (on DOS/Windows LANs), it needed a way for computers to:</strong>
+
+<ul>
+    <li> Find each other by name (\\MYPC\SharedFolder)
+</li>
+<li>Establish a session for file sharing
+</li>
+    <li>Exchange messages</li>
+  
+
+</ul>
+   
+<br>
+<strong>NetBIOS handled this by providing three services:</strong>
+<ul>
+    <li> Name Service (UDP 137) – Computers register and resolve NetBIOS names (like DNS for local networks).</li>
+    <li> Datagram Service (UDP 138) – Sends broadcast messages</li>
+<li>Session Service (TCP 139) – Handles reliable, connection-based communication (used for SMB traffic).</p></li>
+</ul>
+   
+
+   <div class="divider1"></div>
+
+
+
+    <a href="2.4 FTP - File Transfer Protocol.html" class="prev-button">Previous</a>
+    <a href="2.6 HTTP - HyperText Transfer Protocol.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

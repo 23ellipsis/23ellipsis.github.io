@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPv4 Addressing</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="divider1"></div>
+
+  <h1><small>1.3</small> IPv4 Addressing</h1>
+
+  <div class="divider2"></div>
+
+  <h2>Reminder: The Network Layer (Layer 3)</h2>
+  <ul>
+    <li>Provides connectivity between end hosts on different networks (outside of the LAN).</li>
+    <li>Provides logical addressing (IP addresses).</li>
+    <li>Provides <strong>Path Selection</strong> between source and destination.</li>
+    <li>Routers operate here.</li>
+  </ul>
+
+  <div class="divider1"></div>
+
+  <h4>Routers</h4>
+  <ul>
+    <li>Routers separate networks, each switch connected to a different router interface is on a different LAN.</li>
+    <li>Each interface of the router is assigned its own IP address.</li>
+    <li>Unlike switches, routers do not broadcast packets. They need to know where to route them otherwise they'd drop them.</li>
+  </ul>
+
+  <div class="divider1"></div>
+
+  <h3>IP Addresses</h3>
+  <strong>IPv4 addresses</strong> are made up of 4 octets, each octet being 8 bits represented in decimal (to make it easier for us to read).  And therefore each octet can hold a value between 0 and 255 in decimal, which is from 00000000 to 11111111 in binary.
+  
+  <div class="divider1"></div>
+
+  <h3>Subnets</h3>
+  <ul>
+    <li><code>/24</code> for example means that the first 24 bits (3 octets) represent the <strong>Network Portion</strong> of the IP address, and the last octet represents the <strong>Host Portion</strong>.</li>
+    <li>The network portion would be the same for all the devices on one subnet, and the host portion can change.</li>
+    <li>For the notation <code>192.168.0.0/24</code> for example, all devices in the range of <code>192.168.0.1</code> to <code>192.168.0.255</code> are on the same subnet.</li>
+    <li>The first IP address in the subnet is referred to as the default gateway or the network address, and it would be assigned to the router. In this case it would be <code>192.168.0.1</code>.</li>
+    <li>The last IP address in the subnet is the broadcast address, it indicates that the packet should be forwarded to all the devices on the subnet. In this case it’s <code>192.168.0.255</code>.</li>
+  </ul>
+
+  <div class="divider1"></div>
+
+  <h3>IPv4 addresses are split up into 5 different classes:</h3>
+ Note that the class is determined by the first octet.
+  <img src="images/1.3.1.png" width="600">
+  <ul>
+    <li>Addresses in class D are <strong>Multicast</strong> addresses.</li>
+    <li>Addresses in class E are reserved for experimental purposes.</li>
+    <li>In each class, some of the IP addresses are reserved for private IP addresses.</li>
+    <li>Address range of 127.0.0.0 - 127.255.255.255 are <strong>Loopback addresses</strong>.<br>
+      <em>A Loopback Address simply means that anything sent to an address in the 127.0.0.0/8 range will be processed by the device itself as if it was received from another device.</em>
+    </li>
+    <li>The 255.0.0.0 Subnet Mask can also be denoted as /8, 255.255.0.0 is /16 and 255.255.255.0 is /24.</li>
+  </ul>
+
+   <div class="divider1"></div>
+  <h2>Terminology</h2>
+
+  <p><strong>The Network Portion</strong> is the portion in the IP address that corresponds to where it is a 1 in the subnet mask. The network portion defines the subnet and it would be the same for all devices connected to it.</p>
+
+  <blockquote>
+    <p>192.168.0.1/24 has the subnet mask of 255.255.255.0<br>
+    and 255.255.255.0 in binary is 11111111.11111111.11111111.00000000<br>
+    So therefore, the Network Portion of this IP address is “192.168.0” (keep the octets where its a 1)</p>
+  </blockquote>
+
+  <div class="divider2"></div>
+
+  <p><strong>The Host Portion</strong> is the portion in the IP address that corresponds to where it is a 0 in the subnet mask. These are assigned to individual hosts, and they determine the size of the subnet.</p>
+
+  <blockquote>
+    <p>192.168.0.1/24 is a subnet where a device can be assigned the values between 192.168.0.1 to 192.168.0.255.<br>
+    Here, we can change both the forth octet to get new hosts.</p>
+  </blockquote>
+
+  <div class="divider2"></div>
+  The <strong>first usable address</strong> is one above the first address (the network address is the first actual address).<br>
+      <em>Eg: 192.168.0.1</em>
+    
+      <div class="divider2"></div>
+   If the Host portion of the address is all 1's = <strong>Broadcast Address.</strong><br>
+      <em>Eg: 192.168.1.255</em>
+  <div class="divider2"></div>
+    The <strong>last usable address</strong> is one below the last address.<br>
+      <em>Eg: 192.168.1.254</em>
+    <div class="divider2"></div>
+
+   If the destination IP address is a <strong>broadcast address</strong>, the destination MAC address would also be broadcast (<code>FFFF.FFFF.FFFF</code>).
+ 
+
+  <div class="divider1"></div>
+
+
+  <a href="1.2 Ethernet LAN switching.html" class="prev-button">Previous</a>
+  <a href="1.4 IPv4 Headers.html" class="next-button">Next</a>
+
+  <br><br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+</body>
+</html>

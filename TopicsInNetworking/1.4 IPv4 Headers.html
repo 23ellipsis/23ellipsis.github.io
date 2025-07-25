@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPv4 Headers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="divider1"></div>
+
+  <h1><small>1.4</small> IPv4 Headers</h1>
+
+  <div class="divider2"></div>
+
+  <h3>IPv4 headers are made up of these fields:</h3>
+
+  <ol>
+    <li>
+      <strong>Version</strong> [4 bits]
+      <ul>
+        <li>Identifies the version used, either IPv4 or IPv6.</li>
+        <li>IPv4 would have a value of 4 [0100]</li>
+        <li>IPv6 would have a value of 6 [0110]</li>
+      </ul>
+    </li>
+    <br>
+
+    <li>
+      <strong>IHL</strong> "Internet Header Length" [4 bits]
+      <ul>
+        <li>The final field of the IPv4 header (the options field) is variable in length, so this field is necessary to indicate the total length of the header.</li>
+        <li>It identifies the length of the header in 4 byte increments.<br>
+          <em>Eg: If the value was 5 → 5×4 = 20 bytes (length of the header is 20 bytes)</em>
+        </li>
+        <li>The minimum value of this field is 5 [0101], which is an IP header without an options field.</li>
+        <li>The maximum value is 15 [1111], so the length of the header would be 60 bytes.</li>
+      </ul>
+    </li>
+    <br>
+
+    <li>
+      <strong>DSCP</strong> "Differentiated Services Code Point" [6 bits]
+      <ul>
+        <li>Used for QoS <em>"Quality of Service"</em></li>
+        <li>Used to prioritize sensitive data (streaming voice, video etc)</li>
+      </ul>
+    </li>
+    <br>
+
+    <li>
+      <strong>ECN</strong> "Explicit Congestion Notification" [2 bits]
+      <ul>
+        <li>Provides a way to signal that the network is congested without dropping packets.</li>
+      </ul>
+    </li>
+    <br>
+
+    <li>
+      <strong>Total Length</strong> [16 bits]
+      <ul>
+        <li>Indicates the total length of the packet (including the L3 header and L4 segment)</li>
+        <li>Unlike the IHL field, this field indicates the value in bytes.<br>
+          <em>Eg: the value is 100 → total length is 100 bytes.</em>
+        </li>
+        <li>Minimum value is 20 (an IPv4 Header with no encapsulated data)</li>
+        <li>Maximum value is 65,535 (1111111111111111)</li>
+        <li>The IHL field indicates the length of the HEADER, while this field indicates the length of the HEADER + THE DATA INSIDE OF IT (the segment).</li>
+      </ul>
+    </li>
+    <br>
+
+    <li>
+      <strong>Identification</strong> [16 bits]
+      <ul>
+        <li>If the packet gets fragmented due to being too large, this field is used to identify which packet the fragment belongs to so that they can be reassembled later.</li>
+        <li>All fragments of the same packet will have the same value in this field.</li>
+        <li>Packets are fragmented if they're larger than the MTU "Maximum Transmission Unit", which is usually 1500 bytes.</li>
+      </ul>
+    </li>
+    <br>
+
+    <li>
+      <strong>FLAGS</strong> [3 bits]
+      <ul>
+        <li>Used to control/identify fragments.</li>
+        <li>First bit → always 0</li>
+        <li>Second bit → if it was 1, the packet shouldn't be fragmented ("Don't fragment" DF bit)</li>
+        <li>Third bit → if it was 1, there are more fragments ("More fragments" MF bit). And it is set to 0 for the last fragment.</li>
+      </ul>
+    </li>
+    <br>
+
+    <li>
+      <strong>Fragment Offset</strong> [13 bits]
+      <ul>
+        <li>Used to indicate the position of the fragment within the original unfragmented packet.</li>
+        <li>It allows fragmented packets to be correctly reassembled even if they arrive out of order.</li>
+      </ul>
+    </li>
+    <br>
+
+    <li>
+      <strong>TTL</strong> "Time To Live" [8 bits]
+      <ul>
+        <li>It is used to prevent infinite loops; if a packet happened to get continuously sent around in a loop (because of some poor routing configuration), this might cause congestion and eventually failure if many packets accumulate.</li>
+        <li>Routers will drop packets with a TTL of 0.</li>
+        <li>The TTL value shows how many hops till the packet gets dropped, and each time the packet arrives to a router, the router will decrease the packet's TTL by 1.</li>
+        <li>The current recommended TTL is 64.</li>
+      </ul>
+    </li>
+    <br>
+
+    <li>
+      <strong>Protocol</strong> [8 bits]
+      <ul>
+        <li>Used to indicate the protocol of the encapsulated segment (layer 4 PDU).</li>
+        <li>Value of 6 → TCP</li>
+        <li>Value of 17 → UDP</li>
+        <li>Value of 1 → ICMP</li>
+        <li>Value of 89 → OSPF "Open Shortest Path First"</li>
+      </ul>
+    </li>
+    <br>
+
+    <li>
+      <strong>Header Checksum</strong> [16 bits]
+      <ul>
+        <li>A calculated checksum used to check for errors in the IPv4 header.</li>
+        <li>When a router receives a packet, it calculates the checksum of the header and compares it to the one in this field.</li>
+        <li>If the numbers don't match, the router drops the packet because an error has occurred in transmission.</li>
+        <li>Note that this is used to check errors only in the IPv4 HEADER, and not in the encapsulated data. TCP and UDP have their own checksums to detect errors in the encapsulated data.</li>
+      </ul>
+    </li>
+    <br>
+
+    <li><strong>Source IP Address</strong> [32 bits]</li>
+    <br>
+
+    <li><strong>Destination IP Address</strong> [32 bits]</li>
+    <br>
+
+    <li>
+      <strong>Options</strong>
+      <ul>
+        <li>It is rarely used.</li>
+        <li>It has a length of 0 - 320 bits</li>
+        <li>It is present if the IHL value was more than 5.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="divider1"></div>
+  <img src="images/1.4.1.png" width="600">
+
+  <div class="divider1"></div>
+
+  <a href="1.3 IPv4 Addressing.html" class="prev-button">Previous</a>
+  <a href="2.1 ARP - Address Resolution Protocol.html" class="next-button">Next</a>
+
+  <br><br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+</body>
+</html>

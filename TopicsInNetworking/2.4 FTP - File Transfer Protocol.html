@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FTP</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>2.4</small> FTP - File Transfer Protocol</h1>
+    <div class="divider2"></div>
+
+    <p>
+        <strong>FTP (File Transfer Protocol)</strong> is a standard protocol used to transfer <em>files</em> between a client and a server over a network. It operates at the <strong>application layer</strong> of the <strong>TCP/IP</strong> protocol suite and allows users to upload, download, delete, rename, and manage files on a remote server.
+    </p>
+
+    <div class="divider1"></div>
+
+	<span class="note">Connecting to an FTP server</span>
+    <blockquote>
+        Just run the command <code>ftp $IP</code> (on Linux)</p>
+	</blockquote>
+
+	 <div class="divider1"></div>
+    <h3>FTP Basics</h3>
+    <ul>
+        <li>FTP was designed to facilitate the <strong>transfer of files</strong> from one computer to another over a <strong>TCP/IP-based network</strong> (such as the Internet or an intranet).</li>
+        <li>It operates on a <strong>client-server model</strong>, where the <strong>FTP client</strong> initiates the connection, and the <strong>FTP server</strong> accepts and processes the requests.</li>
+        <li>FTP is used for things like:
+            <ul>
+                <li>Uploading a website to a web hosting server.</li>
+                <li>Downloading files from an FTP server (such as software, patches, or documents).</li>
+                <li>Sharing large amounts of data.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="divider1"></div>
+
+	     <span class="note">FTP Modes</span>
+    <blockquote>
+        When your File Transfer Protocol (FTP) server runs behind a firewall or Network Address Translation (NAT) router, your users may sometimes encounter connectivity issues. One of the most common causes of FTP connection issues is the <em>data connection mode</em> being used. The mode can be either <strong>active</strong> or <strong>passive</strong>. Certain firewall configurations will only allow FTP connections if the data connection is set to a mode that works with a given configuration.</p>
+        
+        <p>Note that unlike HTTP or SFTP, FTP uses <strong>two channels</strong> for communication: a <strong>command channel</strong> (where commands would go) and a <strong>data channel</strong> (where the actual data gets transferred).</p>
+	</blockquote>
+
+    <img src="images/2.4.1.png" width="600" alt="FTP Communication Channels Diagram" />
+
+    <ol>
+        <li><strong>Active Mode</strong>:
+            <ul>
+                <li>First, the client sends out a <code>PORT</code> command (from a random port on its side) to the FTP server on port 21. In the <code>PORT</code> command, the client would specify which port the server should connect back to.</li>
+                <li>The server then connects back from port 20 to the client's specified port, allowing for data transfer through this channel.</li>
+            </ul>
+        
+            <p>Here, if the client had a firewall that is configured not to allow connections back to it, the server wouldn't be able to connect. (client devices typically block connections initiated from the outside).</p>
+        </li>
+        
+        <li><strong>Passive Mode</strong>:
+            <ul>
+                <li>First, the client sends out a <code>PASV</code> request (from a random port on its side) to the FTP server on port 21. This tells the sever that it should open a random port on its side.</li>
+                <li>The server sends back to the client what port it has opened for connection.</li>
+                <li>The client then connects from a random port on its side to the port specified by the server.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="divider1"></div>
+
+    <h3>Security Concerns with FTP</h3>
+    <ul>
+        <li><strong>Unencrypted Data</strong>: FTP sends all data, including usernames and passwords, in plaintext, making it vulnerable to interception by attackers (e.g., using a <strong>man-in-the-middle attack</strong>).</li>
+        <li><strong>Anonymous FTP</strong>: Many FTP servers allow anonymous access, where users can log in without a username or password, which can expose sensitive files if misconfigured.</li>
+    </ul>
+
+    <p>To address these issues, several secure alternatives have been developed, such as:</p>
+
+    <h4>a. FTPS (FTP Secure)</h4>
+    <ul>
+        <li>FTPS adds <strong>SSL/TLS encryption</strong> to the standard FTP protocol, protecting the control and data channels from interception.</li>
+        <li>It operates similarly to FTP but uses encryption to secure the communication.</li>
+        <li>FTPS uses port <strong>990</strong> for the control channel in implicit FTPS mode.</li>
+    </ul>
+
+    <h4>b. SFTP (SSH File Transfer Protocol)</h4>
+    <ul>
+        <li>SFTP is a completely different protocol that runs over <strong>SSH (Secure Shell)</strong>.</li>
+        <li>It provides both <strong>authentication</strong> and <strong>encryption</strong> for file transfers, making it much more secure than FTP.</li>
+        <li>SFTP typically operates on <strong>port 22</strong>, like SSH.</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h3>FTP Response Codes</h3>
+    <p>FTP servers respond to client requests with numeric codes, which indicate the success or failure of commands. Some common response codes are:</p>
+
+    <ul>
+        <li><strong>200</strong>: Command successful.</li>
+        <li><strong>220</strong>: Service ready.</li>
+        <li><strong>331</strong>: User name okay, need password.</li>
+        <li><strong>421</strong>: Service not available.</li>
+        <li><strong>425</strong>: Cannot open data connection.</li>
+        <li><strong>530</strong>: Not logged in (authentication failure).</li>
+        <li><strong>550</strong>: Requested action not taken (e.g., file unavailable).</li>
+    </ul>
+
+
+    <div class="divider1"></div>
+
+    <a href="2.3 DNS - Domain Name System.html" class="prev-button">Previous</a>
+    <a href="2.5 SMB - Server Message Block.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

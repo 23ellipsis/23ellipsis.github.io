@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SSH</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>2.7 SSH - Secure Shell</h1>
+    <div class="divider2"></div>
+
+    <p>
+        SSH <strong>"Secure Shell"</strong> is a protocol used to securely connect to and manage remote computers over a
+        network, typically for command-line access, file transfers, and tunneling. It’s the standard way to log into
+        servers and network devices securely.</p>
+    <p>Before SSH, protocols like <strong>Telnet</strong> were used for remote logins, but they sent everything in
+        plain text, making them vulnerable to eavesdropping. SSH fixes this by using <strong>encryption</strong> and
+        <strong>authentication</strong>.</p>
+
+    <div class="divider1"></div>
+
+    <h3>How SSH Works</h3>
+    <ol>
+        <li><strong>Connection Establishment</strong>: the client initiates a connection to the server running SSH,
+            usually on TCP port 22. (the server would be listening on post 22 for incoming SSH connections).</li>
+        <li><strong>Key Exchange</strong>: the client and the server perform a <em>key exchange</em> using algorithms
+            like Diffie-Hellman to agree on a shared session key. From this point, all traffic is encrypted using a
+            symmetric encryption algorithm
+            <blockquote>
+                The idea is that symmetric encryption uses the same key for both sides encrypting and decrypting the
+                messages, while asymmetric encryption uses different keys for encryption and decryption. Symmetric
+                encryption is faster, but it introduces the issue of <em>how would the encryption key be exchanged
+                    without the security getting compromised</em>
+                and this is where key exchange algorithms come into play.
+            </blockquote>
+        </li>
+        <li><strong>Authentication</strong>: the server proves its identity using its <em>host key</em>, and the client
+            authenticates using a password or a <em>public/private key pair</em> via a <em>challenge-response</em>
+            mechanism.</li>
+        <li><strong>Secure Communication</strong>: once authenticated, the user can run commands on the remote SSH
+            server, and all data is encrypted using the exchanged key.</li>
+    </ol>
+
+    <div class="divider1"></div>
+    <h3>OpenSSH</h3>
+    <p><strong>OpenSSH</strong> is a remote management tool that gives you access to run commands on another
+        machine via SSH.</p>
+    <ul>
+        <li><strong>SSH</strong> is the protocol, <strong>OpenSSH</strong> is an <em>implementation</em> of that
+            protocol, and it's the most popular one.</li>
+        <li>Almost every Linux distro has the SSH client installed by default. This allows us to connect to remote
+            servers but not for remote servers to connect to us.</li>
+        <li>The client package is called <strong>openssh-client</strong>.
+            <br><em>(it allows us to connect to servers (machines) that are running SSH).</em>
+   
+        </li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h2>Connecting</h2>
+    <pre><code>$ ssh user@host</code></pre>
+    <p>// connects to the host (IP address) as the user specified.</p>
+
+    <div class="divider1"></div>
+
+    <h2>Fingerprints</h2>
+     <p>A <strong>Fingerprint</strong> is a <em>hash</em> of the <em>public key</em> of the SSH server. (hashing it makes it shorter and easier to compare)
+     </p>
+    <ul>
+        
+        <li>When you connect to a new SSH server, a <strong>"fingerprint"</strong> prompt will pop up.</li>
+    
+        <li>This is used to verify the server's identity.
+            <br><em>For example, the person who runs that server would send you the fingerprint and you'd compare it to
+                the one you got prompted with (to avoid MITM attacks and whatnot).</em>
+        </li>
+        <li>If you choose to store the fingerprint, the next time you connect to that same SSH server, the "fingerprint" prompt isn't gonna show again. This
+            happens because your device fetched the fingerprint and stored it in the <code>known_hosts</code> file
+            (found in <code>~/.ssh</code>).</li>
+        <li>This is used so that you can get "notified" if it happened and you connected to an impostor <em>(an SSH
+                malicious server pretending to be the one you're trying to connect to)</em>. You'll get the fingerprint
+            prompt which means that you haven't visited that malicious SSH server before.</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h2>Public and Private Keys</h2>
+            <p>Public and private key pairs can be used for authentication, which avoids using passwords.</p>
+    <ul>
+        <li>Using a key is more secure than a password. So the best security measure would be to disable password logins
+            (to avoid brute force attacks) and only allow logins using keys.</li>
+    </ul>
+
+    <h4>Process:</h4>
+    <ol>
+        <li>The client generates a key pair with the command:
+            <pre><code>$ ssh-keygen</code></pre>
+            // this command generates a pubic key <code>id_rsa.pub</code> and a private key <code>id_rsa</code> that will be saved
+            in the <code>~/.ssh</code> directory. <em>RSA is used by default to generate the keys.</em>
+        </li>
+        <br>
+        <li>The client sends over their <em>public key</em> to the SSH server owner.</li>
+        <li>The server owner adds the public key to the <code>authorized_keys</code> file in their <code>~/.ssh</code>
+            directory.</li>
+        <li>Now, whenever that authorized client connects, they just need to prove to the server that they have the
+            <em>private key</em> that corresponds to the authorized <em>public key</em> by the server. This can be done
+            using the command:
+            <pre><code>$ ssh -i id_rsa user@server</code></pre>
+        </li>
+    </ol>
+    <blockquote>
+        As discussed earlier, this authentication is done using a challenge-response mechanism. This relies on a core implementation of <em>public key cryptography</em>. 
+
+        The idea is simple: the server generates a random challenge (some data) and asks the client to sign that data using its private key. The server then uses the client's public key 
+        (from the <code>authorized_keys</code> file) to verify the signature, proving the client's identity by whether or not they actually own the corresponding private key.
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <h2>Configuring SSH</h2>
+    
+        <p>SSH can be configured using a <code>config</code> located inside the <code>~/.ssh</code> directory to simplify our SSH login process.</p>
+    
+
+    <p>For example, inside the config file, we'd write the following:</p>
+    <pre><code>Host myserver          // we'll use this in the commands
+Hostname 10.0.2.5    // the host we wanna connect to
+Port 22              // the port we wanna connect to
+User root            // the user we wanna connect as</code></pre>
+    <p>now, we can simply run:</p>
+    <pre><code>$ ssh myserver</code></pre>
+    <p>instead of:</p>
+    <pre><code>$ ssh root@10.0.2.5</code></pre>
+
+
+    <div class="divider1"></div>
+
+    <a href="2.6 HTTP - HyperText Transfer Protocol.html" class="prev-button">Previous</a>
+    <a href="2.8 SMTP - Simple Mail Transfer Protocol.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

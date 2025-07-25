@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Accessing Information</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="divider1"></div>
+
+  <h1><small>3.4.1</small> Accessing Information</h1>
+
+  <p>As we've already discussed, an IA32 CPU has eight 32-bit registers. These registers can be used to store
+    <strong>integer data</strong> as well as <strong>pointers</strong>.
+  </p>
+
+  <blockquote>
+    note that the whole discussion is regarding 32-bit systems.
+  </blockquote>
+
+  <p>All register names start with <code>%e</code> (eg: <code>%eax</code>, <code>%ebx</code>, etc). This naming comes
+    from the original 8086 processor, where registers were 16 bits in size and later extended to 32 bits in size (hence
+    the prefix <code>e</code>).</p>
+
+  <div class="divider2"></div>
+
+  <h2>General Purpose Registers</h2>
+
+  <p>The first six registers (<code>%eax</code>, <code>%ebx</code>, <code>%ecx</code>, <code>%edx</code>,
+    <code>%esi</code> and <code>%edi</code>) are mostly general purpose, meaning they can be used freely by
+    instructions. However, some instructions require specific registers as sources or destinations.
+  </p>
+
+  <p>- Note that calling conventions (rules for functions/procedures) treat the first three registers
+    (<code>%eax</code>, <code>%ecx</code>, <code>%edx</code>) differently from the next three (<code>%ebx</code>,
+    <code>%esi</code>, <code>%edi</code>) when saving/restoring values.
+  </p>
+
+  <p>The last two registers (<code>%esp</code> and <code>%ebp</code>) are special and used for stack management (they
+    store pointers to locations in the stack) and they should be modified according to standard conventions.</p>
+
+  <img src="images/3.4.1.png" alt="Registers diagram">
+
+  <div class="divider1"></div>
+
+  <h2>Operand Specifiers</h2>
+
+  <p>Most instructions have one or more <strong>operands</strong>, which are source values to reference in performing an
+    operation. For example, when adding the numbers <code>x</code> and <code>y</code>, the operation is
+    <strong>addition</strong> while the operands are <strong>x</strong> and <strong>y</strong>.
+  </p>
+
+  <img src="images/3.4.2.png" alt="Operands diagram">
+
+  <p>As shown in the previous figure, there are different types of operands:</p>
+
+  <div class="divider2"></div>
+  <h3>1. Immediate values</h3>
+  <p>Immediate operands are basically constant values. In the AT&amp;T format of assembly code, they're written with a
+    <code>$</code> followed by an integer using the <em>standard C notation</em>.
+  </p>
+
+  <ul>
+    <li>Any value that fits into a 32-bit word can be used.</li>
+    <li>For example: <code>movl $5, %eax</code> moves the value <code>5</code> into the register <code>%eax</code>.</li>
+  </ul>
+
+  <blockquote>
+    note that standard C notation simple means that decimal (base 10) numbers are written normally (eg: 42, -577),
+    hexadecimal (base 16) numbers are written with a 0x prefix (eg: 0x1F for 31), and octal (base 8) numbers are written
+    with a leading 0 (eg: 075 for 61).
+  </blockquote>
+  <div class="divider2"></div>
+  <h3>2. Registers</h3>
+  <p>Operations can use registers as a source/destination for fetching/storing data. Registers are denoted with a
+    <code>%</code> followed by the register name.
+  </p>
+  <p>- For example: <code>movl %eax, %ebx</code> copies the content of the <code>eax</code> register into the
+    <code>ebx</code> register.
+  </p>
+  <div class="divider2"></div>
+  <h3>3. Memory</h3>
+  <p>The computer memory could also be used to fetch/store values. To specify that a value is a memory address in the
+    AT&amp;T format, it's enclosed within <code>()</code>.</p>
+
+  <p>- For example: <code>movl (%eax), %ebx</code> means "fetch the value at the memory address stored in the
+    <code>eax</code> register, and copy it into the <code>ebx</code> register" (so <code>eax</code> contains some memory
+    address (assume it's <code>0x12345678</code>) the data stored in that memory address is the number
+    <code>42984027</code>, so now <code>42984027</code> is copied into the <code>ebx</code> register, and note that
+    <code>movl</code> specifies a <code>long</code> to be moved, which takes up four memory addresses).
+  </p>
+
+  <p>For data structures stored in memory, calculating the memory address of an element is done using four components:
+  </p>
+  <ol>
+    <li><strong>Displacement</strong>: a constant offset which can be positive or negative.</li>
+    <li><strong>Base</strong>: the value of the starting address, which is often the beginning of some structure.</li>
+    <li><strong>Index</strong>: the index of an element, think some array index <code>i</code>.</li>
+    <li><strong>Scale</strong>: a multiplier for the index. It must be 1, 2, 4, or 8 (matching the common element sizes
+      in bytes). It's essentially the number of bytes one element takes up in memory.</li>
+  </ol>
+
+  <blockquote>
+    Note that memory addresses are typically written in hex, while the displacement, index and scale values are written
+    in decimal.
+  </blockquote>
+
+  <div class="divider1"></div>
+  <p><strong>To calculate the address of a data structure element:</strong></p>
+  <pre><code>address = displacement + base + (index × scale)</code></pre>
+
+  <p>In the AT&T assembly format, the general way to denote a memory address is as follows:</p>
+  <pre><code>displacement(base, index, scale)</code></pre>
+
+  <div class="divider1"></div>
+  <h4>Examples</h4>
+
+  <pre><code>movl (%eax), %ebx</code></pre>
+  <ul>
+    <li><code>movl</code> specifies that we're moving a <code>long</code>, which is <code>4</code> consecutive bytes..
+    </li>
+    <li><code>(%eax)</code> means that we're accessing the value stored in the memory address stored in the
+      <code>eax</code> register.
+    </li>
+    <li>This line altogether means: access the memory address stored in <code>eax</code>, take the value stored there
+      and copy it into the <code>ebx</code> register.</li>
+  </ul>
+  <div class="divider2"></div>
+
+
+  <pre><code>movl 4(%ebp), %eax</code></pre>
+  <ul>
+    <li>In <code>4(%ebp)</code>, <code>4</code> is the displacement. So if the address stored in the <code>ebp</code>
+      register is <code>0x100</code>, we will access <code>0x100 + 4</code> which is <code>0x104</code>.</li>
+    <li>This line means: copy the value from the memory address <code>0x104</code> to the <code>eax</code> register.
+    </li>
+  </ul>
+
+  <div class="divider2"></div>
+  <pre><code>movl (%ebx,%ecx), %edx</code></pre>
+  <ul>
+    <li>We can see that the two registers are enclosed in parentheses, which means that whatever value is inside will be
+      treated as a memory address.</li>
+    <li><code>(%ebx,%ecx)</code> is following the syntax <code>displacement(base, index, scale)</code>, particularly
+      <code>base</code> and <code>index</code>.
+    </li>
+    <li>This line means: the value in <code>ebx</code> is the base, the value in <code>ecx</code> is the index. To find
+      the <strong>effective memory address</strong>, which is the memory address we're trying to access, add the index
+      to the base.</li>
+    <li>Assume <code>ebx</code> holds the value <code>0x100</code>, and <code>ecx</code> holds the value <code>4</code>,
+      this means that we're trying to access the element at <code>0x104</code>.</li>
+    <li>Keep in mind that <code>movl</code> will copy a <code>long</code> starting from the effective address into the
+      <code>edx</code> register.
+    </li>
+    <li>Another thing to consider here is that the scale is <code>1</code>. Meaning, in order to get to the element we
+      want at index <code>4</code>, we skipped <code>4</code> bytes. This means that each element is <code>1</code> byte
+      in size. If the elements were integers for example, we would scale the index by <code>4</code>.</li>
+  </ul>
+  <div class="divider2"></div>
+
+  <pre><code>movl (%ebx,%ecx,4), %edx</code></pre>
+  <ul>
+    <li>Here we have three components: a <code>base</code>, <code>index</code> and <code>scale</code> (in the form of
+      <code>(base, index, scale)</code>).
+    </li>
+    <li>To calculate the effective memory address, we multiple the value in <code>ecx</code> by 4 and add it to the
+      value inside <code>ebx</code>.</li>
+    <li>If the value in <code>ecx</code> was <code>2</code> which means "the third element" (remember we start from
+      zero), and the value at <code>ebx</code> was <code>0x100</code> which means that the base (starting) memory
+      address is <code>0x100</code>, then the scale <code>4</code> will be multiplied by <code>2</code> and added to
+      <code>0x100</code>, resulting in <code>0x108</code>, allowing us to access the third element.
+    </li>
+  </ul>
+
+  <img src="images/3.4.3.png" alt="Memory addressing diagram">
+  <div class="divider2"></div>
+
+  <pre><code>movl 4(%edx, %eax, 8), %ecx</code></pre>
+  <ul>
+    <li>Here we have four components: <code>displacement(base, index, scale)</code>.</li>
+    <li>To calculate the effective memory address, we multiply the value in <code>eax</code> by <code>8</code>, add it
+      to the value in <code>edx</code> and add <code>4</code>.</li>
+    <li>This could be utilized when accessing data in <strong>structs</strong>:</li>
+  </ul>
+
+  <pre><code>struct Point{
+    int x; 
+    int y;
+};
+</code></pre>
+
+  <p>This code will define a new user-defined <em>type</em> called <code>Point</code>, which will be <code>8</code>
+    bytes in size. This type consists of two fields: <code>x</code> and <code>y</code>, where <code>x</code> is at
+    offset <code>0</code> and <code>y</code> is at offset <code>4</code>. <em>(similar to object attributes in other
+      programming languages)</em>.</p>
+
+  <p>We can create elements of this struct type using the following code:</p>
+
+  <pre><code>// create two points
+struct Point p1;
+struct Point p2;
+// assign x and y values to each point
+p1.x = 5;
+p1.y = 10;
+
+p2.x = 3;
+p2.y = 8; 
+</code></pre>
+
+  <p>In memory, these elements will look kinda like this:</p>
+
+  <img src="images/3.4.4.png" alt="Struct memory layout">
+
+  <p>As we can see, the scale is <code>8</code> bytes, which is the size of one "Point". To access the second Point for
+    example, we use the <strong>index</strong> <code>1</code> multiplied by the <strong>scale</strong> <code>8</code>
+    which results in <code>8</code>, then we add that to the base memory address which is <code>0x100</code>, resulting
+    in the memory address <code>0x108</code> (the address where the second Point <code>p2</code> begins).</p>
+
+  <p>Now say we want to access <code>p2.y</code> and not simply <code>p2</code>, for that we will utilize a displacement
+    of <code>4</code> added to the memory address <code>0x108</code>, resulting in <code>0x10C</code> (112 in decimal).
+    And in the ATT notation we would write that as
+    <code>4([register containing base address], [register containing index], scale)</code>.
+  </p>
+
+  <div class="divider1"></div>
+
+  <a href="3.3 Data Formats.html" class="prev-button">Previous</a>
+  <a href="3.4.1 Accessing Information.html" class="next-button">Next</a>
+
+  <br><br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+</body>
+
+</html>

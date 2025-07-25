@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operating System Notes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="divider1"></div>
+
+  <h1><small>1.6</small> The Operating System Manages the Hardware</h1>
+  <div class="divider2"></div>
+  <p>
+    Let’s examine the simple <code>hello</code> C program (which outputs “Hello World” to the screen
+    (or more precisely, onto the <em>output stream</em> <code>stdout</code>)).
+  </p>
+  <p>
+    When this program is run on a <strong>terminal</strong> (a shell), the shell first loads it and then runs it.
+    The <code>hello</code> program then prints its output.
+    During that process, <strong>neither program accessed the keyboard, display, disk, or main memory directly.</strong>
+    Rather, they relied on the services provided by the Operating System.
+  </p>
+
+  <div class="divider1"></div>
+
+  <span class="note">Takeaway Concept</span>
+  <blockquote>
+    We can think of the OS as a layer of software between the application programs and the hardware.
+    All attempts by an application program to manipulate the hardware <em>must</em> first go through the OS.
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <h4>The OS has two primary purposes:</h4>
+  <ol>
+    <li>To protect the hardware from misuse by runaway applications.</li>
+    <li>To provide applications with simple and uniform mechanisms for manipulating complicated low-level hardware
+      devices.</li>
+  </ol>
+
+  <div class="divider1"></div>
+
+  <h4>The OS achieves both goals via three fundamental abstractions:</h4>
+  <ul>
+    <li>Processes</li>
+    <li>Virtual memory</li>
+    <li>Files</li>
+  </ul>
+
+  <img src="images/1.6.png" width="500" alt="OS Abstractions">
+
+  <ul>
+    <li>Processes are abstractions for the processor, main memory, and I/O devices.</li>
+    <li>Virtual memory is an abstraction for main memory and I/O devices.</li>
+    <li>Files are abstractions for I/O devices.</li>
+  </ul>
+
+  <div class="divider1"></div>
+  <a href="1.5 Storage Devices From a Hierarchy.html" class="prev-button">Previous</a>
+  <a href="1.7 Processes and Threads.html" class="next-button">Next</a>
+
+  <br>
+  <br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+
+</body>
+
+</html>

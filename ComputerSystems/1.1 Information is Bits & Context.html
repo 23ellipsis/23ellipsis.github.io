@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello Program Explanation</title>
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+
+
+<body>
+
+
+  <div class="divider1"></div>
+
+  <h1><small>1.1</small> Information is Bits & Context</h1>
+  <div class="divider2"></div>
+  <h3>Consider the following source code of a program called <code>hello</code>:</h3>
+
+  <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+int main(){
+    printf("Hello world\n");
+}
+  </code></pre>
+
+  <p>
+    Our <code>hello</code> program begins life as a <strong>source program</strong> (source file)
+    that the programmer creates with an editor and saves in a text file called <code>hello.c</code>.
+  </p>
+  <ul>
+    <li>This source file is stored as a sequence of bits, organized in 8-bit chunks called <strong>bytes</strong>.</li>
+    <li>Most modern systems represent characters using the ASCII standard which encodes each ASCII character using one
+      byte.</li>
+    <li>For example, the first byte has the value 35 which corresponds to the character <code>#</code> (in bits it would
+      be <code>00100011</code>).</li>
+    <li>
+      After the source file gets <strong>compiled</strong>, an <strong>object file</strong> is generated
+      which contains the low-level instructions that the CPU can understand and execute in order to carry out
+      the task that was represented using the high-level C code.
+      (this will be discussed in much more detail later on)
+    </li>
+  </ul>
+
+  <img src="images/1.1.png" alt="Compilation illustration" width="500">
+
+  <p>
+    It's important to emphasize that all data in a computer is stored as bits. The only thing that
+    distinguishes different data objects is the context in which we view them. So, in different contexts,
+    the same sequence of bytes might represent an integer, floating-point number, character string,
+    or machine instruction.
+  </p>
+
+
+  <div class="divider1"></div>
+
+  <span class="note">Takeaway Concept</span>
+  <blockquote>
+
+    Files such as <code>hello.c</code> that consist exclusively of ASCII characters are known as
+    <strong>text files</strong>. All other files are known as <strong>binary files</strong>.<br><br>
+    The idea is simple: a text file contains bytes that are translated to something humans can understand
+    and view using a text editor (for example ASCII characters) while binary files contain bytes that are
+    translated to something the computer understands (for example instructions represented in binary).<br><br>
+    Try compiling a <code>.c</code> program then opening the resulting object file using a text editor.
+    You'll notice that all you see is gibberish and that's because the object file does not contain many
+    bytes that could be "translated" into characters using a text editor.
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <a href="../index.html" class="prev-button">Previous</a>
+  <a href="1.2 Programs Are Translated by Other Programs into Different Forms.html" class="next-button">Next</a>
+
+  <br>
+  <br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+
+</body>
+
+</html>

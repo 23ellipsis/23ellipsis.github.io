@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Processes and Threads</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="divider1"></div>
+  <h1><small>1.7</small> Processes and Threads</h1>
+  <div class="divider2"></div>
+
+  <p>
+    When a program runs, the OS provides the illusion that the program is the only one running on the system.
+    The program appears to have exclusive use of the processor, main memory, and I/O devices.
+    (This concept will be illustrated more clearly later)
+    The processor appears to be executing the instructions of the program one after another,
+    and the code and data of the program appear to be the only objects in the system’s memory.
+  </p>
+
+  <p>
+    These illusions are provided by the notion of a <strong>process</strong>.
+  </p>
+
+  <div class="divider1"></div>
+
+  <h3>What really <em>is</em> a process</h3>
+  <p>
+    A process is the operating system’s abstraction for a running program.
+  </p>
+
+  <div class="divider1"></div>
+
+  <h2>Concurrency</h2>
+  <p>
+    When two processes are running <em>concurrently</em> on a system, this means that the instructions of one process
+    are <em>interleaved</em> with the instructions of another process, giving the illusion of concurrency.
+  </p>
+
+  <blockquote>
+    The CPU can execute only <em>one</em> instruction (per core) at a time.
+    That's why concurrency is often described as an "illusion".
+  </blockquote>
+
+  <p>
+    The OS performs this interleaving with a mechanism known as <strong>Context Switching</strong>.
+    The OS first keeps track of all the state information that the process needs in order to run.
+    This state, which is known as the <strong>context</strong>, includes information such as the current values of the
+    PC (Program Counter, which is the register that holds the memory address of the next instruction to be executed),
+    the register file, and the contents of the main memory which the process needs.
+    When the operating system decides to transfer control from the current process to some new process,
+    it performs a context switch by saving the context of the current process, restoring the context of the new process,
+    and then passing control to the new process.
+  </p>
+
+  <div class="divider1"></div>
+
+  <h3>Scenario</h3>
+  <p>
+    Consider a scenario where the user is running a simple <code>hello</code> program from the shell:
+  </p>
+  <ul>
+    <li>Initially, the shell process is running alone, waiting for input on the command line.</li>
+    <li>When we ask it to run the <code>hello</code> program, the shell carries out our request by invoking a special
+      function known as a <strong>System Call</strong> that passes control to the OS.</li>
+    <li>The OS saves the shell’s context, then creates a new <code>hello</code> process along with its context and
+      passes control to it.</li>
+    <li>After <code>hello</code> terminates, the OS restores the context of the shell process and passes control back
+      to it, where it waits for the next command line input.</li>
+  </ul>
+
+  <blockquote>
+    Remember that all of this happens <strong><em>super fast</em></strong> that you won't even notice any latency.
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <h2>Threads</h2>
+  <p>
+    Although we normally think of a process as having a single control flow, in a modern system a process can consist of
+    multiple execution units called <strong>threads</strong>.
+    You can think of a thread as a linear flow of instructions, fetched and executed one by one.
+    A process has one or more threads.
+  </p>
+
+  <div class="divider1"></div>
+  <a href="1.6 The Operating System Manages the Hardware.html" class="prev-button">Previous</a>
+  <a href="1.8 Virtual Memory.html" class="next-button">Next</a>
+
+  <br>
+  <br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+
+</body>
+
+</html>

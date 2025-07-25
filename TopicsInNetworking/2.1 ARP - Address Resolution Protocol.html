@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARP</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="divider1"></div>
+
+  <h1><small>2.1</small> ARP - Address Resolution Protocol</h1>
+
+  <div class="divider2"></div>
+
+  <p><strong>ARP</strong> "Address Resolution Protocol" is the protocol used to discover the MAC address of a known IP address.</p>
+  <ul>
+    <li>Encapsulated within the L2 header which contains the source and destination <strong>MAC addresses</strong>, is the L3 packet which contains the source and destination <strong>IP addresses</strong>.</li>
+    <li>When a <code>PC1</code> wants to communicate with <code>PC2</code>, it typically would use <code>PC2</code>'s IP address as a destination, however, it might not know its MAC address. (example scenario: <code>ping [PC2's IP address]</code>)</li>
+    <li>If <code>PC1</code> and <code>PC2</code> were inside a LAN, <code>PC1</code> would need to discover <code>PC2</code>'s MAC address, because <em>inside</em> a LAN means separated by a layer 2 device like a switch, which are unable to operate using IP addresses and they need to know the MAC address of the destination.</li>
+    <li>This discovery is done using ARP.</li>
+  </ul>
+
+  <div class="divider1"></div>
+  <h4>The ARP process consists of two messages:</h4>
+  <ol>
+    <li>
+      <strong>ARP Request</strong>
+      <ul>
+        <li>It is sent as a broadcast ethernet frame.</li>
+        <li>"Who has the IP address of <code>192.168.1.3</code>"</li>
+      </ul>
+    </li>
+    <li>
+      <strong>ARP Reply</strong>
+      <ul>
+        <li>It is sent as a unicast frame to the device that requested it.</li>
+        <li>"I have the IP address of <code>192.168.1.3</code>, here's my MAC address …"</li>
+      </ul>
+    </li>
+  </ol>
+
+  <blockquote>
+    When a broadcast message is sent, the destination MAC address would be <code>FFFF.FFFF.FFFF</code></p>
+
+  </blockquote>
+
+  <img src="images/2.1.1.png" width="600">
+
+  <div class="divider1"></div>
+  <p>Note that after a device receives the ARP reply, it keeps the IP address and the corresponding MAC address in its ARP table.</p>
+
+  <blockquote>
+    <p><em>Tip:</em> To view the ARP table, use the command <code>arp -a</code><br>
+     “<strong>Dynamic</strong>” means that our device learned the IP and MAC addresses using an ARP request.<br>
+    “<strong>Static</strong>” means that the IP and MAC addresses are a default entry on our device.</p>
+  </blockquote>
+
+  
+
+  <div class="divider1"></div>
+
+  <a href="1.4 IPv4 Headers.html" class="prev-button">Previous</a>
+  <a href="2.2 TCP - Transmission Control Protocol.html" class="next-button">Next</a>
+
+  <br><br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+</body>
+</html>

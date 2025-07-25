@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Program Encodings</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <div class="divider1"></div>
+  <h1><small>3.2</small> Program Encodings</h1>
+  <div class="divider2"></div>
+
+  <p>
+    Suppose we write a C program as two files <code>p1.c</code> and <code>p2.c</code>. We can then compile them into one
+    executable using the following command:
+  </p>
+
+  <pre><code>gcc -O1 -o p p1.c p2.c</code></pre>
+
+  <ul>
+    <li><code>-O1</code> specifies the optimization level, in this case it's 1. Increasing optimization generally makes
+      the program run faster but increases compile time and may make debugging harder.</li>
+    <li><code>-o p</code> specifies the output file name, here simply <code>p</code>.</li>
+    <li><code>p1.c p2.c</code> are the source files to compile and link together.</li>
+  </ul>
+
+  <div class="divider1"></div>
+  <span class="note">Reminder</span>
+  <blockquote>
+    <p>
+      The <code>gcc</code> command invokes several programs in sequence to turn source code into executable code. First,
+      the C preprocessor expands <code>#include</code> files and macros. Then the compiler generates assembly code files
+      <code>p1.s</code> and <code>p2.s</code>. The assembler converts those into object files <code>p1.o</code> and
+      <code>p2.o</code>. Finally, the linker merges the object files and libraries into the executable <code>p</code>.
+    </p>
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <h3>Machine Level Code</h3>
+  <p>
+    As discussed earlier, computer systems use <strong>abstraction</strong> to hide implementation details. Two key
+    abstractions important to machine-level programming are:
+  </p>
+  <ol>
+    <li>
+      <strong>The Instruction Set Architecture (ISA)</strong>: Defines how machine programs look and behave. Different
+      processors use different ISAs (e.g., IA32, x86_64).
+    </li>
+    <li>
+      <strong>Virtual Memory Addresses</strong>: Programs use virtual addresses, making memory appear as one large
+      continuous byte array. Hardware and OS manage physical memory behind the scenes.
+    </li>
+  </ol>
+
+  <p>
+    Assembly code is very close to machine code but represented in a human-readable textual format. Understanding
+    assembly and how it maps to C is key to understanding how computers execute programs.
+  </p>
+
+  <p>Details visible in assembly but hidden in C include:</p>
+  <ul>
+    <li><strong>Program Counter (PC or Instruction Pointer)</strong>: Holds the address of the next instruction, not the
+      instruction itself.</li>
+    <li><strong>Register file</strong>: 8 registers in 32-bit, 16 in 64-bit systems, storing addresses or integers for
+      program state and temporary data.</li>
+    <li><strong>Condition code registers</strong>: Hold flags for conditions like zero, negative, overflow, used for
+      control flow.</li>
+    <li><strong>Floating-point registers</strong>: Store floating-point data.</li>
+  </ul>
+
+  <div class="divider1"></div>
+
+  <h3>Notes</h3>
+  <ul>
+    <li>C represents objects in memory, but machine code views memory as a flat, byte-addressable array. Arrays and
+      structs are just bytes in memory.</li>
+    <li>Program memory includes executable code, OS-required info, stack for calls, and heap for user allocations.</li>
+    <li>Programs access only a subrange of virtual addresses; e.g., a 32-bit address can theoretically address 4GB, but
+      programs typically use only a few MB.</li>
+    <li>OS manages virtual to physical address translation.</li>
+  </ul>
+
+  <div class="divider1"></div>
+
+  <h3>Example C Code</h3>
+  <pre><code>int accum = 0;
+int sum(int x, int y){
+  int t = x + y;
+  accum += t;
+  return t;
+}</code></pre>
+
+  <p>
+    The command <code>gcc -S program.c</code> generates <code>program.s</code> with assembly instructions like:
+  </p>
+
+  <pre><code>sum:
+  pushl %ebp
+  movl %esp, %ebp
+  movl 12(%ebp), %eax
+  addl 8(%ebp), %eax
+  addl %eax, accum
+  popl %ebp
+  ret
+</code></pre>
+
+  <p>
+    The command <code>gcc -O1 -c program.c</code> generates the object file <code>program.o</code> containing the binary
+    instructions. Object files often contain more data than just instructions (metadata, headers).
+  </p>
+  <p>
+    Instructions are stored consecutively in the <code>.text</code> section of the object file.
+  </p>
+
+
+  <blockquote>
+    <p>
+      <code>gcc -s ...</code> compiles source to assembly (<code>.s</code>), while <code>gcc -c ...</code> compiles and
+      assembles to object files (<code>.o</code>) without linking.
+    </p>
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <h3>A Real Life Example :D</h3>
+  <p>I created a <code>program.c</code> with the code above.</p>
+  <br>
+  <img src="images/3.2.2.png" width="400" alt="program.c file screenshot" />
+
+  <br>
+  <p>After compiling with <code>gcc -S program.c</code>, the <code>program.s</code> looks like this:</p>
+  <br>
+  <img src="images/3.2.1.png" width="600" alt="program.s file screenshot" />
+  <br>
+  <p>
+    Notice that the actual machine instructions reside in the <code>main:</code> block; other lines starting with
+    <code>.</code> are assembler/linker directives.
+  </p>
+  <p>
+    The actual CPU instructions occupy a small section of the object file, stored sequentially as bytes.
+  </p>
+
+  <p>This is visible when running the <code>size</code> command on the object file:</p>
+  <br>
+  <img src="images/3.2.3.png" width="550" alt="size command output" />
+  <br>
+  <ul>
+    <li><strong>text</strong>: size of compiled instructions (106 bytes)</li>
+    <li><strong>data</strong>: initialized global/static variables (0 bytes)</li>
+    <li><strong>bss</strong>: uninitialized globals/statics (4 bytes)</li>
+    <li><strong>dec</strong>: total size in decimal (110 bytes)</li>
+    <li><strong>hex</strong>: total size in hex (0x6e)</li>
+  </ul>
+
+  <p><em>Note: Assembly differs by system architecture; this example is from a 64-bit system while the book discusses
+      32-bit.</em></p>
+
+  <div class="divider1"></div>
+
+  <h3>ATT vs Intel Assembly Formats</h3>
+  <p>
+    We show assembly in <strong>ATT format</strong> (default for GCC and objdump). Intel and Microsoft tools show Intel
+    format.
+  </p>
+  <ul>
+    <li>Intel omits size suffixes (e.g., <code>mov</code> vs <code>movl</code> for 4 bytes).</li>
+    <li>Intel omits <code>%</code> in register names (<code>esp</code> vs <code>%esp</code>).</li>
+    <li>Intel uses different memory location syntax (e.g., <code>DWORD PTR [ebp+8]</code> vs <code>8(%ebp)</code>).</li>
+    <li>Operand order is reversed between the two formats.</li>
+  </ul>
+
+
+  <div class="divider1"></div>
+
+  <a href="3.0 Machine Level Representation of Programs.html" class="prev-button">Previous</a>
+  <a href="3.3 Data Formats.html" class="next-button">Next</a>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+  <br><br>
+</body>
+
+</html>

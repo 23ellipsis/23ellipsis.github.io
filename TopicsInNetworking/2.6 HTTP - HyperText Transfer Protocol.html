@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTTP</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>2.6</small> HTTP - HyperText Transfer Protocol</h1>
+    <div class="divider2"></div>
+
+    <p>
+        <strong>HTTP</strong> <em>"Hypertext Transfer Protocol"</em> is an <strong>application-layer</strong> protocol
+        used for transmitting hypermedia documents, such as <a href="HTML.html" class="custom-link">HTML</a>.
+    </p>
+    <ul>
+        <li>It was designed for communication between <strong>web browsers</strong> and <strong>web servers</strong>,
+            but it can also be used for other purposes like <a href="APIs.html" class="custom-link">API</a>
+            communications, <a href="RPC - Remote Procedure Call.html" class="custom-link">RPC - Remote Procedure
+                Calls</a> and mail transfer.</li>
+        <li>HTTP follows a classical <strong>client-server model</strong> with a client opening a connection to make a
+            request, then waiting until it receives a response.</li>
+        <li>HTTP is <strong>stateless</strong>, meaning that the server does not keep any data (state) between two
+            requests.</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h2>Overview of HTTP</h2>
+    <p>
+        <strong>HTTP</strong> is a <strong>protocol</strong> for fetching resources such as HTML documents.
+    </p>
+    <ul>
+        <li>A complete document is typically constructed from <strong>resources</strong> such as text content, layout
+            instructions, images, videos, scripts, and more.</li>
+    </ul>
+
+    <img src="images/2.6.1.png" width="600" alt="HTTP Resources Diagram" />
+
+    <p>
+        Clients and servers communicate by exchanging individual messages <em>(as opposed to a stream of data)</em>. The
+        messages sent by the <strong>client</strong> are called <strong>requests</strong> and the messages sent by the
+        server as an answer are called <strong>responses</strong>.
+    </p>
+    <ul>
+        <li>HTTP is an <strong>application layer</strong> protocol that is implemented over <a
+                href="2.2 TCP - Transmission Control Protocol.html" class="custom-link">TCP</a> or over an encrypted TCP
+            connection using TLS</li>
+    </ul>
+
+    <img src="images/2.6.2.png" width="500" alt="HTTP Protocol Stack Diagram" />
+
+    <div class="divider1"></div>
+
+
+    <h3>Components of HTTP Based Connections</h3>
+    <h4>1. The User-Agent</h4>
+    <p>
+        HTTP is a <strong>client-server</strong> protocol: <em>requests</em> are sent by one entity, the
+        <strong>user-agent</strong>, which is <em>any</em> tool that acts on behalf of the user.
+    </p>
+    <ul>
+        <li>Most of the time the user-agent is a <strong>Web browser</strong>, but it can be anything, for example, a
+            web crawler for some search engine.</li>
+        <li>The browser is <em>always</em> the entity initiating the request; never the server.</li>
+        <li>To display a Web page, the browser sends an original request to fetch the HTML document that represents the
+            page. Then it parses this file, making additional requests corresponding to the other files linked in that
+            HTML document, like JavaScript and CSS files.</li>
+    </ul>
+
+
+
+    <blockquote>This explains why multiple requests are made to view a single web page.</blockquote>
+
+
+    <h4>2. The Web Server</h4>
+    <p>
+        The <strong>server</strong> <em>serves</em> the document as requested by the client.
+    </p>
+    <ul>
+        <li>A server appears as only a single machine virtually; but it may actually be a collection of servers sharing
+            the load (load balancing), or other software (such as caches, a database server, or e-commerce servers).
+        </li>
+    </ul>
+
+    <h4>3. Proxies</h4>
+    <p>
+        Between the Web browser and the server, numerous computers and machines relay the HTTP messages in different
+        layers of the OSI stack. Those operating at the application layers are generally called
+        <strong>proxies</strong>. These can be transparent, forwarding on the requests they receive without altering
+        them in any way, or non-transparent, in which case they will change the request in some way before passing it
+        along to the server. Proxies may perform numerous functions:
+    </p>
+    <ul>
+        <li><strong>caching</strong> the cache can be public or private, like the browser cache</li>
+        <li><strong>filtering</strong> like an antivirus scan or parental controls</li>
+        <li><strong>load balancing</strong> to allow multiple servers to serve different requests</li>
+        <li><strong>authentication</strong> to control access to different resources</li>
+        <li><strong>logging</strong> allowing the storage of historical information</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+
+    <h3>HTTP Packets</h3>
+    <p>When you load a webpage, your browser first establishes a connection to the
+        requested web server via a TCP handshake. If the website operates with HTTPs (the encrypted version of HTTP), a
+        <strong>key exchange process</strong>
+        happens between you (the client) and the server so that you can exchange encrypted messages.
+    </p>
+    <p>HTTP requests and responses exist <em>inside</em> the TCP packet, and these requests/responses are constructed in
+        <strong>plain text</strong>, meaning,
+        unlike TCP and IP headers which contain binary data that could be arbitrary for us humans, HTTP headers contain
+        text data.</p>
+
+    <div class="divider2"></div>
+    <h4>HTTP Requests</h4>
+    <pre><code>GET /index.html HTTP/1.1
+Host: www.example.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+Accept: text/html,application/xhtml+xml
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+</code></pre>
+    <p> This is an example of a simple HTTP request. Here's a breakdown of each line:</p>
+    <ul>
+        <li><code>GET</code> is the <strong>HTTP Method</strong> used for this connection. It could be
+            <code>POST</code>, <code>PUT</code>, <code>DELETE</code>
+            among others. It simply specifies the <strong>action</strong> we want to perform. In this case, it's
+            fetching resources.</li>
+        <li><code>/index.html</code> is the <strong>resource</strong> we're requesting from the web server. Remember
+            that this whole HTTP header is <em>encapsulated</em>
+            within more headers (IP header, TCP header ...), so we don't really need to specify the IP address of the
+            web server since that information is already present in the IP header. </li>
+        <li><code>HTTP/1.1</code> specifies the HTTP version</li>
+        <li><code>Host</code>, <code>User-Agent</code>, <code>Accept</code>, <code>Accept-Language</code> and
+            <code>Connection</code> are <strong>HTTP headers</strong> and they're used to control how the client and
+            server communicate. </li>
+    </ul>
+
+    <div class="divider2"></div>
+    <h4>HTTP Responses</h4>
+    <pre><code>HTTP/1.1 200 OK
+Date: Fri, 25 Jul 2025 12:00:00 GMT
+Server: Apache/2.4.57
+Content-Type: text/html; charset=UTF-8
+Content-Length: 1256
+Connection: keep-alive
+
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Example&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;Hello World!&lt;/body&gt;
+&lt;html&gt;
+</code></pre>
+
+    <p> This is an example of a simple HTTP response. Here's a breakdown of each line:</p>
+    <ul>
+        <li><code>HTTP/1.1</code> is the <strong>HTTP version</strong> used for this connection.
+        <li><code>200 OK</code> is the <strong>HTTP Status Code</strong> which is a number sent by the server to tell
+            the client what happened with the request. In this case, the request was successful.</li>
+        <li><code>Date</code>, <code>Server</code>, <code>Content-Type</code>, <code>Content-Length</code> and
+            <code>Connection</code> are <strong>HTTP headers</strong> and they're used to control how the client and
+            server communicate. </li>
+        <li><code>&lt;html&gt;...&lt;html&gt;
+</code> is the <strong>response body</strong> which is the actual resource (webpage, file or data) sent by the server.
+        </li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h2>Evolution of HTTP</h2>
+    <h3>HTTP 1.0</h3>
+    <p>
+        <strong>HTTP 1.0</strong> added functionality for the <em>firstly introduced</em> <strong>HTTP 0.9</strong>.
+        This functionality included:
+    </p>
+    <ul>
+        <li>New HTTP methods (HTTP 0.9 only supported <code>GET</code>)</li>
+        <li>Some HTTP headers</li>
+        <li>Status Codes</li>
+        <li>Different file types (HTTP 0.9 only supported HTML files)</li>
+    </ul>
+    <p>
+        With HTTP 0.1, each request needed its own TCP connection, which wasn't really efficient in terms of speed and
+        performance.
+    </p>
+    <img src="images/2.6.3.png" width="400" alt="HTTP 1.0 Diagram" />
+
+    <div class="divider1"></div>
+
+    <h3>HTTP 1.1</h3>
+    <p>
+        <strong>HTTP 1.1</strong> improved performance and added new functionality to <strong>HTTP 1.0</strong>, which
+        included:
+    </p>
+
+    <h4>Reused connection</h4>
+    <p>
+        The connection now can be reused to execute several requests within a single TCP connection. This improves
+        performance by eliminating the need to establish a new TCP connection for each request.
+    </p>
+    <p>
+        For example, if the <code>Connection: keep-alive</code> header is present, the TCP connection remains open.
+    </p>
+    <img src="images/2.6.4.png" width="550" alt="HTTP 1.1 Connection Reuse Diagram" />
+    <br>
+
+
+    <blockquote>Note that HTTP 1.1 mostly opened multiple TCP connection (typically 6) in order to send multiple
+        requests simultaneously as pipelining was rarely used. This made it slowed and inefficient, and was fixed later
+        with Multiplexing in HTTP 2.0</blockquote>
+
+
+    <h4>Pipelining</h4>
+    <p>
+        This feature allows your browser to send multiple HTTP requests over the same TCP connection without waiting for
+        responses. The responses, however, have to be sent back in order.
+    </p>
+
+
+    <blockquote>Although pipelining improved speed, it wasn't supported by many browsers and servers. It also introduced
+        a new issue: <strong>Head Of Line Blocking</strong>, which occurs when one of the responses takes too long to
+        get processed, and it delays the responses that come after it.</blockquote>
+    </div>
+    <img src="images/2.6.5.png" width="550" alt="HTTP Pipelining Diagram" />
+    <img src="images/2.6.6.png" width="500" alt="Head of Line Blocking Diagram" />
+
+    <br>
+    <h4>Host Header</h4>
+    <p>
+        The <code>Host</code> header is mandatory in HTTP 1.1, and it allows servers to handle multiple <strong>domain
+            names</strong> using <strong>the same IP address</strong> enabling better server resource utilization and
+        facilitating the hosting of multiple websites on a single server.
+    </p>
+
+    <h4>New HTTP methods</h4>
+    <p>
+        This version added six new methods: <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code>,
+        <code>CONNECT</code>, <code>TRACE</code>, and <code>OPTIONS</code>.
+    </p>
+
+    <h4>Caching</h4>
+    <p>
+        Additionally, a bunch of new caching mechanisms were introduced such as the <code>Cache-Control</code> header,
+        allowing clients and servers to control caching behavior more effectively.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>HTTP 2.0</h3>
+    <p>
+        <strong>HTTP 2.0</strong> added new functionality which includes:
+    </p>
+
+    <h4>Multiplexing</h4>
+    <p>
+        Multiplexing allows the browser to fire off multiple requests at once on the same connection and receive the
+        requests back in <em>any</em> order (unlike in HTTP 1.1 where responses needed to be sent back in order).
+    </p>
+    <p>
+        This is done using <strong>streams</strong>. Each stream is identified by a unique <strong>stream ID</strong>
+        and is used for a request/response pair.
+    </p>
+
+    <h4>Binary Framing</h4>
+    <p>
+        HTTP/2 uses a binary format instead of a textual format, which makes data smaller and makes reading it <em>-by
+            computers-</em> faster.
+    </p>
+
+    <blockquote>Although all data is ultimately transmitted as binary over WIFI or Ethernet, "binary format" here is a
+        reference to the data in the Application Layer itself, meaning that servers will be receiving and interpreting
+        that data directly from the binary format. (for example, HTTP headers will be represented in binary instead of
+        plain text).</blockquote>
+
+
+    <h4>Header Compression</h4>
+    <p>
+        HTTP/2 uses <strong>HPACK</strong>, a header compression algorithm that reduces the overhead of HTTP headers.
+        This decreases the amount of data transmitted, improving speed.
+    </p>
+
+    <h4>Server Push</h4>
+    <p>
+        The server can proactively send resources to the client without waiting for a request. For example, if a client
+        requests an HTML page, the server can also send associated CSS and JavaScript files immediately.
+    </p>
+
+    <div class="divider2"></div>
+    <h4>Difference between HTTP 1.1 and HTTP 2.0</h4>
+    <img src="images/2.6.7.png" width="700" alt="HTTP 1.1 vs HTTP 2.0 Comparison" />
+
+    <div class="divider1"></div>
+
+
+    <a href="2.5 SMB - Server Message Block.html" class="prev-button">Previous</a>
+    <a href="2.7 SSH - Secure Shell.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

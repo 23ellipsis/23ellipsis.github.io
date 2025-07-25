@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Memory</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+
+    <div class="divider1"></div>
+    <h1><small>1.8</small> Virtual Memory</h1>
+    <div class="divider2"></div>
+
+    <p>
+        <strong>Virtual Memory</strong> is an abstraction that provides each process with the illusion that it has
+        exclusive
+        use of the main memory.
+        Each process has the same uniform view of memory, which is known as its <strong>Virtual Address Space</strong> —
+        a kind of
+        a <em>private view</em> of memory. This is <strong>not the actual physical memory</strong>, but a
+        <strong>mapped layout</strong> that the process thinks is its memory.
+    </p>
+
+    <img src="images/1.8.png" width="750" alt="Virtual Memory Diagram">
+
+    <div class="divider1"></div>
+
+    <h3>How does Virtual Memory work?</h3>
+    <ul>
+        <li>Each process gets its own <strong>virtual address space</strong> that is <strong>independent</strong> of the
+            actual physical memory.</li>
+        <li>The operating system (with help from the CPU's Memory Management Unit, or <strong>MMU</strong>)
+            <strong>maps</strong> virtual addresses to physical addresses.
+        </li>
+        <li>So when Process A thinks it's reading from <code>0x00400000</code>, and Process B also thinks it's reading
+            from
+            <code>0x00400000</code>, <strong>they are actually reading from different places in the physical
+                RAM</strong>.
+        </li>
+    </ul>
+    <p>The OS sets up <strong>page tables</strong> that say:</p>
+    <ul>
+        <li>"When Process A accesses virtual address <code>0x00400000</code>, <strong>translate</strong> it to physical
+            address <code>0x12345000</code>."</li>
+        <li>"When Process B accesses virtual address <code>0x00400000</code>, <strong>translate</strong> it to physical
+            address <code>0xABCDF000</code>."</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h2>Looking briefly at each memory space:</h2>
+    <ol>
+        <li><strong>Read-only code and data</strong>: executable machine code and read-only constants. This part
+            contains
+            the compiled program instructions and the constants initialized inside of it.</li>
+        <li><strong>Read/Write Data</strong>: contains global static variables with initial values, and it’s both
+            readable
+            and writable.</li>
+        <li><strong>Run-time Heap</strong>: created by functions like <code>malloc()</code> and it grows
+            <strong>upwards</strong> (towards the higher addresses). It exists as long as the program runs or until
+            manually
+            freed.
+        </li>
+        <li><strong>Memory Mapped Region for Shared Libraries</strong>: contains shared libraries (like
+            <code>libc.so</code>
+            which contains functions like <code>printf</code>), and it’s shared between processes.</li>
+        <li><strong>Stack</strong>: at the top of the user’s virtual address space is the user stack that the compiler
+            uses
+            to implement function calls. Like the heap, the user stack expands and contracts dynamically during the
+            execution
+            of the program. In particular, each time we call a function, the stack grows. Each time we return from a
+            function,
+            it contracts. Note that the stack grows <strong>downwards</strong>.</li>
+        <li><strong>Kernel virtual memory</strong>: the kernel is the part of the operating system that is always
+            resident
+            in memory. The top region of the address space is reserved for the kernel. Application programs are not
+            allowed
+            to read or write the contents of this area or to directly call functions defined in the kernel code.</li>
+    </ol>
+
+    <div class="divider1"></div>
+    <a href="1.7 Processes and Threads.html" class="prev-button">Previous</a>
+    <a href="1.9 Systems Communicate with Other Systems Using Networks.html" class="next-button">Next</a>
+
+
+    <br>
+    <br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+
+</body>
+
+</html>

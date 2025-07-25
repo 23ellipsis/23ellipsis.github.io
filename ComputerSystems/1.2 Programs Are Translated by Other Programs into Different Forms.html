@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Programs Are Translated by Other Programs</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="divider1"></div>
+  <h1><small>1.2</small> Programs Are Translated by Other Programs into Different Forms</h1>
+
+  <div class="divider2"></div>
+  <p>Consider this source code of a <code>hello</code> C program which prints Hello world on the screen:</p>
+
+  <pre><code class="language-c">#include &lt;stdio.h&gt;
+int main(){
+	printf("Hello world\n");
+	return 0;
+}
+</code></pre>
+
+  <ul>
+    <li>This program begins life as a high-level C program that can be read and understood by humans as discussed
+      earlier.</li>
+    <li>These individual C statements must be translated by other programs (compilers) into a sequence of low-level
+      <strong>machine-language</strong> instructions.</li>
+    <li>These instructions are then packaged in a form called an <strong>executable object program</strong> (object
+      programs are also referred to as <strong>executable object files</strong>)</li>
+    <li>On a Unix system, the translation from source files to object files is performed by a <strong>compiler
+        driver</strong>.</li>
+  </ul>
+
+  <p>The following command invokes the gcc compiler which is the native compiler for C programs in Unix systems</p>
+
+  <pre><code>gcc -o hello hello.c
+</code></pre>
+
+  <div class="divider1"></div>
+
+  <h4>The Stages of Compilation</h4>
+
+  <img src="images/1.2.png" width="800" alt="Stages of Compilation" />
+
+  <ol>
+    <li><strong>The Pre-Processor</strong> handles certain directive and instructions before the code is compiled. For
+      example, whenever an <code>#include</code> statement is encountered, the pre-processor replaces it with the
+      content of the file included.</li>
+    <br>
+    <li><strong>The Compiler</strong> checks for errors and translates the high level code into assembly instructions.
+      Note that this step is the most significant as the high level statements get "translated" into assembly
+      instructions, and depending on the <em>optimization level</em>, the assembly produced might not correspond to the
+      high level code as expected (but still carry out the same task of course). At this stage, the resulting file is
+      still a <em>text file</em> which contains assembly instructions.
+      The command <code>gcc -S hello.c</code> will output a <code>hello.s</code> file which contains the assembly
+      instructions without proceeding to invoke the assembler.</li>
+    <br>
+    <li><strong>The Assembler</strong> turns assembly instructions into machine code. This is <em>mostly</em> a
+      one-to-one mapping between assembly instructions understood by humans (like <code>mov eax ebx</code>) to binary
+      instructions understood by the CPU (like <code>0x89 0xD8</code> which are <code>10001001 11011000</code>).</li>
+    <br>
+    <li><strong>The Linker</strong> combines functions and libraries, for example it resolves functions called in one
+      file but defined in another</li>
+  </ol>
+  <div class="divider1"></div>
+
+  <span class="note">Takeaway Concept</span>
+  <blockquote>
+
+    Note that before assembly code is turned into an object file, it is still a text file. For example, if you open
+    <code>hello.s</code> with a text editor, you’d see assembly instructions. But once the assembler takes this
+    <code>hello.s</code> file and turns it into a <code>hello.o</code> file, it is no longer a text file and its bytes
+    do not represent ASCII characters anymore. Now it’s an object executable file containing binary instructions the CPU
+    can understand.
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <a href="1.1 Information is Bits & Context.html" class="prev-button">Previous</a>
+  <a href="1.3 The Hardware Organization of a System.html" class="next-button">Next</a>
+
+  <br>
+  <br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+
+
+</body>
+
+</html>

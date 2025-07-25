@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Byte Ordering</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <div class="divider1"></div>
+  <h1><small>2.2</small> Byte Ordering</h1>
+  <div class="divider2"></div>
+
+  <p>
+    For program objects that span multiple bytes, we must establish two conventions:
+    what the address of the object will be, and how we will order the bytes in memory.
+  </p>
+  <p>
+    That is, if I have a variable of type <code>int</code> that has the address
+    <code>0x100</code> (meaning, the value of the address expression <code>&amp;x</code>
+    is <code>0x100</code>), then memory addresses allocated to store that int would be:
+    <code>0x100</code>, <code>0x101</code>, <code>0x102</code>, and <code>0x103</code>.
+  </p>
+
+  <img src="images/2.2.1.png" width="500" alt="Byte Addressing Example" />
+
+  <div class="divider1"></div>
+
+  <h3>Demonstration</h3>
+  <img src="images/2.2.2.png" width="750" alt="Endianness Demonstration" />
+
+  <div class="divider1"></div>
+
+  <h3>Big Endian VS Little Endian</h3>
+  <p>
+    In a <strong>little endian</strong> system, the least significant byte is stored first (at the lowest memory
+    address).
+    For example, in the previous code, I stored the value <code>4294967294</code> in 4 bytes.
+    The representation of this number in hex is <code>fffffffe</code>, but in memory it was stored as:
+  </p>
+
+  <pre>
+Address 1: fe
+Address 2: ff
+Address 3: ff
+Address 4: ff
+  </pre>
+
+  <p>
+    (The least significant byte, <code>fe</code>, was stored first.)
+  </p>
+  <p>
+    <strong>Big endian</strong> systems are the opposite.
+  </p>
+
+  <div class="divider1"></div>
+
+  <p>
+    There is no technical difference between the two, however there are times where
+    byte ordering becomes an issue, for example:
+  </p>
+  <ul>
+    <li>When a little endian system sends data to a big endian system over the network.</li>
+    <li>When a disassembler displays bytes and writes them in reverse order.</li>
+  </ul>
+
+  <div class="divider1"></div>
+
+  <a href="2.1 Words and Data Sizes.html" class="prev-button">Previous</a>
+  <a href="2.3 Representing Strings and Code.html" class="next-button">Next</a>
+
+  <br><br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+</body>
+
+</html>

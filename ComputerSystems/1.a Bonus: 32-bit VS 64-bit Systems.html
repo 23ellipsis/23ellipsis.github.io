@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>32-bit VS 64-bit Systems</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <div class="divider1"></div>
+  <h1><small>1.a</small> 32-bit VS 64-bit Systems</h1>
+  <div class="divider2"></div>
+  <p>
+    Modern computing systems are typically classified as either <code>32-bit</code> or <code>64-bit</code>. This concept
+    is fundamental in describing the capabilities of the processor, software compatibility and memory usage, among other
+    things.<br />
+    32-bit systems commonly operate with the <code>x86</code> (IA32)instruction set architecture, while 64-bit systems
+    operate with the extension of <code>x86</code> called <code>x86_64</code> (originally desinged by AMD) or Intel's
+    compatible version known as Intel 64.
+  </p>
+
+  <blockquote>
+    Note that the idea of 32/64 bit architecture encompasses both hardware and software aspects. The hardware aspect of
+    it is the actual design of the processor and data buses, while the software aspect involves the Instruction Set
+    Architecture which describes the low level operations the processor executes.
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <h2>The Word Size</h2>
+  <p>
+    A <strong>Word</strong> is the standard unit of data the CPU processes at once.
+  </p>
+  <ul>
+    <li>32-bit systems have a word size of <code>32</code> bits (4 bytes)</li>
+    <li>65-bit systems have a word size of <code>64</code> bits (8 bytes)</li>
+  </ul>
+
+  <p><strong>The word size determines:</strong></p>
+  <ul>
+    <li>The size of general-purpose registers</li>
+    <li>The width of CPU data buses</li>
+    <li>The maximum addressable memory space</li>
+    <li>The default size of pointers in machine code</li>
+  </ul>
+
+  <div class="divider1"></div>
+
+  <h2>Registers</h2>
+  <ul>
+    <li>There are 8 general registers in 32 bit systems, each is 32 bits in size.</li>
+    <li>There are 16 general registers in 64 bit systems, each is 64 bits in size.</li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Purpose</th>
+        <th>32-bit (x86)</th>
+        <th>64-bit (x86-64)</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Accumulator</td>
+        <td><code>EAX</code></td>
+        <td><code>RAX</code></td>
+        <td>Used for arithmetic operations</td>
+      </tr>
+      <tr>
+        <td>Base</td>
+        <td><code>EBX</code></td>
+        <td><code>RBX</code></td>
+        <td>General data storage</td>
+      </tr>
+      <tr>
+        <td>Counter</td>
+        <td><code>ECX</code></td>
+        <td><code>RCX</code></td>
+        <td>Used in loops and shifts</td>
+      </tr>
+      <tr>
+        <td>Data</td>
+        <td><code>EDX</code></td>
+        <td><code>RDX</code></td>
+        <td>Also used in division/multiplication</td>
+      </tr>
+      <tr>
+        <td>Source Index</td>
+        <td><code>ESI</code></td>
+        <td><code>RSI</code></td>
+        <td>Used for string operations (source)</td>
+      </tr>
+      <tr>
+        <td>Destination Index</td>
+        <td><code>EDI</code></td>
+        <td><code>RDI</code></td>
+        <td>Used for string operations (destination)</td>
+      </tr>
+      <tr>
+        <td>Stack Pointer</td>
+        <td><code>ESP</code></td>
+        <td><code>RSP</code></td>
+        <td>Points to the top of the stack</td>
+      </tr>
+      <tr>
+        <td>Base Pointer</td>
+        <td><code>EBP</code></td>
+        <td><code>RBP</code></td>
+        <td>Used for stack frame reference</td>
+      </tr>
+      <tr>
+        <td>—</td>
+        <td>—</td>
+        <td><code>R8</code> to <code>R15</code></td>
+        <td>Extra general-purpose registers in 64-bit</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    Note that because 64-bit systems are backward compatible, the 32 bit registers (like <code>eax</code> instead of
+    <code>rax</code>) could still be accessed in 64 bit systems.
+  </p>
+
+  <img src="images/1.a.png" width="700" alt="CPU Registers" />
+
+  <blockquote>
+    <code>ax</code> (along with <code>bx</code>, <code>cx</code> and so on) are legacy 16-bit registers, which still
+    could be accessed in 32-bit and 64-bit systems.
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <h2>Address Space</h2>
+
+  <p>
+    Because registers in 32-bit systems are 32 bits in size, the maximum size of a pointer (which is a memory address)
+    is also 32 bits. Thus, a 32-bit system can reference up to <code>2^32</code> <em>unique</em> addresses. (and
+    <code>2^64</code> addresses on 64-bit systems).
+  </p>
+
+  <p>The OS sets up <strong>page tables</strong> that say:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>System</th>
+        <th>Address Width</th>
+        <th>Max Addressable Memory</th>
+        <th>Address range</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>32-bit</td>
+        <td>2³² bits</td>
+        <td>~4 GiB (4,294,967,296 bytes)</td>
+        <td><code>0x00000000</code> to <code>0xFFFFFFFF</code></td>
+      </tr>
+      <tr>
+        <td>64-bit</td>
+        <td>2⁶⁴ bits</td>
+        <td>~18.4 exabytes (theoretical)</td>
+        <td><code>0x0000000000000000</code> to <code>0xFFFFFFFFFFFFFFFF</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    This shows that 32-bit systems cannot allocate more than ~4 GB of RAM to processes, even if the physical RAM was
+    larger than 4 GB. This is simply because there are not enough addresses to reference that space.
+  </p>
+
+  <p>
+    The memory address range of 32-bit systems
+  </p>
+
+  <blockquote>
+    Remember that each memory address is used to address 1 byte (8 bits).
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <h2>Operating System and Application Compatibility</h2>
+  <ul>
+    <li>A 32-bit operating system runs on 32-bit CPUs and can only execute 32-bit applications (that is, programs
+      compiled for the 32-bit instruction set architecture).</li>
+    <li>A 64-bit operating system runs on 64-bit CPUs and can typically execute both 64-bit and 32-bit applications via
+      compatibility layers (such as WoW64 on Windows or multilib support on Linux).</li>
+    <li>Modern systems are almost universally 64-bit at both the hardware and OS level. However, many applications are
+      still compiled and ran as 32-bit, either for compatibility, size efficiency, or because they don’t require the
+      extended capabilities of 64-bit systems.</li>
+  </ul>
+
+  <div class="divider1"></div>
+
+  <a href="1.9 Systems Communicate with Other Systems Using Networks.html" class="prev-button">Previous</a>
+  <a href="2.1 Words and Data Sizes.html" class="next-button">Next</a>
+
+  <br>
+  <br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+</body>
+
+</html>

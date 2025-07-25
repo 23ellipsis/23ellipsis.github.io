@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2.3 Representing Strings and Code</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <div class="divider1"></div>
+  <h1><small>2.3</small> Representing Strings and Code</h1>
+  <div class="divider2"></div>
+
+  <h3>Representing Strings</h3>
+  <p>
+    Consider the following C code:
+  </p>
+  <br>
+  <img src="images/2.3.1.png" width="600" alt="C Code String Representation" />
+  <br>
+  <p>
+    This code creates a string with the value <code>"12345"</code>, and then prints
+    the bytes stored in the memory address that is storing this string.
+    Notice how the value of <code>"12345"</code> is actually stored in memory as
+    <code>31 32 33 34 35 00</code>. These are the corresponding ASCII encodings for
+    each character (for example, the string <code>"1"</code> corresponds to <code>"31"</code>
+    in ASCII). Also, notice the <code>00</code> at the end, which is the null terminator
+    marking the end of the string.
+  </p>
+  <p>
+    This illustrates the difference between how strings and integers are handled in memory.
+    If we were to store the integer <code>1</code> instead of the <em>string</em> <code>"1"</code>
+    (denoted by the quotes), it would be stored in memory as <code>0x01</code>, not <code>0x31</code>.
+  </p>
+  <img src="images/2.3.2.png" width="600" alt="Memory Representation of Integer vs String" />
+
+  <div class="divider1"></div>
+
+  <h3>Representing Code</h3>
+  <img src="images/2.3.3.png" width="600" alt="Binary Code Representation" />
+  <p>
+    As we know, programs are compiled into binary code that is executed by the CPU.
+    Compilers generate this binary code based on different factors such as CPU architecture
+    and operating system conventions, which is why it can differ across systems.
+  </p>
+
+  <div class="divider1"></div>
+
+  <a href="2.2 Byte Ordering.html" class="prev-button">Previous</a>
+  <a href="2.4 Integer Representation.html" class="next-button">Next</a>
+
+  <br><br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+</body>
+
+</html>

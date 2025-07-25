@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TCP</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>2.2</small> TCP - Transmission Control Protocol</h1>
+    <div class="divider2"></div>
+
+    <p>
+        <strong>TCP</strong> “Transmission Control Protocol” is a reliable <em>transport</em> protocol as it establishes
+        a connection before sending any data and everything that it sends is acknowledged by the receiver.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>The TCP Header</h3>
+
+    <img src="images/2.2.1.png" width="800" alt="TCP Header" />
+
+    <ul>
+        <li><strong>Source port</strong>: this is a 16 bit field that specifies the port number of the sender.</li>
+        <li><strong>Destination port</strong>: this is a 16 bit field that specifies the port number of the receiver.
+        </li>
+        <li><strong>Sequence number</strong>: this field is used to track how much bytes are <em>sent</em>.
+            <br><em>Note: When you establish a new TCP connection (3 way handshake) the initial sequence number is a
+                random 32 bit value.</em>
+        </li>
+        <li><strong>Acknowledgment number</strong>: this field is used to track how much bytes are <em>received</em>.
+        </li>
+    </ul>
+
+    <blockquote>
+        <p>
+            Imagine Alice and Bob are establishing a TCP connection and exchanging data.
+            First, Alice initiates the connection by sending a SYN packet with a random initial sequence number (ISN) of
+            1001. This SYN does not carry data, but the sequence number 1001 still counts.
+            Bob replies with a SYN+ACK, acknowledgment number 1002 (1001 + 1 to account for Alice’s SYN), and chooses
+            his own sequence number, for example, 5001.
+            Alice then sends an ACK with ack=5002, completing the handshake. Alice’s first data byte will use sequence
+            number 1002.
+            Next, Alice sends 200 bytes of data starting at seq=1002, covering sequence numbers 1002 through 1201.
+            Bob acknowledges this by sending an ACK with ack=1202 (1002 + 200), confirming receipt of all data up to
+            1201 and indicating that the next expected byte starts at 1202.
+            So Alice’s next packet will begin at sequence number 1202, not 1201, because the SYN consumed one
+            sequence number and the 200 bytes advanced it by 200 more.
+        </p>
+
+    </blockquote>
+
+    <p>
+        <em>TCP tracks data byte by byte.</em> If the sequence number starts at 50, and Alice sends 30 bytes, she
+        numbers
+        them 50–79. Bob’s acknowledgment number would be <code>80</code>, meaning he’s ready for byte <code>80</code>.
+    </p>
+
+    <ul>
+        <li><strong>Data Offset</strong>: 4-bit field (header length), shows where actual data begins.</li>
+        <li><strong>Reserved</strong>: 3 unused bits, always 0.</li>
+        <li><strong>Flags</strong>: 9 bits (control bits) to establish, send, or terminate connections:
+            <ul>
+                <li><strong>URG</strong>: urgent data.</li>
+                <li><strong>ACK</strong>: acknowledgment flag.</li>
+                <li><strong>PSH</strong>: push data immediately.</li>
+                <li><strong>RST</strong>: reset connection (abnormal termination).</li>
+                <li><strong>SYN</strong>: used during handshake for initial sequence number.</li>
+                <li><strong>FIN</strong>: used to gracefully terminate a connection (both sides must send it).</li>
+            </ul>
+        </li>
+        <li><strong>Window</strong>: how many bytes the receiver can accept before acknowledgment.
+            <blockquote>
+                <p>
+                    Example: If the window size is 500 bytes, Alice can send 200 + 200 + 100 bytes before she must wait
+                    for an
+                    <code>ACK</code>.
+                </p>
+            </blockquote>
+        </li>
+        <li><strong>Checksum</strong>: 16 bits to verify TCP header integrity.</li>
+        <li><strong>Urgent pointer</strong>: used when <code>URG</code> is set to indicate urgent data boundary.</li>
+        <li><strong>Options</strong>: optional, 0–320 bits long.</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h3>Features of TCP</h3>
+
+    <h4>Retransmission Timeout</h4>
+    <p>
+        Packets are cached for a duration called the <strong>Retransmission Timeout</strong>. If no
+        <code>ACK</code> arrives in time, the packet is resent.
+    </p>
+
+    <div class="divider2"></div>
+    <h4>Delayed Acknowledgment</h4>
+    <p>
+        Normally, every TCP packet must be acknowledged, doubling traffic. <strong>Delayed Acknowledgment</strong>
+        lets the receiver acknowledge every other packet instead.
+    </p>
+    <blockquote>
+        <p>
+            Example: Alice sends packets (200 bytes, seq=1001) and (200 bytes, seq=1201). Bob acknowledges both with
+            <code>ack=1401</code>.
+        </p>
+    </blockquote>
+
+    <div class="divider2"></div>
+
+    <h4>The Initial Sequence Number (ISN)</h4>
+    <ul>
+        <li>Each party randomly chooses its own sequence number during the handshake.</li>
+        <li>The first <code>SYN</code> has a sequence number but no acknowledgment number.</li>
+        <li>Any <code>ACK</code> must acknowledge the exact received sequence number.</li>
+    </ul>
+
+    <div class="divider2"></div>
+    <h4>The Phantom Byte</h4>
+    <p>
+        When acknowledging a <code>0-byte</code> packet (like an initial <code>SYN</code>), the acknowledgment number is
+        incremented by 1.
+    </p>
+    <blockquote>
+        <p>
+            Example: If a <code>SYN</code> has sequence <code>1000</code> and no payload, the receiver replies with
+            <code>ack=1001</code>.
+        </p>
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <h3>The TCP Three-Way Handshake</h3>
+    <ol>
+        <li>A → B: <code>SYN</code> (seq=X)</li>
+        <li>B → A: <code>ACK</code> (ack=X+1)</li>
+        <li>B → A: <code>SYN</code> (seq=Y)</li>
+        <li>A → B: <code>ACK</code> (ack=Y+1)</li>
+    </ol>
+
+    <img src="images/2.2.3.png" width="600" alt="TCP Header" />
+    <br>
+
+
+    <div class="divider1"></div>
+
+    <h3>Ending a TCP Connection</h3>
+    <p>There are two main ways to close a connection:</p>
+    <ol>
+        <li>
+            <strong>Graceful Closing</strong> (<code>FIN</code> flag):
+            <ul>
+                <li>Four packets: <code>FIN</code>, <code>ACK/FIN</code>, <code>ACK</code>.</li>
+                <li><code>ACK</code> and <code>FIN</code> may be sent separately if more data needs to be transmitted
+                    first.</li>
+            </ul>
+
+        </li>
+        <li>
+            <strong>Ungraceful Closing</strong> (<code>RST</code> flag): connection is immediately reset.
+        </li>
+    </ol>
+
+    <br>
+    <img src="images/2.2.2.png" width="600">
+
+    <div class="divider1"></div>
+    <a href="2.1 ARP - Address Resolution Protocol.html" class="prev-button">Previous</a>
+    <a href="2.3 DNS - Domain Name System.html" class="next-button">Next</a>
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

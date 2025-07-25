@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Computer Architecture Notes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="divider1"></div>
+
+  <h1><small>1.3</small> The Hardware Organization of a System</h1>
+  <div class="divider2"></div>
+  <img src="images/1.3.png" width="800" alt="System Diagram">
+
+  <div class="divider1"></div>
+
+  <h4>Buses</h4>
+  <p>
+    Buses are electrical circuits that carry bytes of information back and forth between components.
+    Buses are typically designed to transfer fixed-sized chucks of bytes known as <strong>words</strong>.
+    The number of bytes in a word (the <strong>word size</strong>) is a fundamental system parameter that
+    varies across systems: most machines today have word sizes of either <strong>4 bytes</strong> (32 bits)
+    or <strong>8 bytes</strong> (64 bits).
+  </p>
+
+  <div class="divider1"></div>
+
+  <h4>I/O Devices</h4>
+  <p>
+    Input/Output devices are the system’s connection to the external world.
+    Each I/O device is connected to the I/O bus by either a <strong>controller</strong> or an <strong>adapter</strong>.
+    <strong>Controllers</strong> are chip sets in the device itself (on the computer’s motherboard) while
+    <strong>Adapters</strong> are cards that plug into a slot on the motherboard. The purpose of each is to
+    carry info back and forth between I/O buses and I/O devices.
+  </p>
+
+  <div class="divider1"></div>
+
+  <h4>Main Memory</h4>
+  <p>
+    The main memory consists of a collection of <strong>Dynamic Random Access Memory</strong> (DRAM) chips.
+    Logically, memory is organized as a linear array of bytes, each with its own unique address (array index) starting
+    at zero.
+  </p>
+
+  <div class="divider1"></div>
+
+  <h4>Processor</h4>
+  <p>
+    The Central Processing Unit (CPU) is the engine that executes instructions stored in the main memory.
+    At its core is a <strong>word-sized</strong> storage device or <strong>register</strong> called the
+    <strong>Program Counter</strong> (PC). At any point in time, the PC points at (contains the address of)
+    the next machine-language instruction stored in the main memory.
+  </p>
+
+  <div class="divider1"></div>
+
+  <h3>The Instruction Set Architecture</h3>
+  <p>
+    The Instruction Set Architecture of a processor is a set of <em>simple</em> operations (like add, move, load)
+    that the processor can execute. There are only a few of these simple operations, and they revolve around the
+    <strong>main memory</strong>, <strong>register file</strong> and the <strong>Arithmetic/Logic Unit</strong> (ALU).
+  </p>
+  <p>
+    The ALU computes new data and address values stored in registers.
+  </p>
+
+  <div class="divider2"></div>
+
+  <blockquote>
+    Examples of ISAs are:
+    <ul>
+      <li>x86</li>
+      <li>ARM</li>
+    </ul>
+  </blockquote>
+
+  <div class="divider1"></div>
+
+  <h3>Register Files</h3>
+  <p>
+    A Register File is a small storage device found in the CPU that consists of a collection of word-sized registers,
+    each with its own unique name. Note that the CPU can only operate on data stored in registers, meaning, if a CPU
+    wants to add two numbers, it must first fetch them from the memory and into two registers, and then add them before
+    returning the result and storing it in memory.
+  </p>
+
+  <div class="divider1"></div>
+
+  <span class="note">DRAM vs SRAM</span>
+  <blockquote>
+    Dynamic RAM (DRAM) stores data using tiny capacitors that need constant refreshing because they naturally lose
+    charge over time,
+    which makes DRAM slower but cheaper and denser, and this is why it’s used for a computer’s main memory.
+    <strong>Static RAM</strong> (SRAM) on the other hand uses flip-flop circuits to store data, so it doesn't need
+    refreshing
+    and is much faster but also more expensive and takes up more space. SRAM is used in CPU caches.
+  </blockquote>
+
+  <div class="divider1"></div>
+  <a href="1.2 Programs Are Translated by Other Programs into Different Forms.html" class="prev-button">Previous</a>
+  <a href="1.4 Cache Matters.html" class="next-button">Next</a>
+
+  <br>
+  <br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Words and Data Sizes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="divider1"></div>
+    <h1><small>2.1</small> Words and Data Sizes</h1>
+    <div class="divider2"></div>
+
+    <p>
+        Rather than accessing individual bits in memory, most computers use blocks of eight bits (one byte) as the
+        smallest addressable unit of memory.
+    </p>
+    <p>
+        A machine-level program views memory as a very large array of bytes, referred to as <strong>virtual
+            memory</strong>.
+        Each byte of memory is identified by a unique number, known as its <strong>address</strong>,
+        and the set of all possible addresses is known as the <strong>virtual address space</strong>.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>Hexadecimal Notation</h3>
+    <p>
+        Hex uses numbers from 0-9 and characters from A-F to represent 16 possible values.
+        Two digits in hex can represent 255 unique values, the same amount eight digits in binary can represent.
+        <code>0xFF</code> = <code>11111111</code> because <code>16^2</code> = <code>2^8</code>
+    </p>
+
+    <hr>
+
+    <blockquote>
+        Remember:
+        whatever value that starts with <code>0x</code> or <code>0X</code> is a value represented in hex.
+        Hex is case-insensitive, so <code>0x49f</code> = <code>0x49F</code>
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <h4>Words</h4>
+    <p>
+        Every computer has a <strong>word size</strong>, which indicates its <strong>pointer size</strong> (memory
+        address size).
+        It also refers to the amount of data the CPU stores in one register.
+        In 32 bit systems, the word size is 32 bits. This means multiple things:
+    </p>
+    <ul>
+        <li>There are <code>2^32</code> possible memory addresses (around 4 billion).</li>
+        <li>The addresses would be represented using 32 bits (duh) and would range from <code>0x00000000</code> to
+            <code>0xFFFFFFFF</code>.</li>
+        <li>Each register would have the size of 32 bits.</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <span class="note">Binary to Hex conversion</span>
+    <blockquote>
+        <code>8</code> bits can represent <code>256</code> different values (each digit can represent one of two
+        possible values and we have 8 digits, so <code>2^8</code>)<br>
+        These <code>256</code> unique values can be represented using two hex digits
+        (because each digit can represent one of sixteen possible values and we have two digits, so <code>16^2</code>
+        which is <code>256</code>.)<br>
+        Thus, each byte could be represented using two hex digits. The range would be <code>0-255</code> in binary,
+        and <code>0x00-0xFF</code> in hex.
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <p>
+        Since a virtual address is encoded by such a <em>word</em>, the most important system parameter determined by
+        the word size is the
+        <strong>maximum size of the virtual address space</strong>.
+        That is, for a machine with a w-bit sized word, the virtual addresses can range from <code>0</code> to
+        <code>(2^w)-1</code>,
+        giving the programs access to <em>at most</em> <code>2^w</code> bytes.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>Data Sizes</h3>
+    <img src="images/2.1.png" alt="Data Sizes">
+    <div class="divider1"></div>
+
+    <a href="1.a Bonus: 32-bit VS 64-bit Systems.html" class="prev-button">Previous</a>
+    <a href="2.2 Byte Ordering.html" class="next-button">Next</a>
+
+    <br>
+    <br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+
+</body>
+
+</html>
