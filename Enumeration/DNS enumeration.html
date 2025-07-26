@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DNS Enumeration</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>DNS Enumeration</h1>
+    <div class="divider2"></div>
+
+
+    <span class="note">DNS Server VS Name Server</span>
+    <blockquote>
+        Before discussing DNS enumeration, it's important to define some DNS terminology.
+        <ol>
+            <li>A <strong>DNS server</strong> may perform multiple tasks, including recursive lookups, caching results,
+                and forwarding requests to other DNS servers if it doesn't have the answer locally.</li>
+            <li>A <strong>name server</strong>, in the strictest sense, is a <em>specific</em> type of DNS server. It
+                holds records about a particular domain and can answer queries about that domain's IP address directly.
+                For instance, if you own <code>example.com</code>, you'll have a name server with your domain registrar
+                that points to your web server's IP. This name server is part of the DNS hierarchy but is dedicated to
+                managing information about specific domains.</li>
+        </ol>
+    </blockquote>
+
+
+    <p>
+        For a machine to have <strong>port 53 open</strong> means it's potentially capable of handling DNS requests, it
+        does not necessarily mean that it's a <strong>name server</strong> (unless it was specifically configured to
+        respond to queries about certain domain names it manages), it simply indicates that DNS services are enabled and
+        listening for requests.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>DNS Default Port</h3>
+    <p>
+        <strong>Port 53</strong> is the standard port used by DNS services for both <strong>TCP and UDP</strong>
+        traffic:
+    </p>
+    <ul>
+        <li><strong>UDP on port 53</strong> is used most often for regular DNS queries due to its speed and efficiency.
+        </li>
+        <li><strong>TCP on port 53</strong> is used for larger queries or responses, such as <strong>zone
+                transfers</strong> between DNS servers.</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h3>The host Command</h3>
+    <p>
+        The <code>host</code> command is used to find the IP address of a domain.
+    </p>
+    <pre><code>┌──(kali@kali)-[~]
+└─$ host www.megacorpone.com
+www.megacorpone.com has address 149.56.244.87</code></pre>
+    <p>
+        By default, this command returns an <strong>A record</strong>, but we can also query other fields such as
+        <code>MX</code> or <code>TXT</code> records. (review <a
+            href="../TopicsInNetworking/2.3 DNS - Domain Name System.html" class="custom-link">DNS</a>)
+    </p>
+    <p>
+        To do this, we can use the <code>-t</code> option to specify the type of record we are looking for:
+    </p>
+    <pre><code>┌──(kali@kali)-[~]
+└─$ host -t mx www.megacorpone.com
+www.megacorpone.com has no MX record</code></pre>
+
+    <div class="divider1"></div>
+
+    <h3>Automating Lookups</h3>
+    <p>
+        This is an example script that iterates through <code>list.txt</code> and runs the host command against each
+        subdomain:
+    </p>
+    <pre><code>┌──(kali@kali)-[~]
+└─$ cat list.txt
+www
+ftp
+mail
+proxy
+router
+
+┌──(kali@kali)-[~]
+└─$ for subdomain in $(cat list.txt); do host "$subdomain".megacorpone.com; done
+www.megacorpone.com has address 149.56.244.87
+Host ftp.megacorpone.com not found: 3(NXDOMAIN)
+mail.megacorpone.com has address 167.114.21.68
+Host proxy.megacorpone.com not found: 3(NXDOMAIN)
+router.megacorpone.com has address 167.114.21.70</code></pre>
+
+    <div class="divider1"></div>
+
+    <h3>Automating Reverse Lookups</h3>
+    <p>
+        A reverse DNS lookup basically means that we have an IP address which we want to resolve to a domain name.
+        For this to work, a <strong>PTR record</strong> (Pointer Record) should exist for that domain, which maps the IP
+        address back to the domain name.
+    </p>
+    <p>
+        A typical PTR record looks like this:
+    </p>
+    <pre><code>34.216.184.93.in-addr.arpa. IN PTR example.com.</code></pre>
+    <ul>
+        <li>In PTR records, the IP address is written in reverse order. So, for <code>93.184.216.34</code>,
+            it's actually <code>34.216.184.93</code></li>
+        <li><code>.in-addr.arpa</code> is the special domain used for reverse lookups for IPv4 addresses.</li>
+        <li><code>PTR record</code> indicates that this IP address (<code>34.216.184.93</code>) links back to the domain
+            name <code>example.com</code></li>
+    </ul>
+
+    <div class="divider2"></div>
+    <h4>Example Scenario</h4>
+    <p>
+        If we have <em>for example</em> identified a range of IP addresses that are used by some domain, we can run the
+        following command to identify each IP address in that range and the domain name it corresponds to, expanding our
+        attack vector to more machines:
+    </p>
+    <pre><code>┌──(kali@kali)-[~]
+└─$ for num in $(seq 50 100); do host -t ptr 38.20.100.$num; done | grep -v "not found"
+50.100.20.38.in-addr.arpa domain name pointer makeup.godownsize.com.
+51.100.20.38.in-addr.arpa domain name pointer soprano.protoolreviews.com.
+52.100.20.38.in-addr.arpa domain name pointer trade.cpopowertools.com.
+53.100.20.38.in-addr.arpa domain name pointer fashionable.toolguyd.com.
+54.100.20.38.in-addr.arpa domain name pointer bridge.matrixinfosoft.com.
+55.100.20.38.in-addr.arpa domain name pointer upset.ruckscience.com.
+56.100.20.38.in-addr.arpa domain name pointer cane.evdecide.com.
+57.100.20.38.in-addr.arpa domain name pointer thrust.rexonassociates.com.
+58.100.20.38.in-addr.arpa domain name pointer plastic.gkfooddiary.com.
+59.100.20.38.in-addr.arpa domain name pointer gem.slumbersearch.com.
+60.100.20.38.in-addr.arpa domain name pointer revoke.artdecoeur.com.
+61.100.20.38.in-addr.arpa domain name pointer album.wanbexpress.com.</code></pre>
+
+    <div class="divider1"></div>
+
+    <h2>DNS Zone Transfers</h2>
+    <p>
+        In DNS, a <strong>Zone Transfer</strong> is a process where the full list of records (such as IP addresses,
+        subdomains, etc.) for a domain is copied from one DNS server to another.
+        This is often used to replicate DNS data across multiple servers or to backup DNS data.
+    </p>
+    <blockquote>
+        <p>Think of a zone as a "section" of the DNS system where an organization manages and stores records (like A
+            records, MX records, etc.) related to a domain or a subdomain</p>
+    </blockquote>
+    <p>
+        In this demonstration, I'll be using the website <a href="https://digi.ninja/projects/zonetransferme.php"
+            class="custom-link" target="_blank">https://digi.ninja/projects/zonetransferme.php</a> whose owner has
+        registered the domain <code>zonetransfer.me</code> for people to practice with.
+    </p>
+    <pre><code>┌──(kali㉿kali)-[~]
+└─$ host -t ns zonetransfer.me
+zonetransfer.me name server nsztm2.digi.ninja.
+zonetransfer.me name server nsztm1.digi.ninja.</code></pre>
+    <p>
+        This shows tat the two name servers responsible for this domain are <code>nsztm1.digi.ninja</code> and
+        <code>nsztm2.digi.ninja</code>.
+        This means that whenever someone wants to access <code>zonetransfer.me</code>, they will query one of these
+        authoritative name servers for this domain's records.
+    </p>
+
+    <p>
+        From the previous command, we have determined that <code>zonetransfer.me</code> uses the
+        <code>nsztm1.digi.ninja</code> and <code>nsztm2.digi.ninja</code> name servers. These are the DNS servers that
+        hold the records associated with the <code>zonetransfer.me</code> domain.
+        We can then perform a zone transfer on these name servers:
+    </p>
+    <pre><code>┌──(kali@kali)-[~]
+└─$ dig axfr @nsztm1.digi.ninja. zonetransfer.me</code></pre>
+    <ul>
+        <li><code>@nsztm1.digi.ninja</code>: The DNS server you're querying.</li>
+        <li><code>zonetransfer.me</code>: The domain you're asking about.</li>
+    </ul>
+    <p>
+        <strong>AXFR</strong>: A full zone transfer, where all DNS records for the domain are transferred.<br>
+        <strong>IXFR</strong>: An incremental zone transfer, where only the changes (deltas) since the last transfer are
+        sent.
+    </p>
+    <p>
+        If the DNS server allows the zone transfer, it will return all the DNS records for <code>zonetransfer.me</code>,
+        which includes A records, MX records, NS records, and so on.
+    </p>
+
+
+    <div class="divider2"></div>
+    <span class="note">Remarks</span>
+    <blockquote>
+        The zone is the collection of DNS records for a domain.
+        <p>The zone for <code>zonetransfer.me</code> can exist on multiple DNS servers, and these servers may also
+            host zones for other domains. In this case <code>nsztm1.digi.ninja.</code> and
+            <code>nsztm2.digi.ninja.</code>
+        </p>
+        <p>When you query a server (like <code>nsztm1.digi.ninja</code>) with an AXFR request for zonetransfer.me,
+            you are asking for all the DNS records associated with zonetransfer.me that the server holds.</p>
+    </blockquote>
+
+    <div class="divider2"></div>
+
+    <p>Example Output:</p>
+    <pre><code>; <<>> DiG 9.20.2-1-Debian <<>> axfr @nsztm1.digi.ninja. zonetransfer.me
+; (1 server found)
+;; global options: +cmd
+zonetransfer.me.        7200    IN      SOA     nsztm1.digi.ninja. robin.digi.ninja. 2019100801 172800 900 1209600 3600
+zonetransfer.me.        301     IN      TXT     "google-site-verification=tyP28J7JAUHA9fw2sHXMgcCC0I6XBmmoVi04VlMewxA"
+zonetransfer.me.        7200    IN      MX      0 ASPMX.L.GOOGLE.COM.
+zonetransfer.me.        7200    IN      MX      10 ALT1.ASPMX.L.GOOGLE.COM.
+zonetransfer.me.        7200    IN      MX      10 ALT2.ASPMX.L.GOOGLE.COM.
+zonetransfer.me.        7200    IN      MX      20 ASPMX2.GOOGLEMAIL.COM.
+zonetransfer.me.        7200    IN      MX      20 ASPMX3.GOOGLEMAIL.COM.
+zonetransfer.me.        7200    IN      MX      20 ASPMX4.GOOGLEMAIL.COM.
+zonetransfer.me.        7200    IN      MX      20 ASPMX5.GOOGLEMAIL.COM.
+zonetransfer.me.        7200    IN      A       5.196.105.14
+zonetransfer.me.        7200    IN      NS      nsztm1.digi.ninja.</code></pre>
+    <p>
+        Detailed breakdown of the records: <a href="https://digi.ninja/projects/zonetransferme.php" class="custom-link"
+            target="_blank">https://digi.ninja/projects/zonetransferme.php</a>
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>DNSRecon</h3>
+    <p>
+        <code>dnsrecon</code> is an advanced modern DNS enumeration script written in Python.
+    </p>
+    <pre><code>┌──(kali㉿kali)-[~]
+└─$ dnsrecon -d zonetransfer.me -t axfr</code></pre>
+    <p>
+        <code>-d</code>: domain<br>
+        <code>-t</code>: type of enumeration to perform
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>DNSenum</h3>
+    <p>
+        Another popular DNS enumeration tool.
+    </p>
+    <pre><code>┌──(kali@kali)-[~]
+└─$ dnsenum zonetransfer.me</code></pre>
+
+    <div class="divider1"></div>
+
+    <a href="../index.html" class="prev-button">Previous</a>
+    <a href="FTP enumeration.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

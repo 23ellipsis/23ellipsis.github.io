@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SNMP Enumeration</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>SNMP Enumeration</h1>
+    <div class="divider2"></div>
+
+    <p class="related">
+        Read
+        <a href="../TopicsInNetworking/2.11 SNMP - Simple Network Management Protocol.html" class="custom-link">SNMP - Simple Network Management Protocol</a>
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>Identifying the SNMP Version</h3>
+    <p>
+        SNMP has three versions, each with different security levels:
+    </p>
+    <ul>
+        <li><strong>SNMPv1</strong>: Minimal security, uses community strings like "public" (read-only) and "private" (read-write) by default.</li>
+        <li><strong>SNMPv2c</strong>: Similar to SNMPv1 but with better performance and additional commands, still relying on community strings.</li>
+        <li><strong>SNMPv3</strong>: Adds security features like encryption and authentication, making it more challenging to enumerate without valid credentials.</li>
+    </ul>
+    <p>
+        Start by determining which version the target device uses. This can often be done by trying common community strings (e.g., "public") and seeing if the device responds.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>Discovering Community Strings</h3>
+    <p>
+        SNMPv1 and SNMPv2c use community strings as a simple form of authentication. Common strings include:
+    </p>
+    <ul>
+        <li><code>public</code> (default for read-only access)</li>
+        <li><code>private</code> (default for read-write access)</li>
+    </ul>
+    <p>
+        You can try discovering community strings via brute forcing (manual or using the nmap script <code>snmp_brute</code>).
+    </p>
+
+
+    <div class="divider1"></div>
+    <h4>snmpwalk</h4>
+
+       <strong>snmpwalk</strong> is A command-line tool for recursively querying SNMP objects in a target device. Common usage:
+            <pre><code>snmpwalk -v 2c -c public &lt;target-IP&gt;</code></pre>
+            Replace <code>2c</code> with <code>1</code> for SNMPv1 or <code>3</code> for SNMPv3. This will list all available SNMP information that the device shares for the community string provided.
+   
+
+             <pre><code>snmpwalk -v 2c -c public &lt;target-IP&gt; &gt; output.txt</code></pre>
+    <p>// this will dump the entire MIB tree</p>
+    <div class="divider1"></div>
+
+    <h4>Extracting Information Using Specific OIDs</h4>
+    <p>
+        Once you have access, use the following OIDs (or consult the MIB for the device) to enumerate specific information:
+    </p>
+    <ul>
+        <li><strong>System Information</strong>: <code>1.3.6.1.2.1.1</code> (provides details like system name, uptime, location, contact)</li>
+        <li><strong>Network Interfaces</strong>: <code>1.3.6.1.2.1.2</code> (shows network interface details, IP addresses, status)</li>
+        <li><strong>Routing Table</strong>: <code>1.3.6.1.2.1.4.21</code> (contains routing entries, network destinations)</li>
+        <li><strong>ARP Table</strong>: <code>1.3.6.1.2.1.4.22</code> (displays ARP entries, IP-to-MAC address mappings)</li>
+        <li><strong>TCP Connections</strong>: <code>1.3.6.1.2.1.6.13</code> (lists active TCP connections)</li>
+        <li><strong>UDP Table</strong>: <code>1.3.6.1.2.1.7.5</code> (shows UDP listening ports)</li>
+    </ul>
+    <p>
+        You can query these specific OIDs directly with <code>snmpget</code>:
+    </p>
+    <pre><code>snmpget -v 2c -c public &lt;target-IP&gt; &lt;OID&gt;</code></pre>
+
+   
+  
+
+    <div class="divider1"></div>
+
+    <a href="SMTP enumeration.html" class="prev-button">Previous</a>
+    <a href="#" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manual Scanning</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>Manual Scanning</h1>
+    <div class="divider2"></div>
+    <h3>TCP Scanning</h3>
+
+    <p>As discussed earlier, the simplest TCP port scanning technique is referred to as Connect Scanning.</p>
+    <p>It basically checks if the target can complete a TCP three way handshake (SYN, SYN-ACK, ACK) on a specific TCP
+        port, and if the handshake is successful, the port is considered open.</p>
+
+    <div class="divider1"></div>
+    <h4>TCP Connect Scans with Netcat</h4>
+    <p>Netcat (often abbreviated as <code>nc</code>) is a simple but powerful tool used to read and write data across
+        network connections using TCP or UDP.</p>
+    <p><strong>We can use the following command for a simple TCP connect scan:</strong></p>
+    <pre><code>nc -nvv -w 1 -z [IP address] [Port]</code></pre>
+    <ul>
+        <li><code>-n</code>: skip DNS lookups</li>
+        <li><code>vv</code>: verbose (detailed) output</li>
+        <li><code>-w 1</code>: connection timeout set to one seconds</li>
+        <li><code>-z</code>: "Zero I/O mode", meaning, do not send any data (the connection is established for
+            scanning,
+            not for sharing data).</li>
+    </ul>
+
+
+
+    </p>
+
+    <div class="divider1"></div>
+
+    <h1>UDP Scanning</h1>
+
+
+    <p>Since UDP is stateless and does not involve a three-way handshake, the mechanism behind UDP port scanning is
+        different from TCP:</p>
+
+    <ul>
+        <li>If the target UDP port is open, the the packet will be passed to the application layer and the response
+            received will depend on how the application is programmed to respond to empty packets.</li>
+        <li>If the port is close, the target should respond with an "ICMP port unreachable" message.</li>
+    </ul>
+
+
+    <span class="note">Remember</span>
+    <blockquote>
+        When scanning UDP ports, a closed port usually responds with an ICMP "port unreachable" message.
+        If a firewall blocks this response, the scanner cannot distinguish between an open port and a filtered (blocked)
+        one, so it may report the state as "open|filtered."
+        For TCP scans, closed ports normally reply with a TCP RST instead, while filtered ports often produce no
+        response.
+    </blockquote>
+    <div class="divider1"></div>
+
+    <h4>UDP Connect Scans with Netcat</h4>
+    <pre><code>nc -nvv -w 1 -z -u [IP address] [Port]</code></pre>
+    <p>// <code>-u</code>: specifies UDP</p>
+
+    <div class="divider1"></div>
+
+    <a href="HostDiscovery.html" class="prev-button">Previous</a>
+    <a href="ScanningWithNmap.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

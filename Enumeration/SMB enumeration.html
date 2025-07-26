@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SMB Enumeration</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>SMB Enumeration</h1>
+    <div class="divider2"></div>
+
+    <p class="related">
+        Read
+        <a href="../TopicsInNetworking/2.5 SMB - Server Message Block.html" class="custom-link">SMB - Server Message
+            Block</a><br>
+    </p>
+
+    <div class="divider2"></div>
+
+    <span class="note">Null Sessions</span>
+    <blockquote>
+        A <strong>null session</strong> in the context of SMB refers to an <strong>unauthenticated connection</strong>
+        to an SMB server. This is essentially a connection established without providing a username or password, often
+        leveraging a guest account or default permissions. Null sessions can be used to gather information about network
+        shares, user accounts, and system settings on a network, making them a potential security risk if not properly
+        managed.
+        <p>Null sessions can expose details like the shared resources on the server, the user accounts, and the policies
+            and configurations.</p>
+    </blockquote>
+
+    <div class="divider2"></div>
+
+
+    <h4>Connecting via a Null Session</h4>
+    <p>For connecting via a null sessoin, use <code>smbclient</code> with the <code>-N</code> option.</p>
+    <pre><code>$ smbclient -L //[ipaddress] -N</code></pre>
+    <p>// lists the available shares. <code>-N</code> means that you want to provide No password → access via a "null
+        session"</p>
+    </div>
+
+    <div class="divider1"></div>
+
+    <h3>Running nmap Scripts</h3>
+    <pre><code>nmap --script smb-enum-shares,smb-enum-users -p 445 target-ip</code></pre>
+    <p>// This will enumerate shares and users on the target system via SMB and can highlight any security weaknesses
+        related to null sessions.</p>
+
+    <div class="divider1"></div>
+
+
+    <span class="note">IPC$ shares</span>
+    <blockquote>
+        <strong>IPC$</strong> is a special share that is used to facilitate Inter-Process Communications (IPCs). That is, it doesn't
+        facilitate accessing files or directories like other shares, but rather communicating with processes
+        running on the remote system. Specifically, IPC$ exposes named pipes that you can write to or read from to
+        communicate with remote processes. 
+        <p>Certain versions of Windows allowed users to authenticate and mount the IPC$ share without providing a username
+            or password. Such a connection is often referred to as a NULL session, which while limited in its
+            privileges, could be used to execute various RPC calls and as a result obtain useful information about the
+            remote system. Arguably the most useful information one could extract in this manner is user and group
+            listings, which can be used in brute force attacks.</p>
+    </blockquote>
+
+
+    <div class="divider2"></div>
+
+    <span class="note">Named pipes</span>
+    <blockquote>
+        Named Pipes are a method of <strong>Inter-process communication (IPC)</strong> that allow processes to
+        communicate with each other, either on the same machine or across a network. Named pipes create a channel where
+        one process can send data and another process can receive it.
+        <p><strong>Unnamed pipes</strong> are used for communication between processes that share a parent-child
+            relationship (eg, one process spawns another), while <strong>named pipes</strong> are more flexible because
+            they allow communication between unrelated processes, and potentially on different machines. They are identified
+            by a specific name, allowing processes to connect by referencing that name.</p>
+    </blockquote>
+
+
+    <div class="divider1"></div>
+
+    <h3>Using enum4linux</h3>
+    <pre><code>$ enum4linux -a target_ip</code></pre>
+    <p>// displays stuff like:</p>
+    <ul>
+        <li>Information on the operating system</li>
+        <li>Details on the parent domain</li>
+        <li>A compilation of local users and groups</li>
+        <li>Information on available SMB shares</li>
+        <li>The effective system security policy</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h3>Identifying SMB version</h3>
+    <h4>1. Using nmap</h4>
+    <pre><code>$ nmap -p 445,139 -sV</code></pre>
+    <p>Note that this may not work sometimes as SMB doesn't display a banner containing version information by default.
+    </p>
+    <div class="divider2"></div>
+
+    <h4>2. Using wireshark</h4>
+    <p>You can analyze the packets during the initiation of the SMB connection (either via <code>netcat</code> or whatever
+        other tool that initiated the connection), and by doing so you might find OS version information in the packets.
+    </p>
+    <div class="divider2"></div>
+
+    <h4>3. Using metasploit</h4>
+    <p>You can use the <code>auxiliary/scanner/smb/smb_version</code> (which exists in the <code>/usr/share/metasploit-framework/modules</code> directory).</p>
+
+    <div class="divider2"></div>  
+    <h4>4. Using the following script</h4>
+    <p>Which is equivalent to manually doing it with <code>wireshark</code>.</p>
+    <pre><code>#!/bin/sh
+#Author: rewardone
+#Description:
+# Requires root or enough permissions to use tcpdump
+# Will listen for the first 7 packets of a null login
+# and grab the SMB Version
+#Notes:
+# Will sometimes not capture or will print multiple
+# lines. May need to run a second time for success.
+if [ -z $1 ]; then echo "Usage: ./smbver.sh RHOST {RPORT}" && exit; else rhost=$1; fi
+if [ ! -z $2 ]; then rport=$2; else rport=139; fi
+tcpdump -s0 -n -i tap0 src $rhost and port $rport -A -c 7 2>/dev/null | grep -i "samba\|s.a.m" | tr -d '.' | grep -oP 'UnixSamba.*[0-9a-z]' | tr -d '\n' & echo -n "$rhost: " &
+echo "exit" | smbclient -L $rhost 1>/dev/null 2>/dev/null
+echo "" && sleep .1</code></pre>
+
+    <div class="divider1"></div>
+
+    <h2>Searching through exploits</h2>
+    <pre><code>$ searchsploit smb [SMB/windows version]</code></pre>
+    <pre><code>msf6> search type:exploit platform:windows target:[windows version] smb</code></pre>
+
+    <div class="divider1"></div>
+
+    <h2>Possible Credentials</h2>
+    <table>
+        <tr>
+            <th><strong>Username</strong></th>
+            <th><strong>Common passwords</strong></th>
+        </tr>
+        <tr>
+            <td><em>(blank)</em></td>
+            <td><em>(blank)</em></td>
+        </tr>
+        <tr>
+            <td>guest</td>
+            <td><em>(blank)</em></td>
+        </tr>
+        <tr>
+            <td>Administrator, admin</td>
+            <td><em>(blank)</em>, password, administrator, admin</td>
+        </tr>
+        <tr>
+            <td>arcserve</td>
+            <td>arcserve, backup</td>
+        </tr>
+        <tr>
+            <td>tivoli, tmersrvd</td>
+            <td>tivoli, tmersrvd, admin</td>
+        </tr>
+        <tr>
+            <td>backupexec, backup</td>
+            <td>backupexec, backup, arcada</td>
+        </tr>
+        <tr>
+            <td>test, lab, demo</td>
+            <td>password, test, lab, demo</td>
+        </tr>
+    </table>
+
+    <div class="divider1"></div>
+
+    <a href="NFS Enumeration.html" class="prev-button">Previous</a>
+    <a href="SMTP enumeration.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

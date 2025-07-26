@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Asymmetric Encryption</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>Asymmetric Encryption</h1>
+    <div class="divider2"></div>
+
+    <ol>
+        <li>A <strong>mathematical algorithm</strong> (being the encryption algorithm) would produce two keys, and they would be a <strong>pair</strong>.
+            <ul>
+                <li>The two keys are mathematically linked.</li>
+                <li>You cannot derive one from the other.</li>
+                <li>If data got encrypted by the first key, the second key would be the <em>only</em> key that can decrypt that data.</li>
+                <li>One of these keys would be a <strong>public key</strong> and would be shared <em>publicly</em>.</li>
+                <li>The other one would be a <strong>private key</strong>, and would be kept <em>private</em>.</li>
+                <li>Note that there isn't a functional difference between the public and private key, any could be either.</li>
+            </ul>
+        </li>
+        
+        <br>
+        
+        <li>Both parties would exchange their <strong>public keys</strong>. This could be done anywhere since the keys are public anyway.</li>
+        
+        <br>
+        
+        <li>If <em>Person1</em> with <em>Key1</em> wanted to send data to <em>Person2</em> with <em>Key2</em>, he would <strong>encrypt</strong> the data using <em>Person2's</em> <strong>public key</strong>.</li>
+        
+        <br>
+        
+        <li>Now that the data is encrypted with <em>Person2's</em> public key, only his private key can <strong>decrypt</strong> the data.</li>
+        
+        <br>
+        
+        <li>And since this model is dependent on the security of the private key, assuming it is kept safe, only <em>Person2</em> will be able to view the data.</li>
+    </ol>
+
+    <div class="divider1"></div>
+
+    <img src="images/0.1.png">
+    <div class="divider1"></div>
+
+    <a href="1.8 Euler's Theorem.html" class="prev-button">Previous</a>
+    <a href="How to use GPG.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

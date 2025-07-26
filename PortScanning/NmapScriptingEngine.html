@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Nmap Scripting Engine</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>The Nmap Scripting Engine</h1>
+    <div class="divider2"></div>
+
+    <p>The <strong>Nmap Scripting Engine</strong> (NSE) is a feature in Nmap that lets you run scripts (written in Lua)
+        to automate
+        advanced network discovery, vulnerability detection, and exploitation tasks.</p>
+
+    <div class="divider1"></div>
+    <h3>Finding scripts</h3>
+    <p>nmap scripts are located in the <code>/usr/share/nmap/scripts</code> directory, you can search through
+        them using the <code>grep</code> utility.</p>
+    <pre><code>$ ls /usr/share/nmap/scripts | grep [name of the service you want to scan]</code></pre>
+
+    <div class="divider2"></div>
+
+    <h4>Finding info about scripts</h4>
+    <pre><code>$ nmap --script-help &lt;script-name&gt;</code></pre>
+
+    <div class="divider2"></div>
+    <h4>Updating your script database</h4>
+    <pre><code>$ nmap --script-updatedb</code></pre>
+
+    <div class="divider1"></div>
+
+    <h3>Using the scripts</h3>
+    <pre><code>$ nmap -p [port] --script [script name] [target]</code></pre>
+    <ul>
+        <li>Separate multiple scripts by a comma.</li>
+    </ul>
+
+    <div class="divider2"></div>
+    <p>If you'd like to use all the scripts related to a certain service, you could use a wildcard:</p>
+    <p><pre><code>$ nmap -p 21 --script "*ftp-*" [target]</code></pre>
+        // runs all ftp scripts on the target</p>
+
+    <div class="divider1"></div>
+
+    <a href="ScanningWithNmap.html" class="prev-button">Previous</a>
+    <a href="#" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

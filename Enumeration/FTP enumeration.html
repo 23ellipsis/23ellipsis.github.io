@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FTP Enumeration</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>FTP Enumeration</h1>
+    <div class="divider2"></div>
+
+    <h3>Connecting to the FTP server</h3>
+    <p>You can connect to an FTP server using the command</p>
+    <pre><code>$ ftp $IP</code></pre>
+
+    <div class="divider2"></div>
+    <h4>Some commands to run:</h4>
+    <ul>
+        <li><code>passive</code>: changes your mode from active to passive</li>
+        <li><code>put</code>: file upload</li>
+        <li><code>get</code>: file download</li>
+    </ul>
+
+    <div class="divider2"></div>
+    <span class="note">You can also access an FTP server via Telnet</span>
+    <blockquote>
+        <pre><code>telnet $IP 21</code></pre>
+        <p>// assuming FTP is running on port 21</p>
+        <pre><code>USER [username]
+PASS [password]</code></pre>
+        <p>// entering credentials</p>
+        <p>Note that after connecting via telnet, you can switch to passive mode by typing the command
+            <code>PASV</code>, telnet will then return a statement containing 6 numbers in the end. The last two, A
+            and B respectively, can be used to calculate the port which is open for the data channel connection
+            using the formula <code>A * 256 + B</code>.
+        </p>
+        <p>Then you'd open a new telnet connection that that port, issue commands via port <code>21</code> and
+            receive files via the port calculated.</p>
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <h3>Checking for anonymous login</h3>
+
+    <p>Anonymous Login occurs when the FTP server is configured to allow anyone to log in without a real account by
+        using the username anonymous. To check for it, simply enter the username <code>anonymous</code> when prompted
+        for a username, and the password is usually an empty string.</p>
+    <div class="divider1"></div>
+    <h3>General enumeration</h3>
+    <h4>Running nmap scripts</h4>
+    <pre><code>$ nmap --script ftp-* -p 21 $IP</code></pre>
+    <p>// runs all FTP scripts on port 21</p>
+
+    <div class="divider2"></div>
+
+    <h4>Identifying the FTP software and version</h4>
+    <ul>
+        <li>This is done by <em>banner grabbing</em>, which <code>nmap</code> will do in some scripts.</li>
+        <li>If that didn't work, you could try connecting using <code>netcat</code>:
+            <pre><code>$ nc -nv $IP 21</code></pre>
+        </li>
+    </ul>
+
+    <div class="divider2"></div>
+
+    <h4>Fetching files</h4>
+    <ol>
+        <li>Using <code>wget</code>
+            <pre><code>$ wget ftp://$IP/[path to file]</code></pre>
+        </li>
+        <li>Using the FTP client
+            <p>After establishing a connection to the FTP server <code>ftp $ip</code>:</p>
+            <pre><code>ftp> get [file name]</code></pre>
+        </li>
+    </ol>
+
+    <blockquote>
+        Note that once you get authenticated by the FTP server, you can use commands like <code>ls</code>,
+        <code>dir</code> and <code>cd</code> to move around the file system.
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <a href="DNS enumeration.html" class="prev-button">Previous</a>
+    <a href="NFS Enumeration.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

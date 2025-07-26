@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NFS Enumeration</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>NFS Enumeration</h1>
+    <div class="divider2"></div>
+
+    <p class="related">
+        Read
+        <a href="../TopicsInNetworking/2.10 NFS - Network File System.html" class="custom-link">NFS - Network File
+            System</a><br>
+    </p>
+
+    <p>
+        <strong>Network File System</strong> (NFS) is a distributed file system protocol similar to SMB. It allows a
+        client to access files over a network as if they were locally-mounted storage.
+        NFS is often used with UNIX operating systems.
+    </p>
+
+
+    <blockquote>
+        NFS is predominantly insecure and it can be somewhat difficult to set up securely.
+    </blockquote>
+
+
+    <div class="divider1"></div>
+
+    <h3>Reminder: how NFS works with RPC</h3>
+    <p>
+        RPC is implemented using a service like <code>rpcbind</code> or <code>portmapper</code>. These services run on
+        TCP port 111.
+    </p>
+    <ol>
+        <li>A <strong>client</strong> sends a request to the <strong>Portmapper or RPCbind</strong> service on port 111,
+            asking for the port number for a specific RPC program (like NFS).</li>
+        <li>Portmapper or RPCbind responds with the port number where the desired service is available.</li>
+        <li>The <strong>client</strong> then communicates directly with the RPC service on that port to perform the
+            requested operation.</li>
+    </ol>
+
+    <div class="divider1"></div>
+
+    <h3>Running Nmap Scans</h3>
+    <pre><code>nmap -v -p 111 [IP address]</code></pre>
+    <p>// verbose output on port 111</p>
+    <pre><code>nmap -sV -p 111 --script=rpcinfo [IP address]</code></pre>
+    <p>// uses the nmap script "rpcinfo"</p>
+    <pre><code>ls /usr/share/nmap/scripts | grep rpc</code></pre>
+    <p>// shows available rpc nmap scripts</p>
+    <pre><code>nmap -p 111 --script=nfs* [IP address]</code></pre>
+    <p>// runs all nfs nmap scripts</p>
+
+    <div class="divider1"></div>
+
+    <h3>Mounting available shares</h3>
+    <p>Consider the following result of an nmap scan:</p>
+    <img src="images/1.png" width="600" alt="NFS Share Example" />
+    <p>
+        In this case, the whole <code>/home</code> directory is being shared and we can access it by mounting it on our
+        machine.
+    </p>
+
+
+    <div class="divider2"></div>
+    <span class="note">mountd</span>
+    <blockquote>
+        The <strong>mountd</strong> service is an RPC-based daemon that handles NFS mount requests from clients.
+        When a client wants to mount an NFS share, it sends an RPC request to <strong>mountd</strong> on the
+        server. First, the client uses <strong>Portmapper</strong> or <strong>RPCbind</strong> to find the port
+        number where <strong>mountd</strong> is running. After receiving the correct port, the client sends an
+        RPC request directly to <strong>mountd</strong>, asking to mount a specific directory.
+        <strong>mountd</strong> then checks whether the client is allowed to mount the requested directory, and
+        if authorized, it returns the necessary information (like file system details) for the mount operation
+        to proceed. Essentially, <strong>mountd</strong> uses RPC to manage the mount process and ensure clients
+        can access shared file systems securely.
+    </blockquote>
+
+    <div class="divider2"></div>
+    <pre><code>mkdir nfsmount</code></pre>
+    <p>// creates a home directory to mount the NFS share to</p>
+    <pre><code>sudo mount -o nolock [IP address]:/[share name] ./nfsmount</code></pre>
+    <p>// mount the share into the specified directory <code>nfsmount</code> in this case</p>
+    <ul>
+        <li><code>-o nolock</code> → disables file locking</li>
+    </ul>
+    <pre><code>sudo mount -o nolock 10.0.1.2:/home ./nfsmount</code></pre>
+    <p>// mounts the NFS share <code>10.0.1.2:/home</code> to the directory <code>nfsmount</code></p>
+
+
+    <div class="divider1"></div>
+
+    <a href="FTP enumeration.html" class="prev-button">Previous</a>
+    <a href="SMB enumeration.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How to use GPG</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>How to use GPG</h1>
+    <div class="divider2"></div>
+
+
+    <p><strong>GPG</strong> "GNU Privacy Guard", is an open-source <em>implementation</em> of the
+        <strong>OpenPGP</strong> standard. It is often referred to as GPG or GnuPG.
+    </p>
+    <p>It provides similar functionality to PGP but is free and open-source. It supports both
+        <strong>encryption</strong> and <strong>digital signatures</strong> using the OpenPGP standard.
+    </p>
+
+
+    <div class="divider1"></div>
+
+    <h3>Using the command line tool</h3>
+
+    <p>GPG comes preinstalled in most linux distributions.</p>
+
+    <pre><code>$ gpg --help</code></pre>
+    <p>// displays the help menu</p>
+
+    <p>
+    <pre><code>$ gpg --version</code></pre> // displays information about the installed version of GPG.<br>
+    The output might look something like this:</p>
+    <pre><code>Supported algorithms:
+Pubkey: RSA, ELG, DSA, ECDH, ECDSA, EDDSA
+Cipher: IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,
+        CAMELLIA128, CAMELLIA192, CAMELLIA256
+Hash: SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224
+Compression: Uncompressed, ZIP, ZLIB, BZIP2</code></pre>
+    <p>Here, <strong>"Pubkey"</strong> refers to the asymmetric algorithms supported by the program and
+        <strong>"Cipher"</strong> refers to the symmetric algorithms.
+    </p>
+
+
+    <div class="divider1"></div>
+
+    <h3>Generating keys:</h3>
+    <pre><code>$ gpg --generate-key
+$ gpg --full-generate-key</code></pre>
+    <p>// both of these commands can be used to generate a key pair (asymmetric cryptography)<br>
+        Note that the second command offers more advanced options and features.</p>
+
+    <div class="divider1"></div>
+
+    <h3>Where do the keys get stored?</h3>
+    <ul>
+        <li>The default file for GNU keys is <code>~/.gnupg</code></li>
+        <li>Public Keys are stored in <code>~/.gnupg/pubring.kbx</code>.</li>
+        <li>Private Keys are stored in <code>~/.gnupg/private-keys-v1.d/</code>.</li>
+        <li>Both of them are stored in <strong>binary format</strong> (that's why we use the option
+            <code>--armor</code> when exporting them later).
+        </li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h3>Listing keys:</h3>
+    <div class="divider2"></div>
+    <h4>1. Public Keys:</h4>
+    <pre><code>$ gpg --list-keys</code></pre>
+    <p>// lists the public keys</p>
+    <p>The output might look something like this:</p>
+    <pre><code>pub   rsa4096 2024-09-04 [SC] [expires: 2024-09-06]
+      A2F5504061B48F33D37360CE159AB5C5D96F913F
+uid                      ellipsis <ellipsis@test.com>
+sub   rsa4096 2024-09-04 [E] [expires: 2024-09-06]</code></pre>
+    <p>// <code>SC</code> specifies that this key is used for <strong>Signing</strong> and <strong>Certifying</strong>
+        other keys.</p>
+    <blockquote>
+        "Certifying" other keys implements the concept of the <strong>Web Of Trust</strong>, which is a decentralized
+        model that allows individuals to verify and trust each others' keys.
+    </blockquote>
+    <p>// <code>A2F5504061B48F33D37360CE159AB5C5D96F913F</code> is a shortened version of the key's
+        <strong>fingerprint</strong>.
+    </p>
+    <blockquote>
+        A fingerprint is derived from the Hash value of the key.
+    </blockquote>
+    <p>// <code>sub</code> shows the <strong>subkeys</strong>, which are the other keys associated with the main
+        one.<br>
+    <blockquote> this case, there's one subkey and it's a type <code>E</code> key, which means it's used for
+        <strong>encryption</strong>. (the primary key is used for signing, while this subkey is used for encrypting).</blockquote>
+    </p>
+
+    <div class="divider2"></div>
+    <h4>2. Private keys:</h4>
+    <pre><code>$ gpg --list-secret-keys</code></pre>
+    <p>// lists the private keys<br></p>
+    <ul>
+        <li>Note that a public and private key pair would have the same key ID, which is usually the last 8 or
+            16 characters of the fingerprint.</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h3>Exporting keys:</h3>
+    <pre><code>$ gpg --export --armor [key ID or email] > file.asc</code></pre>
+    <p>// exports the public key specified into a file.<br></p>
+    <blockquote> You might want to export keys so that you can easily share them.</blockquote>
+
+    <div class="divider1"></div>
+
+    <h3>Deleting keys:</h3>
+    <pre><code>$ gpg --delete-secret-keys [key ID or email]</code></pre>
+    <p>// deletes the private key specified.<br></p>
+    <blockquote>You typically want to delete the private key first.</blockquote>
+    <pre><code>$ gpg --delete-keys [key ID or email]</code></pre>
+    <p>// deletes the public key specified.</p>
+
+    <div class="divider1"></div>
+
+    <h3>Importing keys:</h3>
+    <pre><code>$ gpg --import [file containing the key]</code></pre>
+    <p>// imports the key so that you can use it with the GPG program.</p>
+    <blockquote>
+        An example scenario would be if you've copied someone's public key and you want to start using it to send them
+        encrypted data. You'd copy the key into a file then import it into GNU.
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <a href="Asymmetric Encryption.html" class="prev-button">Previous</a>
+    <a href="#" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

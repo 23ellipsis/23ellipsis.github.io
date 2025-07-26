@@ -274,3 +274,12 @@
   color: #2100f9;
   text-decoration: underline;
 }
+.math {
+    color: #a856ffff;
+ 
+    border-radius: 0.3rem;
+    letter-spacing: 0.1rem;
+    display: inline-block;
+    font-family: 'Source Serif Pro';
+    font-size: 1.4rem;
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Port States</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>Port States</h1>
+    <div class="divider2"></div>
+    <p>When you scan a network with tools like <code>nmap</code>, ports can appear in different states, which describe
+        how the
+        port is behaving or responding.</p>
+
+    <div class="divider1"></div>
+
+    <h4>How are port scans actually carried out?</h4>
+    <p>Technically speaking, the process of port scanning includes sending certain packets to a port on a target system
+        and analyzing the response.</p>
+    <p>The simplest scan type is a <strong>TCP connect scan</strong> which involves attempting a TCP three-way handshake
+        with the target (on the port we're probing).</p>
+
+    <br>
+    <img src="images/1.png" width="700">
+    <br>
+
+    <blockquote>
+        Note that this is not the only way to scan a target port. There are more complex scans that involve different
+        types of packets, and there are different techniques for bypassing firewall restrictions.
+    </blockquote>
+
+    <div class="divider1"></div>
+    <h2>Port states</h2>
+    <ol>
+        <li><strong>Open</strong>
+            <ul>
+                <li>The port is accessible and responsive.</li>
+                <li>A service is actively listening on that port.</li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>Closed</strong>
+            <ul>
+                <li>The port is accessible and responsive.</li>
+                <li>Nothing is filtering the port (like a firewall).</li>
+                <li>No service is actively listening on that port.</li>
+                <li>It returns a <code>RST</code> or <code>ICMP unreachable</code> message.</li>
+            </ul>
+            <blockquote>
+                An <code>ICMP unreachable</code> packet might be returned when the scanning tool sends an
+                <code>ICMP ping request</code> before attempting the actual scan.
+            </blockquote>
+        </li>
+        <br>
+        <li><strong>Filtered</strong>
+            <ul>
+                <li> The scanner detects the port is being blocked by a firewall or filter.</li>
+                <li>Usually, the target sends back an <code>ICMP unreachable</code> message or drops the packet in a
+                    way that indicates filtering.</li>
+                <li>The port might be open or closed.</li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>Open | Filtered</strong>
+            <ul>
+                <li>The scanner can't determine whether the port is open or filtered.</li>
+                <li>Usually, the scanner receives no response at all.</li>
+                <li>The port might be filtered by a security system or the service isn't responding.</li>
+                <li>This is common with UDP scans where the target doesn't reply to a UDP packet at all.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="divider1"></div>
+
+    <a href="Introduction.html" class="prev-button">Previous</a>
+    <a href="HostDiscovery.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

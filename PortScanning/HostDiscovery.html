@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Host Discovery</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>Host Discovery</h1>
+    <div class="divider2"></div>
+    <p><strong>Host discovery</strong> is the process of identifying active hosts on a target subnet or
+        network. By active we mean that the computer is actually on and connected to the network.</p>
+
+    <div class="divider1"></div>
+
+    <h3>Using nmap</h3>
+    <pre><code>$ nmap -sn [IP]</code></pre>
+    <p>// <code>-sn</code> for ping scan<br>
+        // the IP you'd specify here would be the IP of a whole network, like <code>10.0.2.1-255</code> or
+        <code>10.0.2.0/24</code>
+    </p>
+
+
+    <div class="divider1"></div>
+
+    <h3>Using netdiscover</h3>
+
+    <p><strong>Netdiscover</strong> is a simple network reconnaissance tool used to find live hosts (devices) on a local
+        network.
+        It sends <a href="../TopicsInNetworking/2.1 ARP - Address Resolution Protocol.html" class="custom-link">ARP</a> requests on the local subnet, and any active host should reply with
+        its IP address and MAC address.</p>
+    <pre><code>$ netdiscover -r [range of IP addresses]</code></pre>
+    <p>// sends ARP requests to the whole range in order to determine which hosts are up</p>
+    </li>
+    </ol>
+
+    <div class="divider1"></div>
+
+    <a href="PortStates.html" class="prev-button">Previous</a>
+    <a href="ManualScanning.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

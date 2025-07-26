@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tor Hidden Services</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>Tor Hidden Services</h1>
+    <div class="divider2"></div>
+
+    <h3>Connecting to a hidden service</h3>
+    <ol>
+        <li>The client (the tor browser) picks three <strong>Tor nodes</strong> to be a <em>guard</em> (entry) node, a
+            <em>middle</em> node and an <em>exit</em> node.
+        </li>
+        <blockquote>Tor has a small set of trusted servers called directory authorities (around 10 hardcoded ones).
+            These authorities keep an up-to-date list of all Tor relays (nodes) that can be used by the tor client.
+        </blockquote>
+        <li>The tor browser exchanges three <strong>keys</strong> with the three nodes.
+            <ul>
+                <li><em>K3 with the Entry node</em></li>
+                <li><em>K2 with the Middle node</em></li>
+                <li><em>K1 with the Exit node</em></li>
+            </ul>
+        </li>
+        <li>When the browser wants to send out an http request, it encrypts it with K1, then K2, then K3.</li>
+        <li>The <strong>Entry node</strong> receives the packet and decrypts the first encryption layer using its K3,
+            then it sees that it needs to forward the packet to the <strong>Middle node</strong> (the packet now has the
+            source IP address of the Entry node and the destination IP address of the Middle node).</li>
+        <li>The Middle node receives the packet and decrypts the second encryption layer using K2, then forwards it to
+            the <strong>Exit node</strong>.</li>
+        <li>The Exit node receives the packet and decrypts the final encryption layer using K1, then forwards the
+            request to the appropriate destination.</li>
+    </ol>
+
+    <ul>
+        <li>Each node only knows the IP address of the device before and after it, so the client is anonymous here.</li>
+        <li>When the tor client encrypts the request in three layers, it ensures appropriate addressing for each layer
+            (for example, after the first encryption layer is removed, the entry node should know where to forward the
+            packet, which should be the IP address of the middle node.</li>
+        <li>The three tor nodes used route the traffic are called a <strong>circuit</strong>.</li>
+    </ul>
+    <br>
+
+    <img src="images/tor1.png" alt="Tor Network Diagram" width="1000">
+
+    <div class="divider1"></div>
+
+    <h3>How Hidden Services Work</h3>
+    <div class="divider2"></div>
+
+    <ol>
+        <li>When a server decides to become a tor <strong>hidden service</strong>, it first uses a tor circuit to
+            connect to three random devices and chooses them to become its <strong>Introduction
+                Points</strong>.
+            <ul>
+                <li>The identity of the server is protected here since it's connecting to these devices via a tor
+                    circuit, so it looks just like any other client that is using the tor browser.</li>
+            </ul>
+        </li>
+        <img src="images/tor2.png" width="600">
+        <div class="divider2"></div>
+
+        <li>The Hidden Service publishes a <strong>Descriptor</strong>, which contains the following:
+            <ol type="a">
+                <li>The <strong>Content</strong> of the descriptor, which would be the IP addresses of the chosen
+                    introduction points, its public key for authentication, and some metadata about the server.</li>
+                <li>Its <strong>Digital Signature</strong>:
+                    <ul>
+                        <li>First, the server uses a <strong>Hashing</strong> algorithm to create a Hash value of the
+                            Content.</li>
+                        <li>Then it <strong>Encrypts</strong> it using its <strong>Private Key</strong>.</li>
+                        <li>This is done to verify the identity of the server.</li>
+                    </ul>
+                </li>
+            </ol>
+        </li>
+              <img src="images/tor3.png" width="800">
+        <div class="divider2"></div>
+
+        <li>Users can <strong>authenticate</strong> the descriptor (make sure that in order to connect to
+            <code>xyz.onion</code> they need to reach out to the specified introduction points) like this:
+            <ul>
+                <li>First, they create a <strong>Hash value</strong> of the <strong>Content</strong> using the same
+                    algorithm that the server used to create its own hash.</li>
+                <li>Then they <strong>Decrypt</strong> the <strong>Digital Signature</strong> using the server's
+                    <strong>Public Key</strong> (which is derived from its <code>xyz.onion</code> address) resulting in
+                    <em>a</em> (possibly <em>the</em>) hash.
+                </li>
+                <li>The two resulting hashes should match to verify the server's identity.</li>
+            </ul>
+        </li>
+        <div class="divider2"></div>
+
+        <li>After the client authenticates the descriptor, it creates another tor circuit consisting of an
+            <strong>Entry node</strong>, a <strong>Middle node</strong> and a <strong>Rendezvous Point</strong>. The
+            Rendezvous Point is the final node in this circuit, and it will act as the link between the client and the
+            server.
+        </li>
+
+        <div class="divider2"></div>
+
+        <li>The client generates a <strong>Cookie</strong> <em>(which is a
+                randomly generated string used as a "one time
+                secret")</em> and sends it over to the rendezvous point (thru the established circuit) along with the IP
+            address of a randomly selected
+            introduction point fetched from the descriptor.</li>
+          <img src="images/tor4.png" width="900">
+        <div class="divider2"></div>
+
+        <li>The rendezvous point receives the Cookie, and creates a new tor circuit of an <strong>Entry</strong>,
+            <strong>Middle</strong>, and <strong>Exit</strong> nodes to connect to the IP address of the
+            <strong>introduction point</strong>. Then, the rendezvous point sends over the Cookie to the introduction
+            point, along with its <em>own</em> IP address <em>(the introduction point doesn't know the IP address of the
+                rendezvous point since the connection between them happened via a tor circuit).</em>
+        </li>
+
+        <img src="images/tor5.png" width="800">
+        <div class="divider2"></div>
+        <li>The introduction point receives the Cookie and the IP address of the rendezvous point, then sends these over
+            to the server <em>(which is the tor service)</em> via the tor circuit that was established in the beginning.
+        </li>
+
+        <img src="images/tor6.png" width="800">
+        <div class="divider2"></div>
+        <li>The server decides if it wants to connect back to the client, if it does, it will create <em>another</em>
+            tor circuit (Entry, Middle and Exit nodes) to connect to the rendezvous point <em>(it knows its IP address since
+            it received it with the cookie)</em>. Then it sends back that Cookie to the rendezvous point.</li>
+        <img src="images/tor7.png" width="900"> 
+        <div class="divider2"></div>
+
+        <li>The rendezvous point sees that it received the same Cookie from two devices (the server and the client), so
+            it connects them together.</li>
+    </ol>
+
+    <img src="images/tor8.png" width="900">
+
+    <div class="divider1"></div>
+
+    <a href="XORSwapping.html" class="prev-button">Previous</a>
+    <a href="#" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

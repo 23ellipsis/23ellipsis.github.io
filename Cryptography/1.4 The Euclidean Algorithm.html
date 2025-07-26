@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css">
+    <title>The Euclidean Algorithm</title>
+
+</head>
+
+<body>
+
+
+    <div class="divider1"></div>
+    <h1><small>1.4</small> The Euclidean Algorithm</h1>
+    <div class="divider2"></div>
+
+    <p>
+        Let <span class="math">a</span> and <span class="math">b</span> be two positive integers where
+        <span class="math">a &gt; b</span>, and let <span class="math">r</span> be the remainder when
+        <span class="math">a / b</span>. Then:
+    </p>
+
+    <p class="math">
+        GCD(a, b) = GCD(b, r)
+    </p>
+    <div class="divider2"></div>
+
+    <h3>Explanation</h3>
+    <p>
+        Assume we have two numbers <span class="math">a</span> and <span class="math">b</span>, with
+        <span class="math">a</span> being larger. The Euclidean Algorithm states that to find
+        <span class="math">GCD(a, b)</span>, we can instead find
+        <span class="math">GCD(b, r)</span> where
+        <span class="math">r</span> is the remainder of <span class="math">a / b</span>.
+        This approach is more efficient when a and b are large.
+    </p>
+
+    <div class="divider1"></div>
+    <h3>Visualizing the Process</h3>
+    <p>
+        The Euclidean Algorithm works because the greatest common divisor of
+        <span class="math">a</span> and <span class="math">b</span> cannot be larger than the smaller number
+        (<span class="math">b</span>).
+    </p>
+
+
+    <p> For example,
+        <span class="math">GCD(90, 30) = 30</span>, because 30 is the largest integer that divides both numbers, and
+        it's also the largest possible value that could be considered the GCD under the right conditions (which is
+        dividing both 30 and 90). <br>
+        When the smaller integer does not perfectly divide the larger one, the GCD must be <strong>less than the smaller
+            integer.</strong> For example, <span class="math">GCD(80, 30)</span> <em>must</em> be less than 30, because
+        any number
+        larger than 30 will not divide 30, so it won't divide <em>both</em> numbers (30 and 80) to be considered a
+        common divisor, let alone the greatest common divisor.
+    </p>
+
+    <p>
+        Using the Euclidean Algorithm to find <span class="math">GCD(80, 30)</span> reduces the problem as follows:<br>
+        <span class="math">
+            GCD(80, 30) → GCD(30, 20)
+        </span><br>
+        What happened is that we removed full multiples of 30 from 80 (two 30's exist inside 80), leaving only the
+        remainder (20).
+    </p>
+
+
+    <div class="divider1"></div>
+
+    <h4>Example</h4>
+
+    <p>
+        Find <span class="math">GCD(252, 105)</span> using the Euclidean Algorithm:
+    </p>
+
+    <ol>
+        <li>
+            Divide <span class="math">252</span> by <span class="math">105</span>:
+            <br>
+            <span class="math">252 = 105 × 2 + 42</span>
+            (remainder <span class="math">r = 42</span>).
+            <br>
+            Now, <span class="math">GCD(252,105) = GCD(105,42)</span>.
+        </li>
+        <li>
+            Divide <span class="math">105</span> by <span class="math">42</span>:
+            <br>
+            <span class="math">105 = 42 × 2 + 21</span>
+            (remainder <span class="math">r = 21</span>).
+            <br>
+            Now, <span class="math">GCD(105,42) = GCD(42,21)</span>.
+        </li>
+        <li>
+            Divide <span class="math">42</span> by <span class="math">21</span>:
+            <br>
+            <span class="math">42 = 21 × 2 + 0</span>
+            (remainder <span class="math">r = 0</span>).
+            <br>
+            Since the remainder is 0, the GCD is the last non-zero divisor:
+            <span class="math">GCD = 21</span>.
+        </li>
+    </ol>
+
+    <p>
+        Therefore, <span class="math">GCD(252,105) = 21</span>.
+    </p>
+
+    <div class="divider1"></div>
+
+    <a href="1.3 The Greatest Common Divisor.html" class="prev-button">Previous</a>
+    <a href="1.5 Congruence.html" class="next-button">Next</a>
+
+    <br>
+    <br>
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="#">More</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SMTP Enumeration</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>SMTP Enumeration</h1>
+    <div class="divider2"></div>
+
+    <p class="related">
+        Read
+        <a href="../TopicsInNetworking/2.8 SMTP - Simple Mail Transfer Protocol.html" class="custom-link">SMTP - Simple Mail Transfer Protocol</a>
+    </p>
+    <div class="divider1"></div>
+
+    <h2>Remember</h2>
+    <ul>
+        <li>A mail server is simply a device that has software which can receive and serve emails.</li>
+        <li>SMTP is the protocol used by mail servers to receive as well as relay emails from one server to another, until it reaches its destination.</li>
+        <li>SMTP just like any other protocol is utilized by the <em>software</em> installed on the system, such as postfix.</li>
+        <li>When some device has an SMTP service running, it simply means that the device is considered an SMTP mail server and it's capable of receiving and relaying emails.</li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <h3>Running nmap Scripts</h3>
+    <pre><code>$ nmap -sV -sC --script "smtp* and not brute" $ip</code></pre>
+    <p>// this will run all SMTP related scripts (other than the brute ones) against the target.</p>
+
+    <div class="divider1"></div>
+
+    <h3>Version discovery</h3>
+    <h4>1. Using metasploit</h4>
+    <pre><code>msf6> search smtp_version
+msf6> use 0
+msf6> set RHOST $ip
+msf6> run</code></pre>
+
+    <div class="divider2"></div>
+
+    <h4>2. Banner grabbing</h4>
+    <p>What <code>metasploit</code> essentially does is banner grabbing in order to find version information. This could be done manually using <code>netcat</code>:</p>
+    <pre><code>$ nc $ip 25</code></pre>
+    <p>// connects to the specified IP on port 25</p>
+
+    <div class="divider1"></div>
+
+    <h3>Metasploit</h3>
+    <h4>Using smtp_enum</h4>
+    <pre><code>msf6> search smtp_enum
+msf6> use 0
+msf6> set RHOSTS [target IP address]
+msf6> set USER_FILE [path to file containing possible users]</code></pre>
+    <p>// the smtp_enum module will brute force the list of users in order to determine which ones exist on the system.</p>
+
+    <div class="divider2"></div>
+    <h4>We can also do that manually using telnet</h4>
+    <pre><code>telnet 10.10.199.212 25
+Trying 10.10.199.212...
+Connected to 10.10.199.212.
+Escape character is '^]'.
+220 polosmtp.home ESMTP Postfix (Ubuntu)
+HELO example@polosmtp.home
+250 polosmtp.home
+MAIL FROM:x
+250 2.1.0 Ok
+RCPT TO:admin
+550 5.1.1 &lt;admin&gt;: Recipient address rejected: User unknown in local recipient 
+RCPT TO:administrator
+250 2.1.5 Ok</code></pre>
+    <p>// this discloses that the user "administrator" exists on the mail server.</p>
+
+    <div class="divider1"></div>
+
+    <h2>Using built-in commands</h2>
+    <ol>
+        <li>Connect using netcat:
+            <pre><code>nc -nv [IP address] 25</code></pre>
+        </li>
+        <li>Some commands to run:
+            <ul>
+                <li><strong>VRFY</strong>: It is used to verify if a user exists on the mail server.
+                    <pre><code>VRFY root</code></pre>
+                    <p>// this can help us guess usernames for potential brute force attacks.</p>
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="divider1"></div>
+
+    <a href="SMB enumeration.html" class="prev-button">Previous</a>
+    <a href="SNMP enumeration.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

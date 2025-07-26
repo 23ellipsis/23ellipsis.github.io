@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css">
+    <title>Introduction to Modular Arithmetic</title>
+
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>1.1</small> Introduction to Modular Arithmetic</h1>
+    <div class="divider2"></div>
+
+
+    <p><strong>Modular arithmetic</strong> is a system of arithmetic where numbers "wrap around" after reaching a
+        certain value, called
+        the <strong>modulus</strong>.
+        It’s often described as "clock arithmetic" because, like a clock, after you reach the maximum value, you go back
+        to 0.</p>
+
+    <p>"Modulo 5" for example means we are working with numbers in a system where everything wraps around after 5 — like
+        a clock with 5 hours.</p>
+    <img src="images/1.1.2.png" width="500">
+    <blockquote>
+        In modulo 5, 10 for example is equivalent to 0. In more technical terms, 10 is <em>congruent</em> to 0.
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <h3>The Division Algorithm</h3>
+    <p>Let <span class="math">a</span> be any integer and <span class="math">b</span> be a positive integer, then, there
+        exists unique integers
+        <span class="math">q</span> (quotient) and <span class="math">r</span> (remainder) such that <span
+            class="math">a=bq+r</span> where <span class="math">0&le;r&le;b</span>
+    </p>
+    <img src="images/1.1.1.png" width="500">
+    <div class="divider1"></div>
+    <h3>The Floor Function</h3>
+    <p>The <strong>Floor Function</strong> is a mathematical function that takes a number and rounds it down to the
+        nearest integer.</p>
+    <p><span class="math">q = &#8970;a/b&#8971;, r = a-bq</span></p>
+    <p>If <span class="math">a = 10, b = 4</span> and we're trying to divide <span class="math">a</span> by <span
+            class="math">b</span>, the direct result of this division is <span class="math">2.5</span>. However, the
+        quotient is <span class="math">q = &#8970;a/b&#8971;</span> which is <span class="math">2</span>, and the
+        remainder is <span class="math">r = a-bq</span> which is <span class="math">r = 10-(4*2) = 2</span></p>
+
+    <div class="divider1"></div>
+    <h3>The DIV and MOD Operators</h3>
+    <p><span class="math">a div b</span> asks about the <strong>quotient</strong> that results from <span
+            class="math">a/b</span><br>
+        <span class="math">a mod b</span> asks about the <strong>remainder</strong> that results from <span
+            class="math">a/b</span>
+    </p>
+    <div class="divider1"></div>
+
+    <h3>Divisibility</h3>
+    <p>If <span class="math">b</span> divides <span class="math">a</span>, then the remainder <span
+            class="math">r</span>
+        when <span class="math">a/b</span> is <span class="math">0</span>.</p>
+    <p>"b divides a" is denoted as <span class="math">b|a</span><br>For example, 4 divides 8.</p>
+    <ul>
+        <li><span class="math">b</span> is a <strong>divisor</strong> of <span class="math">a</span> if <span
+                class="math">b|a</span></li>
+        <li><span class="math">a</span> is a <strong>multiple</strong> of <span class="math">b</span> if <span
+                class="math">b|a</span></li>
+    </ul>
+
+    <div class="divider1"></div>
+
+    <a href="index.html" class="prev-button">Previous</a>
+    <a href="1.2 The Fundamental Theorem of Arithmetic.html" class="next-button">Next</a>
+
+    <br>
+    <br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="#">More</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>

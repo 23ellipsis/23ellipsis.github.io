@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css">
+    <title>Euler's Theorem</title>
+
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>1.8</small> Euler's Theorem</h1>
+    <div class="divider2"></div>
+    <h3>Statement of Euler’s Theorem</h3>
+    <p>
+        If <span class="math">n</span> is a positive integer and <span class="math">a</span> is an integer coprime to
+        <span class="math">n</span> (meaning <span class="math">gcd(a, n) = 1</span>), then:<br>
+        <span class="math">a<sup>φ(n)</sup> ≡ 1 (mod n)</span>
+        where <span class="math">φ(n)</span> is Euler’s totient function (the number of integers less than or equal to
+        <span class="math">n</span> that are coprime to <span class="math">n</span>).
+    </p>
+
+    <div class="divider2"></div>
+    <h4>Explanation</h4>
+    <p>
+        Raising <span class="math">a</span> to the power of <span class="math">φ(n)</span> always gives a result
+        congruent to <span class="math">1</span> modulo <span class="math">n</span>, if <span class="math">a</span> and <span
+            class="math">n</span> are coprime.
+    </p>
+
+    <div class="divider1"></div>
+    <h3>Fermat’s Little Theorem</h3>
+    <p>
+        If <span class="math">n = p</span> is prime, then <span class="math">φ(p) = p − 1</span>, so Euler’s theorem
+        reduces to:
+    </p>
+    <p>
+        <span class="math">a<sup>p − 1</sup> ≡ 1 (mod p)</span>
+    </p>
+
+    <div class="divider1"></div>
+    <a href="1.7 Euler's Totient Function.html" class="prev-button">Previous</a>
+    <a href="1.8 Euler's Theorem.html" class="next-button">Next</a>
+
+    <br>
+    <br>
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="#">More</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>

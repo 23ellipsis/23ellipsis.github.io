@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css">
+    <title>The Greatest Common Divisor</title>
+
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1><small>1.3</small> The Greatest Common Divisor</h1>
+    <div class="divider2"></div>
+
+    <p>
+        If <span class="math">a</span> and <span class="math">b</span> are integers, then <span class="math">d</span> is
+        called a <strong>common divisor</strong> if <span class="math">d|a</span> and <span class="math">d|b</span>
+        (that
+        is, if <span class="math">d</span> divides both <span class="math">a</span> and <span class="math">b</span>).
+    </p>
+    <div class="divider2"></div>
+
+    <p>
+        The <strong>Greatest Common Divisor (GCD)</strong> is the largest integer that divides both
+        <span class="math">a</span> and <span class="math">b</span>.
+    </p>
+
+    <div class="divider1"></div>
+    <h3>Coprimes</h3>
+    <p>
+        The integers <span class="math">a</span> and <span class="math">b</span> are <strong>Relatively Prime</strong>
+        (or
+        <strong>Coprime</strong>) if <span class="math">GCD(a,b) = 1</span>. In other words,
+        <span class="math">a</span> is considered prime relative to <span class="math">b</span> (and vice versa) if
+        their greatest common divisor is <span class="math">1</span>.
+    </p>
+    <p>
+        If the largest integer that divides both <span class="math">a</span> and <span class="math">b</span> is <span
+            class="math">1</span>, then it logically follows that it is the <em>only</em> integer that divides them
+        both.
+    </p>
+
+    <blockquote>
+        Remember: A prime number is only divisible by itself and 1.
+    </blockquote>
+
+
+    <div class="divider1"></div>
+    <h3>Finding the GCD</h3>
+    <p>
+        There are different ways to find the GCD, and one of them is using <strong>Canonical Decomposition</strong>.<br>
+        Read <a href="1.2 The Fundamental Theorem of Arithmetic.html" class="custom-link">The Fundamental Theorem of
+            Arithmetic</a>
+
+    </p>
+    <p>
+        Suppose the integers <span class="math">a</span> and <span class="math">b</span> can be expressed as:<br>
+        <span class="math">
+            a = p<sub>1</sub><sup>k<sub>1</sub></sup> &middot; p<sub>2</sub><sup>k<sub>2</sub></sup> &middot;
+            p<sub>3</sub><sup>k<sub>3</sub></sup> ...
+        </span>
+        <br>
+        <span class="math">
+            b = p<sub>1</sub><sup>m<sub>1</sub></sup> &middot; p<sub>2</sub><sup>m<sub>2</sub></sup> &middot;
+            p<sub>3</sub><sup>m<sub>3</sub></sup> ...
+        </span>
+    </p>
+
+    <p>
+        Then the <strong>Greatest Common Divisor</strong> of <span class="math">a</span> and <span class="math">b</span>
+        is given by:<br>
+        <span class="math">
+            GCD(a, b) = p<sub>1</sub><sup>min(k<sub>1</sub>, m<sub>1</sub>)</sup>
+            &middot; p<sub>2</sub><sup>min(k<sub>2</sub>, m<sub>2</sub>)</sup>
+            &middot; p<sub>3</sub><sup>min(k<sub>3</sub>, m<sub>3</sub>)</sup> ...
+        </span>
+    </p>
+    <div class="divider2"></div>
+
+    <p>
+        Example: finding the <strong>GCD</strong> of <span class="math">a = 60</span> and <span class="math">b =
+            48</span>.
+    </p>
+
+    <p>
+        First, express both numbers as products of prime powers:<br>
+        <span class="math">
+            60 = 2<sup>2</sup> &middot; 3<sup>1</sup> &middot; 5<sup>1</sup><br>
+            48 = 2<sup>4</sup> &middot; 3<sup>1</sup>
+        </span>
+    </p>
+
+
+
+    <p>
+        Now take each common prime factor and choose the smallest exponent for each:<br>
+        <span class="math">
+            GCD(60, 48) = 2<sup>min(2, 4)</sup> &middot; 3<sup>min(1, 1)</sup> = 2<sup>2</sup> &middot; 3<sup>1</sup>
+        </span>
+    </p>
+
+    <p>
+        Finally, simplify:
+        <span class="math">
+            GCD(60, 48) = 4 &middot; 3 = 12
+        </span>
+
+    </p>
+
+
+    <div class="divider1"></div>
+    <a href="1.2 The Fundamental Theorem of Arithmetic.html" class="prev-button">Previous</a>
+    <a href="1.4 The Euclidean Algorithm.html" class="next-button">Next</a>
+
+    <br>
+    <br>
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="#">More</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>

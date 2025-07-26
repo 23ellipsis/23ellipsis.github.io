@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Introduction</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>Introduction</h1>
+    <div class="divider2"></div>
+
+    <p><strong>Post Scanning</strong> is the process of <strong>probing</strong> target ports to determine which are
+        open
+        and accepting incoming connections.
+    </p>
+
+
+    <div class="divider2"></div>
+    <h4>What exactly are ports?</h4>
+    <p>A <strong>port</strong> in this context is simply a logical endpoint on a device. <em>(we aren't referring
+            to physical ports where cables connect).
+        </em></p>
+
+    <p>Ports allow multiple services to accept connections at once, having traffic routed to the appropriate service
+        once it
+        reaches the destination.
+        For example, I could run an HTTP Apache service that accepts incoming HTTP requests on my device, and at the
+        same
+        time
+        run an FTP service that accepts incoming FTP connections. Once HTTP or FTP traffic reaches my device (using my
+        IP
+        address), we need
+        to have a way to forward HTTP traffic to the HTTP service, and FTP traffic to the FTP service. This is where we
+        use
+        <strong>Port Numbers</strong>
+        (embedded in the TCP header) to specify where the traffic should go <em>after</em> it reaches the target device.
+    </p>
+
+    <div class="divider1"></div>
+
+    <h3>Well Known Port Numbers</h3>
+    <p>Some services run on a fixed, well known port number by default. Here is a list:</p>
+
+    <table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Port</th>
+      <th>Protocol</th>
+      <th>Service</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>80</td>
+      <td>TCP</td>
+      <td>HTTP</td>
+      <td>Web traffic</td>
+    </tr>
+    <tr>
+      <td>443</td>
+      <td>TCP</td>
+      <td>HTTPS</td>
+      <td>Secure web traffic</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>TCP</td>
+      <td>FTP</td>
+      <td>File transfer</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>TCP</td>
+      <td>SSH / SFTP</td>
+      <td>Secure shell and file transfer</td>
+    </tr>
+    <tr>
+      <td>69</td>
+      <td>UDP</td>
+      <td>TFTP</td>
+      <td>Trivial file transfer</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>TCP</td>
+      <td>Telnet</td>
+      <td>Unencrypted remote login</td>
+    </tr>
+    <tr>
+      <td>3389</td>
+      <td>TCP</td>
+      <td>RDP</td>
+      <td>Remote desktop</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>TCP</td>
+      <td>SMTP</td>
+      <td>Send mail</td>
+    </tr>
+    <tr>
+      <td>110</td>
+      <td>TCP</td>
+      <td>POP3</td>
+      <td>Retrieve mail</td>
+    </tr>
+    <tr>
+      <td>143</td>
+      <td>TCP</td>
+      <td>IMAP</td>
+      <td>Mail sync</td>
+    </tr>
+    <tr>
+      <td>445</td>
+      <td>TCP</td>
+      <td>SMB</td>
+      <td>Windows file sharing</td>
+    </tr>
+    <tr>
+      <td>2049</td>
+      <td>TCP/UDP</td>
+      <td>NFS</td>
+      <td>Network file system</td>
+    </tr>
+    <tr>
+      <td>53</td>
+      <td>TCP/UDP</td>
+      <td>DNS</td>
+      <td>Name resolution</td>
+    </tr>
+    <tr>
+      <td>111</td>
+      <td>TCP/UDP</td>
+      <td>RPCbind</td>
+      <td>RPC endpoint mapping</td>
+    </tr>
+    <tr>
+      <td>161/162</td>
+      <td>UDP</td>
+      <td>SNMP</td>
+      <td>Network management</td>
+    </tr>
+  </tbody>
+</table>
+
+    <div class="divider1"></div>
+
+    <h2>Types of scans</h2>
+    <ol>
+        <li><strong>Passive scanning</strong>, which includes:
+            <ul>
+                <li>Analysing the network traffic using tools as <code>tcpdump</code> and <code>wireshark</code>.</li>
+                <li>Using <code>arp</code> tables.</li>
+            </ul>
+        </li>
+        <li><strong>Active scanning</strong>, which includes:
+            <ul>
+                <li>Using tools such as <code>nmap</code>, <code>hping</code>, <code>scapy</code>, <code>ping</code>,
+                    and <code>tracert</code>.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="divider1"></div>
+
+    <a href="index.html" class="prev-button">Previous</a>
+    <a href="PortStates.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

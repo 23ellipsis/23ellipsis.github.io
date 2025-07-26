@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>XOR Swapping</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>XOR Swapping</h1>
+    <div class="divider2"></div>
+    <p><strong>XOR Swapping</strong> is a technique used for swapping the values of two variables without the need for a
+        temporary variable. It is done using the XOR bitwise operation and i find it really kewl.</p>
+
+    <blockquote>A bitwise operation is an operation carried out on individual bits. Read <a
+            href="../ComputerSystems/2.5 Bit-wise and Logical Operations in C.html" class="custom-link">more</a>>.
+    </blockquote>
+
+    <img src="images/XOR.png" width="400">
+    <div class="divider1"></div>
+    <h3>Process</h3>
+    <p>Assume:</p>
+    <pre><code>x = 110
+y = 101</code></pre>
+
+    <pre><code>y XOR x = 011 → store that in y
+y = 011<br>
+y XOR x = 011 XOR 110 = 101 → store that in x 
+x = 101<br>// notice how we returned to the value y after doing ((x XOR y) XOR x)<br><br>
+y XOR x = 011 XOR 101 = 110 → store that in y
+// and now we returned to the value x after doing ((x XOR y) XOR y)
+
+x = 101
+y = 110
+
+Swapping done.</code></pre>
+
+    <div class="divider1"></div>
+
+    <h2>Visualizing the process</h2>
+    <p>Whenever an XOR operation produces a <code>0</code>, <em>both</em> inputs should have been the same (either <code>0</code>,
+        <code>0</code> or <code>1</code>, <code>1</code>).<br>
+        So if the result of XOR is <code>0</code> and one <em>(known)</em> input was <code>0</code>, this
+        leaves no other option for the <em>(unknown)</em> variable but to be <code>0</code> (same applies on
+        <code>1</code>).
+    </p>
+
+    <p>Whenever the result of XOR is <code>1</code>, one of the inputs must be <code>0</code> and the other must be
+        <code>1</code>. So if one input is known to be <code>0</code>, it follows that the other
+        <em>(unknown)</em> one is <code>1</code>.
+    </p>
+
+    <p>XOR works here because the process is consistent: two possible combinations produce <code>1</code> and the two others
+        produce <code>1</code>.</p>
+
+    <div class="divider1"></div>
+
+    <a href="../index.html" class="prev-button">Previous</a>
+    <a href="next-page.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

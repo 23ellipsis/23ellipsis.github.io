@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Scanning With Nmap</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <div class="divider1"></div>
+    <h1>Scanning With Nmap</h1>
+    <div class="divider2"></div>
+
+    <p><code>nmap</code> (Network Mapper) is a very popular network scanning tool
+        used for host discovery, port scanning, service and version detection, OS detection and vulnerability scanning.
+    </p>
+    <p>It does that by sending specially crafted packets to the target and analyzing the responses.</p>
+
+    <p><strong>Command:</strong> <br>
+    <pre><code>nmap [options] [target]</code></pre>
+    </p>
+    <div class="divider1"></div>
+
+    <h3>Scan Types</h3>
+    <p>These are different ways to scan the target, and each has its own features and implementation.</p>
+    <div class="divider2"></div>
+    <p><code>-sn</code><br>
+        // this option is used for <strong>host discovery</strong>. It only checks whether the specified target/targets
+        is/are up and running (ping scan). You need to specify a target (one IP or a range of IPs).</p>
+
+    <div class="divider2"></div>
+    <p><code>-sT</code><br>
+        // a <strong>TCP connect scan</strong> (full three way handshake). This is the default scan for a non-root user
+        when no option is specified.
+    </p>
+
+    <div class="divider2"></div>
+    <p><code>-sS</code><br>
+        // a <strong>SYN scan</strong>. nmap will only send a <strong>SYN</strong> packet:</p>
+    <ul>
+        <li>If the target sends back a <strong>SYN/ACK</strong> packet the port is marked as
+            <strong>open</strong>.
+        </li>
+        <li>If the target sends back a <strong>RST</strong> packet, the port is marked as
+            <strong>close</strong>.
+        </li>
+        <li>If the target doesn't send anything it is marked as <strong>filtered</strong>.</li>
+    </ul>
+    <p>// in this scan nmap does not complete the three way handshake, after receiving the <code>SYN/ACK</code> packet
+        nmap sends a <code>RST</code>
+        packet and closes the connection.<br>
+    <p>// This scan is also known as a <strong>stealth</strong> scan or <strong>half-open</strong> scan.</p>
+    <em>the SYN scan is the default scan for a root user, and it requires root privileges.</em>
+    </p>
+
+    <div class="divider2"></div>
+    <p><code>-sU</code><br>
+        // a <strong>UDP scan.</strong>
+    </p>
+    <p>
+        // This scan is slower because we mostly don't receive responses back from the target. This increases the time
+        nmap takes to determine whether the port is open or not.
+    </p>
+    <ul>
+        <li>If the target responds with a <strong>UDP</strong> packet the port is considered
+            <strong>open</strong>.
+        </li>
+        <li>If it responds with an <strong>ICMP unreachable type 3 code 3</strong> packet then it's
+            <strong>closed</strong>.
+        </li>
+        <li>If it doesn't respond at all then the port is marked as <strong>open | filtered</strong>.</li>
+    </ul>
+
+    <div class="divider2"></div>
+    <p><code>-sV</code><br>
+        // this option determines the versions of the services that are running on the open ports.</p>
+    <p>// This is done using different techniques, one of them is <strong>banner grabbing</strong>.</p>
+
+    <div class="divider1"></div>
+
+    <span class="note">Raw Packets</span>
+    <blockquote>
+        <strong>Raw packets</strong> are <strong>network packets</strong> that you create or manipulate
+        <strong>directly</strong>, without letting the operating system's networking stack handle them for you.<br>
+        Creating and sending <strong>Raw Network Packets</strong> (without going through the normal TCP/IP stack) is
+        something only root can do, so they require <code>sudo</code> privileges.<br>
+        Examples include almost every scan other than <code>-sT</code> (the typical full TCP scan) and <code>-sV</code>
+        (version discovery).
+    </blockquote>
+
+    <div class="divider1"></div>
+
+    <h3>Target specifications</h3>
+    <p>These are different ways in which you could provide a target/targets for nmap to scan.</p>
+
+    <div class="divider2"></div>
+    <p><code>192.168.1.0/24</code><br>
+        // scans the whole subnet</p>
+
+    <div class="divider2"></div>
+
+    <p><code>192.168.1.0-100</code><br>
+        // scans IP addresses from 192.168.1.1 to 192.168.1.100</p>
+
+    <div class="divider2"></div>
+
+    <p><code>192.168.1.1, 192.168.1.2</code><br>
+        // scans the specified IP addresses</p>
+
+    <div class="divider1"></div>
+
+    <h3>Port specifications</h3>
+    <p><code>nmap</code> scans the top <em>(most common)</em> 1000 ports by default, but there are different ways in
+        which you could specify certain ports.</p>
+
+
+    <div class="divider2"></div>
+    <p><code>-p22,80,443</code><br>
+        // scans port 22, 80 and 443</p>
+
+
+    <div class="divider2"></div>
+    <p><code>-p22-100</code><br>
+        // scans ports from 22 to 100</p>
+
+
+    <div class="divider2"></div>
+    <p><code>-pT:22,80,U:53</code><br>
+        // specifies ports 22 and 80 for the TCP scan and port 53 for the UDP scan. This can be used when we're using
+        <code>-sS</code> (TCP SYN scan) with <code>-sU</code> (UDP scan) for example.
+    </p>
+
+
+    <div class="divider2"></div>
+    <p><code>--top-port 2000</code><br>
+        // scans top 2000 ports</p>
+
+
+    <div class="divider2"></div>
+    <p><code>-F</code><br>
+        // fast scan, only the top 100 ports are scanned</p>
+
+
+    <div class="divider2"></div>
+    <p><code>-p-</code><br>
+        // scans all 65535 ports</p>
+
+    <div class="divider1"></div>
+
+    <h3>Other stuff</h3>
+
+    <p><code>-Pn</code><br>
+        // treats all hosts as up.
+    </p>
+    <p>This skips host discovery, which is a step nmap does before proceeding
+        to scan the port.<br> With <code>-Pn</code> we tell <code>nmap</code> to scan hosts without making sure they're
+        up beforehand. This can help evade certain filters that make the target unresponsive to ping requests.</p>
+
+    <div class="divider2"></div>
+    <p><code>-n</code><br>
+        // this option disables <strong>reverse DNS lookup</strong> which nmap does by default.
+    </p>
+    <p>A <strong>Reverse DNS lookup</strong> is the opposite of a typical DNS lookup: in a typical DNS lookup we
+        map domain names to IP addresses, in reverse DNS we map IP addresses to domain names.</li>
+    </p>
+    <p>// this option is used when we don't care about the domain name and we just want to see the IP address of the
+        target in the results (instead of the mapped domain name).</p>
+
+    <div class="divider2"></div>
+    <p><code>-O</code><br>
+        // this feature attempts to guess the target's operating system by inspecting response packets. This is possible
+        because operating systems often have slightly different implementation of the TCP/IP stack (such ad TTL values
+        and TCP window sizes).</p>
+
+    <div class="divider2"></div>
+    <p><code>--reason</code><br>
+        // used to show the reason why ports are marked as open/closed/filtered</p>
+
+    <div class="divider2"></div>
+    <p><code>-A</code><br>
+        // this is an <strong>aggressive</strong> scan. It includes version discovery, OS detection and runs the default
+        nmap scripts on the target system. This option is usually not used because it generates a huge amount of traffic
+        that raises suspicion, or makes the target temporarily inaccessible for legit connections.</p>
+
+
+    <div class="divider2"></div>
+    <p><code>-oN [file path]</code><br>
+        // outputs the results onto a certain file</p>
+
+
+    <div class="divider2"></div>
+    <p><code>-oG [file path]</code><br>
+        // also used to output the results onto a certain file, but in a more <strong>grepable</strong> format
+        (<code>grep</code> is a tool used for text manipulation)</p>
+    <div class="divider1"></div>
+
+    <a href="ManualScanning.html" class="prev-button">Previous</a>
+    <a href="NmapScriptingEngine.html" class="next-button">Next</a>
+
+    <br><br>
+
+    <div class="sidebar">
+        <div class="hamburger">☰</div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.html">Content</a></li>
+            <li><a href="">More</a></li>
+        </ul>
+    </div>
+
+</body>
+
+</html>
