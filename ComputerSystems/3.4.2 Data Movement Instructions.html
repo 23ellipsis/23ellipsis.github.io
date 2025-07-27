@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Data Movement Instructions</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="divider1"></div>
+
+  <h1><small>3.4.2</small> Data Movement Instructions</h1>
+  <div class="divider2"></div>
+
+  <p>Among the most heavily used instructions are those that copy data from one
+    location to another. (remember, that's what the CPU spends most of its time doing).</p>
+
+  <p>There are three main Instruction Classes used to move data:</p>
+
+  <ol>
+    <li>
+      <code>mov</code>: <strong>move</strong>
+      <ul>
+        <li><code>movb</code>: move byte</li>
+        <li><code>movw</code>: move word (2 bytes)</li>
+        <li><code>movl</code>: move long (4 bytes)</li>
+      </ul>
+    </li>
+
+    <br>
+    <li>
+      <code>movs</code>: <strong>move with sign extension</strong>
+      <ul>
+        <li><code>movsbw</code>: move sign-extended byte to word</li>
+        <li><code>movsbl</code>: move sign-extended byte to long</li>
+        <li><code>movswl</code>: move sign-extended word to long</li>
+      </ul>
+    </li>
+    <br>
+    <li>
+      <code>movz</code>: <strong>move with zero extension</strong>
+      <ul>
+        <li><code>movzbw</code>: move zero-extended byte to word</li>
+        <li><code>movzbl</code>: move zero-extended byte to long</li>
+        <li><code>movzwl</code>: move zero-extended word to long</li>
+      </ul>
+    </li>
+  </ol>
+
+  <ul>
+    <li>Each of these instructions take a source operand and destination operand (duh)</li>
+  </ul>
+
+  <blockquote>
+    An instruction class is simply a group of instructions that perform the same operation but with different operand
+    sizes
+  </blockquote>
+
+  <div class="divider2"></div>
+  <p>Note that the source operand can be an <strong>immediate value</strong>, a <strong>register</strong> or a
+    <strong>memory address</strong>. The destination operand
+    can be either a <strong>register</strong> or a <strong>memory address</strong>.
+  </p>
+  <p>
+    IA32 doesn't allow moving a value from one memory address to another directly, so the source and destination
+    operands can't both be a memory address. In order to move a value from one memory address to another, we need two
+    instructions:
+  <pre><code>1. Source memory address to register x 
+2. Register x to destination memory address</code></pre>
+  </p>
+  <div class="divider2"></div>
+
+  <p>Notice how the <code>movs</code> and <code>movz</code> instructions move data from a <strong>smaller</strong> sized
+    block to a
+    <strong>larger</strong> sized block <em>(from a byte to a word, word to long etc)</em>.<br><br>
+    When that is done, there will be empty bits in the new block:
+  </p>
+
+  <ul>
+    <li>In the case of <strong>zero extension</strong> (<code>movz</code>), the empty bits will be zeroed</li>
+    <img src="images/3.4.5.png" width="650">
+    <blockquote>
+      This example involves moving the value 173 from a byte-sized block to a word-sized block
+    </blockquote>
+    <div class="divider2"></div>
+    <li>In the case of <strong>sign extension</strong> (<code>movs</code>), the empty bits will be filled with the value
+      of the most
+      significant bit of the source byte.</li>
+    <img src="images/3.4.8.png" width="650">
+    <blockquote>This example involves moving the value -6 (represented using two's complement) from a 4-bit-sized block
+      to an 8-bit-sized block. To really understand how (more of <em>why</em>) this works, review how two's complement
+      works.
+      <img src="images/3.4.6.png" width="1000">
+    </blockquote>
+  </ul>
+  <div class="divider2"></div>
+
+
+  <blockquote>
+    The sign extension operation for example could be carried out when we have a signed number stored in one byte but
+    the program wants to use it as a 32-bit value, so it gets sign extended from a byte-sized block to a long-sized
+    block according to the rule mentioned earlier.
+  </blockquote>
+  <div class="divider2"></div>
+  <p>When a byte-sized value is being moved to or from a register using the <code>movb</code> instruction, the size of
+    that register should be 1 byte (so <code>%al</code> instead of <code>ax</code> or <code>eax</code> or
+    <code>rax</code>), same applies to moving a word-sized value (the register should be <code>ax</code>), and for
+    moving a long-sized value (the register should be <code>eax</code>).
+    For example:
+
+  <pre><code>movb %dh, %al        -> moving from a byte-sized register to a byte sized register
+movzbl %dh, %eax     -> moving from a byte-sized register (8 bits) to a long-sized register (32 bits)</code></pre>
+  <img src="images/1.a.png" width="700">
+
+  <div class="divider1"></div>
+
+
+
+
+  <h3>Moving data to and from the Stack</h3>
+
+  <p>The <strong>Stack</strong> is a data structure where values can be added or deleted, but only according to a
+    "last-in, first-out" discipline. The stack plays a vital role in the handling of procedure calls and program data.
+  </p>
+
+  <p>As data gets <strong>pushed</strong> onto the stack, it grows <strong>downward</strong> towards the lower memory
+    addresses. <br>So the <strong>top</strong> of the
+    stack is the <em>lowest address</em>, while the <strong>bottom</strong> of the stack is the <em>highest
+      address</em>. </p>
+  <img src="images/3.4.9.png" width="500">
+
+  <div class="divider2"></div>
+
+
+  <p>The <code>push</code> instruction is used to <strong>push</strong> data onto the stack, while the <code>pop</code>
+    instruction is used to <strong>fetch</strong> data from the stack.
+  <pre><code>push [data source]
+pop [data destination]
+</code></pre>
+  <blockquote>
+    Note that size specifications can be used with push and pop, like <code>pushl</code> or <code>popw</code> etc.
+  </blockquote>
+  </p>
+  <div class="divider1"></div>
+
+  <h3>The esp Register</h3>
+  <p>The <strong>esp register</strong> is referred to as the <strong>"Stack Pointer"</strong>. It holds the address of
+    the top stack element.<br><br>
+    Thus, pushing data onto the stack involves <strong>decrementing</strong> the stack pointer, while popping data from
+    teh stack
+    involves <strong>incrementing</strong> the stack pointer. </p>
+  <img src="images/3.4.10.png" width="800">
+
+  <p>From there, we could implement the <code>push</code> instruction using two instructions: <code>sub</code>
+    (subtract) and <code>mov</code>.<br> For example the
+    behavior or the instruction <code>pushl &ebp</code> is equivalent to:
+  <pre><code>subl $4, %esp     -> decrement the stack pointer
+movl %ebp, (%esp) -> store the value of ebp on the stack
+  </code></pre>
+  except that the <code>pushl</code> instruction is encoded in the machine code as a single byte, whereas the pair of
+  the
+  instructions shown above requires a total of 6 bytes.</p>
+  <div class="divider1"></div>
+
+  <a href="3.4.1 Accessing Information.html" class="prev-button">Previous</a>
+  <a href="#" class="next-button">Next</a>
+
+  <br><br>
+
+  <div class="sidebar">
+    <div class="hamburger">☰</div>
+    <ul class="menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html">Content</a></li>
+      <li><a href="">More</a></li>
+    </ul>
+  </div>
+</body>
+
+</html>

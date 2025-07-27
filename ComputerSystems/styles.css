@@ -274,3 +274,35 @@
   color: #2100f9;
   text-decoration: underline;
 }
+
+@media (max-width: 760px) { 
+  html { font-size: 10px; } 
+  img, table, pre, code { max-width: 100%; } 
+
+  .sidebar {
+    width: 100% !important; 
+    height: auto; 
+    position: static; /
+  }
+  .sidebar:hover {
+    width: 100% !important; 
+  }
+  .topics a {
+    font-size: 1.1rem; 
+    margin: 0.4rem 0; 
+    padding-left: 0.4rem; 
+  }
+  .menu {
+    opacity: 1 !important; 
+    display: flex; 
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    margin-top: 0;
+  }
+  .hamburger {
+    display: none; 
+  }
+}
+
+
