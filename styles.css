@@ -102,15 +102,26 @@ pre.terminal{
 
 }
 
-/* ================= SKILLS BOX ================= */
+
+/* ================= RIGHT SIDE CONTAINER ================= */
+.right-side {
+  display: flex;
+  margin-left: auto;
+  flex-direction: column;
+  gap: 20px; /* spacing between skills and toolbox */
+  align-items: flex-start; /* align boxes to the left */
+}
+
+/* ================= SKILLS BOX  ================= */
+
 .skills{
   margin-left:auto;
   padding:1.6rem 1.8rem;
   border:1px solid #00cbf9;
   border-radius:14px;
-  min-width:250px;
-  max-width:350px;
-  flex:1 1 300px;
+  min-width:400px;
+  max-width:400px;
+  
 }
 
 .skills h3{
@@ -182,7 +193,7 @@ pre.terminal{
   }
 }
 
-/* optional delays so they don't start together */
+/* delays so they don't start together */
 
 .skill:nth-child(2) .fill { animation-delay:0.2s; }
 .skill:nth-child(3) .fill { animation-delay:0.4s; }
@@ -190,6 +201,42 @@ pre.terminal{
 .skill:nth-child(5) .fill { animation-delay:0.8s; }
 .skill:nth-child(6) .fill { animation-delay:1s; }
 
+/* ================= TOOLBOX BOX (mirror skills box) ================= */
+.toolbox {
+  margin-left: auto;
+  padding: 1.6rem 1.8rem;
+  border: 1px solid #00cbf9;
+  border-radius: 14px;
+  max-width: 400px;
+  display: flex;
+  flex-wrap: wrap;       /* allow icons to wrap if too many */
+  gap: 15px;             /* spacing between icons */
+  justify-content: flex-start;
+
+  background: transparent; /* keep skills box design intact */
+}
+
+.toolbox h3{
+  margin-top:0;
+  color:#00d4f9;
+  width: 100%;
+}
+
+
+/* ================= TOOL ICONS ================= */
+.toolbox .tool-icon {
+  width: 40px;
+  height: 40px;
+  color: #00cbf9; /* match skills box border color */
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+
+.toolbox .tool-icon:hover {
+  transform: scale(1.1);
+  color: #8ae9ff; /* subtle hover glow like skill bar gradient */
+}
 /* ================= TOPIC LINKS ================= */
 .topics a{
   display:block;
@@ -336,6 +383,8 @@ body {
     margin-top: 0.5rem;
   }
 
+
+
   pre.terminal {
     font-size: 0.9rem;
     width: calc(100% - 90px); /* terminal next to profile */
@@ -350,16 +399,35 @@ body {
     display: none; /* Chrome, Safari, Edge */
   }
 
-  /* Skills section smaller width */
-  .skills {
-    display: block;
-    width: 80%;        /* narrower */
-    max-width: 80%;
-    padding: 0.5rem;
-    margin: 0rem auto 0 auto; /* top margin + center */
-    font-size: 0.75rem;
-    border-radius: 8px;
+  
+   .right-side {
+    display: flex;
+    flex-direction: column;      /* stack vertically */
+    align-items: center;         /* center boxes horizontally */
+    gap: 1rem;                   /* spacing between skills & toolbox */
+    margin: 1rem auto 2rem auto; /* vertical spacing + center horizontally */
+    width: 90%;                  /* container width with side margin */
+    max-width: 350px;            /* slightly smaller max width */
   }
+
+  /* Skills & Toolbox inside right-side */
+  .skills, .toolbox {
+    width: 100%;                 /* fill container width */
+    max-width: 100%;             /* override desktop max-width */
+    min-width: 0;                /* override desktop min-width */
+    margin-left: 0;              /* remove auto margins */
+    margin-right: 0;
+    padding: 0.6rem 1rem;        /* adjust padding */
+    font-size: 0.8rem;
+  }
+
+  /* Toolbox icons */
+  .toolbox {
+    justify-content: center;     /* center icons */
+    gap: 10px;
+  }
+
+
 
   .skills h3 {
     font-size: 0.85rem;
@@ -438,4 +506,5 @@ pre.terminal {
 pre.terminal::-webkit-scrollbar {
   display: none; 
 }
+
 }
