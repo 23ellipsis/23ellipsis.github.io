@@ -1,87 +1,225 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>23ellipsis</title>
-  <style>
-    .topics a {
-      display: block;
-      color: #00cbf9ff;
-      text-decoration: none;
-      margin: 0.6rem 0;
-      font-weight: 600;
-      font-size: 1.4rem;
-      letter-spacing: 0.02em;
-      transition: color 0.3s ease, transform 0.25s ease;
-      border-left: 4px solid transparent;
-      padding-left: 0.6rem;
-      border-radius: 2px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>23ellipsis</title>
 
-    .topics a:hover {
-      color: #8500f9ff;
-      border-left-color: #9500f9;
-      transform: translateX(6px);
-      text-decoration: none;
-    }
-  </style>
-  </style>
-  <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css">
+
+
 </head>
 
 <body>
-  <div class="divider1"></div>
+<div id="particles-js"></div>
 
-  <div class="container">
-    <div class="intro">
-      <h1>Hey there!</h1>
-      <p>I go by <strong>ellipsis</strong>. I'm a first year Cyber Security student and this is a blog where I
-        post my personal notes on different topics I'm learning.</p>
-      <p>If you have any suggestions or feedback regarding the material, please reach out to me on discord
-        @<strong>ellipsis23</strong>. I'm a student who's still learning, and I appreciate any assistance or critique.
-      <p>It’s probably best not to treat these notes as 100% accurate or complete. I would suggest doing your own
-        research and hands-on practice to really understand the material and make sure that what you're reading is
-        correct and relevant.</p>
 
-      <p>Happy learning :></p>
-    </div>
+<div class="header">
 
-    <div class="profile">
-      <img src="pfp.png" alt="Profile Picture">
-    </div>
+<div class="intro-section">
+
+<div class="top-row">
+
+<img class="pfp" src="pfp.png" alt="Profile Picture">
+<pre class="terminal">┌──[ellipsis@fedora]-[~]
+└─$ <span id="typed-text"></span></pre>
+
+</div>
+
+<div class="terminal-divider"></div>
+
+<p class="bio">
+A 20 year old Cyber Security enthusiast, a student and a curious mind. 
+<br>
+This is a collection of some of my notes and guides on various topics. Have fun!
+</p>
+
+<p class="discord">
+Reach out to me on discord at <strong>23ellipsis</strong>
+</p>
+
+</div>
+
+<div class="skills">
+
+<h3>Skills</h3>
+
+<div class="skill">
+Web exploitation 
+<div class="bar"><div class="fill" style="width:65%"></div></div>
+</div>
+
+<div class="skill">
+Linux 
+<div class="bar"><div class="fill" style="width:60%"></div></div>
+</div>
+
+<div class="skill">
+Cryptography 
+<div class="bar"><div class="fill" style="width:40%"></div></div>
+</div>
+
+<div class="skill">
+Assembly 
+<div class="bar"><div class="fill" style="width:20%"></div></div>
+</div>
+
+<div class="skill">
+Networking 
+<div class="bar"><div class="fill" style="width:45%"></div></div>
+</div>
+
+</div>
+
+</div>
+
+<div class="divider1"></div>
+
+<h2>Explore</h2>
+
+<div class="topics">
+<a href="ComputerSystems/index.html">Computer Systems</a>
+<a href="TopicsInNetworking/index.html">Topics in Networking</a>
+<a href="Cryptography/index.html">Topics in Cryptography</a>
+<a href="Enumeration/index.html">Service Enumeration</a>
+<a href="PortScanning/index.html">Port Scanning</a>
+</div>
+
+<div class="divider1"></div>
+
+<h2>MISC</h2>
+
+<div class="topics">
+<a href="MISC/XORSwapping.html">XOR Swapping</a>
+<a href="MISC/Tor Hidden Services.html">Tor Hidden Services</a>
+</div>
+
+
+</div>
+
+<div class="dev-note">Still under development :/</div>
+
+
+<!-- Top Navigation Bar -->
+<!-- Top Navigation Bar -->
+<nav class="top-nav">
+  <div class="nav-left">23ellipsis</div>
+  <div class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="#content">Content</a>
+    <a href="#contact">Say Hi</a>
   </div>
-
-  <div class="divider1"></div>
-
-
-  <h2>Explore</h2>
-  <div class="topics">
-    <a href="ComputerSystems/index.html">Computer Systems</a>
-    <a href="TopicsInNetworking/index.html">Topics in Networking</a>
-    <a href="Cryptography/index.html">Topics in Cryptography</a>
-    <a href="Enumeration/index.html">Service Enumeration</a>
-    <a href="PortScanning/index.html">Port Scanning</a>
-  </div>
-
-  <div class="divider1"></div>
-  <h2>MISC</h2>
-  <div class="topics">
-    <a href="MISC/XORSwapping.html">XOR Swapping</a>
-    <a href="MISC/Tor Hidden Services.html">Tor Hidden Services</a>
-  </div>
-
-  <div class="sidebar">
-    <div class="hamburger">☰</div>
-    <ul class="menu">
-      <li><a href="#meow">meow</a></li>
-    </ul>
-  </div>
+  <div class="nav-gradient"></div>
+</nav>
 
 
-  <div class="dev-note">Still under development :/</div>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
+<script>
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 60,
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": ["#9bbcff", "#ffffff"] /* your colors */
+      },
+      "shape": {
+        "type": "circle"
+      },
+      "opacity": {
+        "value": 0.4,
+        "random": false
+      },
+      "size": {
+        "value": 3,
+        "random": true
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#9bbcff",
+        "opacity": 0.3,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 1.2,  /* slower movement */
+        "direction": "none",
+        "random": false,
+        "straight": false,
+        "out_mode": "out",
+        "bounce": false
+      }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "grab"
+        },
+        "onclick": {
+          "enable": false
+        },
+        "resize": true
+      },
+      "modes": {
+        "grab": {
+          "distance": 180,
+          "line_linked": {
+            "opacity": 0.6
+          }
+        }
+      }
+    },
+    "retina_detect": true
+  });
+</script>
+<script>
+const text = 'echo "hello, intruder"';
+const typedText = document.getElementById('typed-text');
+let i = 0;
+let forward = true; // typing forward or deleting
+let speed = 120; // typing speed
+let pause = 1000; // pause after typing full text
+
+function typeLoop() {
+  if (forward) {
+    // Add next character
+    typedText.textContent += text.charAt(i);
+    i++;
+    if (i === text.length) {
+      forward = false; // switch to deleting
+      setTimeout(typeLoop, pause); // pause at end
+      return;
+    }
+  } else {
+    // Delete last character
+    typedText.textContent = text.substring(0, i - 1);
+    i--;
+    if (i === 0) {
+      forward = true; // switch to typing
+      setTimeout(typeLoop, 700); // short pause before typing again
+      return;
+    }
+  }
+  setTimeout(typeLoop, speed);
+}
+
+// Start the loop
+typeLoop();
+</script>
 </body>
 
+
 </html>
+
+

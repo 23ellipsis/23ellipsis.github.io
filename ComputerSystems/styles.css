@@ -1,10 +1,10 @@
  body {
-   background-color: #020014;
+   background-color: #02000e;
    color: #d5cff9;
    font-family: 'Fira Code', 'Courier New', Courier, monospace;
    margin: 0;
    padding: 2rem 15%;
-   line-height: 1.3;
+   line-height: 1.2;
    font-size: 1.3rem;
  }
 
@@ -19,22 +19,22 @@
 
  h1 {
    color: #2100f9;
-   font-size: 1.9rem;
+   font-size: 1.8rem;
  }
 
  h2 {
    color: #9500f9;
-   font-size: 1.7rem;
+   font-size: 1.6rem;
  }
 
  h3 {
    color: #f100f9;
-   font-size: 1.8rem;
+   font-size: 1.5rem;
  }
 
  h4 {
    color: #00d4f9;
-   font-size: 1.6rem;
+   font-size: 1.4rem;
  }
  .note {
    color: #9500f9;
@@ -43,7 +43,6 @@
    font-weight: bold;
 
  }
-
 
 
  p {
@@ -82,7 +81,7 @@
 
  pre,
  code {
-   background-color: #000334ff;
+   background-color: rgb(3, 0, 31);
    color: #e0e0ff;
    font-family: 'Fira Code', 'Courier New', Courier, monospace;
    padding: 0.3rem 1rem;
@@ -90,7 +89,7 @@
    display: block;
    white-space: pre-wrap;
    overflow-x: auto;
-   font-size: 1.3rem;
+   font-size: 1.2rem;
    line-height: 1.4;
  }
 
@@ -116,7 +115,7 @@
    padding-left: 1rem;
    margin-left: 0;
    color: #b3a4f9;
-   font-style: italic;
+
    margin-top: 0.3rem;
  }
 
@@ -190,71 +189,6 @@
  }
 
 
- .sidebar {
-   position: fixed;
-   top: 0;
-   left: 0;
-   height: 100vh;
-   width: 40px;
-   background: #000020;
-   transition: width 0.3s ease;
-   overflow: hidden;
-   z-index: 1000;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
- }
-
- .sidebar:hover {
-   width: 170px;
- }
-
- .hamburger {
-   margin-top: 1rem;
-   font-size: 1.6rem;
-   color: #d5cff9;
-   cursor: pointer;
-   transition: color 0.3s ease;
- }
-
- .hamburger:hover {
-   color: #ffffff;
- }
-
- .menu {
-   list-style: none;
-   padding: 0;
-   margin: 4rem 0 0 0;
-   width: 100%;
-   opacity: 0;
-   transition: opacity 0.3s ease;
- }
-
- .sidebar:hover .menu {
-   opacity: 1;
- }
-
- .menu li {
-   margin: 0.3rem 0;
-   text-align: left;
-   font-size: 1.1rem;
-
- }
-
- .menu a {
-   display: block;
-   padding: 0.3rem 1.0rem;
-   color: #d5cff9;
-   text-decoration: none;
-   background: #000020;
-   border-radius: 4px;
-   transition: background-color 0.3s ease, color 0.3s ease;
- }
-
- .menu a:hover {
-   background: #070036ff;
-   color: #64fff5ff;
- }
 
 .custom-link {
   color: #00d4f9;
@@ -274,35 +208,81 @@
   color: #2100f9;
   text-decoration: underline;
 }
-
-@media (max-width: 760px) { 
-  html { font-size: 10px; } 
-  img, table, pre, code { max-width: 100%; } 
-
-  .sidebar {
-    width: 100% !important; 
-    height: auto; 
-    position: static; /
-  }
-  .sidebar:hover {
-    width: 100% !important; 
-  }
-  .topics a {
-    font-size: 1.1rem; 
-    margin: 0.4rem 0; 
-    padding-left: 0.4rem; 
-  }
-  .menu {
-    opacity: 1 !important; 
-    display: flex; 
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    margin-top: 0;
-  }
-  .hamburger {
-    display: none; 
-  }
+.math {
+    color: #a856ffff;
+ 
+    border-radius: 0.3rem;
+    letter-spacing: 0.1rem;
+    display: inline-block;
+    font-family: 'Source Serif Pro';
+    font-size: 1.4rem;
 }
 
 
+/* ================= TOP NAVBAR ================= */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  /* match the body padding */
+  padding: 0 2%;  /* same as body horizontal padding */
+  
+  background: rgba(2,0,17,0.85); /* slightly darker overlay */
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  box-sizing: border-box; /* ensures padding is included in width */
+}
+
+/* Left side */
+.top-nav .nav-left {
+  color: #d5cff9; 
+  font-weight: bold;
+  font-size: 1.5rem;
+  white-space: nowrap; /* prevent wrapping */
+}
+
+/* Right side links */
+.top-nav .nav-right a {
+  color: #9bbcff;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+  transition: 0.3s;
+  white-space: nowrap;
+}
+
+.top-nav .nav-right a:hover {
+  color: #ffffff;
+}
+
+/* Gradient bar at the bottom of nav */
+.top-nav .nav-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(
+    90deg,
+    #2100f9,
+    #9500f9,
+    #00d4f9,
+    #9500f9,
+    #2100f9
+  );
+  background-size: 300% 100%;
+  animation: gradient-sweep 23s linear infinite;
+}
+
+body {
+  padding-top: 100px; /* leave space for navbar + gradient bar */
+  padding-left: 15%;
+  padding-right: 15%;
+}
