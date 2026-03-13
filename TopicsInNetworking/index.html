@@ -4,21 +4,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../styles.css">
   <title>Topics in Networking</title>
+      <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
 
 </head>
 
 <body>
 
-  <div class="divider1"></div>
+        <!-- Top Navigation Bar -->
+  <nav class="top-nav">
+    <div class="nav-left">23ellipsis</div>
+    <div class="nav-right">
+      <a href="../index.html">Home</a>
+      <a href="#content">Content</a>
+      <a href="https://discordapp.com/users/1310114663979028521">Say Hi</a>
+    </div>
+    <div class="nav-gradient"></div>
+  </nav>
+
+  <!-- Particles background -->
+  <div id="particles-js"></div>
   <h1>Topics in Networking</h1>
   <div class="divider2"></div>
-  <p>These notes cover a bunch of networking concepts (more is yet to come hehe). I discuss different protocols in
+  <p>These notes cover a bunch of networking concepts. I discuss different protocols in
     fairly good detail, and present their aspects with regards to security and Linux systems.</p>
 
   <div class="divider1"></div>
-  <h1>Content</h1>
+  <h2>Content</h2>
   <div class="divider2"></div>
 
   <div class="topics">
@@ -44,14 +58,73 @@
 
   </div>
 
-  <div class="sidebar">
-    <div class="hamburger">☰</div>
-    <ul class="menu">
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="#">Content</a></li>
-      <li><a href="#">More</a></li>
-    </ul>
-  </div>
+
+     <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 60,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": {
+          "value": ["#9bbcff", "#ffffff"]
+        },
+        "shape": {
+          "type": "circle"
+        },
+        "opacity": {
+          "value": 0.4,
+          "random": false
+        },
+        "size": {
+          "value": 3,
+          "random": true
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#9bbcff",
+          "opacity": 0.3,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 1.2,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false
+        }
+      },
+      "interactivity": {
+        "detect_on": "window",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          },
+          "onclick": {
+            "enable": false
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 180,
+            "line_linked": {
+              "opacity": 0.6
+            }
+          }
+        }
+      },
+      "retina_detect": true
+    });
+  </script>
+  
 </body>
 
 </html>

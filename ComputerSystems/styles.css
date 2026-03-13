@@ -286,3 +286,114 @@ body {
   padding-left: 15%;
   padding-right: 15%;
 }
+
+
+
+/* ================= MOBILE ADJUSTMENTS ================= */
+@media (max-width: 760px) {
+
+  body {
+    padding-top: 80px;
+    padding-left: 4%;
+    padding-right: 4%;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  /* Navbar */
+  .top-nav {
+    height: 50px;
+    padding: 0 4%;
+  }
+
+  .top-nav .nav-left {
+    font-size: 1rem;
+  }
+
+  .top-nav .nav-right a {
+    font-size: 0.9rem;
+    margin-left: 0.8rem;
+  }
+
+  /* Headers smaller */
+  h1 { font-size: 1.4rem; margin-top: 0.8rem; }
+  h2 { font-size: 1.25rem; margin-top: 0.8rem; }
+  h3 { font-size: 1.1rem; margin-top: 0.6rem; }
+  h4 { font-size: 1rem; margin-top: 0.6rem; }
+
+  .note {
+    font-size: 1.1rem;
+  }
+
+  /* Paragraph spacing */
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+  }
+
+  /* Code blocks */
+  pre,
+  code {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  pre::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Images responsive */
+  img {
+    max-width: 90%;
+  }
+
+  /* Tables scrollable */
+  table {
+    font-size: 0.85rem;
+    display: block;
+    overflow-x: auto;
+  }
+
+  table th,
+  table td {
+    font-size: 0.85rem;
+    padding: 6px 8px;
+  }
+
+  /* Topic links smaller */
+  .topics a {
+    font-size: 1rem;
+    margin: 0.35rem 0;
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .topics a:hover {
+    color: inherit;
+    transform: none;
+    border-left: none;
+  }
+
+  /* Buttons */
+  .prev-button,
+  .next-button {
+    font-size: 0.9rem;
+    padding: 0.25rem 0.4rem;
+  }
+
+  /* Disable hover animations on mobile */
+  .prev-button:hover,
+  .next-button:hover,
+  .topics a:hover,
+  .custom-link:hover,
+  .top-nav .nav-right a:hover {
+    color: inherit;
+    transform: none;
+    text-decoration: none;
+    background: none;
+  }
+
+}

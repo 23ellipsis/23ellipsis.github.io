@@ -125,17 +125,70 @@ pre.terminal{
 
 .bar{
   width:100%;
-  height:10px;
+  height:8px;
   background:#050038;
   border-radius:8px;
-  margin-top:4px;
+  overflow:hidden;
 }
 
 .fill{
   height:100%;
-  background:#00cbf9;
   border-radius:8px;
+
+  background: linear-gradient(
+    90deg,
+    #00cbf9,
+    #8ae9ff,
+    #00cbf9
+  );
+
+  background-size:200% 100%;
+
+  transform-origin:left;
+  transform:scaleX(0);
+
+  animation:
+    grow 2s ease forwards,
+    shine 3s linear infinite;
 }
+
+/* different skill widths */
+
+.web { width:65%; }
+.linux { width:60%; }
+.crypto { width:40%; }
+.asm { width:20%; }
+.net { width:45%; }
+
+/* grow animation */
+
+@keyframes grow{
+  from{
+    transform:scaleX(0);
+  }
+  to{
+    transform:scaleX(1);
+  }
+}
+
+/* glowing sweep */
+
+@keyframes shine{
+  from{
+    background-position:200% 0;
+  }
+  to{
+    background-position:-200% 0;
+  }
+}
+
+/* optional delays so they don't start together */
+
+.skill:nth-child(2) .fill { animation-delay:0.2s; }
+.skill:nth-child(3) .fill { animation-delay:0.4s; }
+.skill:nth-child(4) .fill { animation-delay:0.6s; }
+.skill:nth-child(5) .fill { animation-delay:0.8s; }
+.skill:nth-child(6) .fill { animation-delay:1s; }
 
 /* ================= TOPIC LINKS ================= */
 .topics a{
