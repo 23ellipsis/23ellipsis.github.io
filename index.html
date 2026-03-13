@@ -283,6 +283,32 @@ function typeLoop() {
 // Start the loop
 typeLoop();
 </script>
+
+<script>
+  const icons = document.querySelectorAll('.toolbox .tool-icon');
+  let lastGlowing = null;
+
+  function glowOneIcon() {
+    // pick a random icon that’s not currently glowing
+    let icon;
+    do {
+      icon = icons[Math.floor(Math.random() * icons.length)];
+    } while (icon === lastGlowing && icons.length > 1);
+
+    // remove glow from previous icon
+    if (lastGlowing) lastGlowing.classList.remove('glow');
+
+    // add glow to new icon
+    icon.classList.add('glow');
+    lastGlowing = icon;
+  }
+
+  // trigger glow every 2-3 seconds
+  setInterval(() => {
+    glowOneIcon();
+  }, Math.random() * 1000 + 2000);
+</script>
+
 </body>
 
 

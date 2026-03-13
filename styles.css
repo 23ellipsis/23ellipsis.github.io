@@ -254,6 +254,23 @@ pre.terminal{
 }
 
 
+/* glowing animation */
+@keyframes svgGlow {
+  0%, 100% {
+    color: #00cbf9; 
+    filter: drop-shadow(0 0 0px #00cbf9c0);
+  }
+  50% {
+    color: #76c6ff; /* bright glow */
+    filter: drop-shadow(0 0 12px #35f5f598) drop-shadow(0 0 20px #18b7fbaf);
+  }
+}
+
+.toolbox .glow {
+  animation: svgGlow 2s ease-in-out;
+}
+
+
 /* ================= TOP NAVBAR ================= */
 .top-nav {
   position: fixed;
@@ -430,7 +447,7 @@ body {
 
 
   .skills h3 {
-    font-size: 0.85rem;
+    font-size: 1.0rem;
     margin-bottom: 0.5rem;
   }
 
@@ -466,7 +483,7 @@ body {
 
   /* Topics smaller, hover disabled */
   .topics a {
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin: 0.3rem 0;
     border-left: 0;
   }
