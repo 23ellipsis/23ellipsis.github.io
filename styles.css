@@ -131,7 +131,7 @@ pre.terminal{
 
 .skill{
   margin-bottom:1rem;
-  font-size:0.95rem;
+  font-size:1.1rem;
 }
 
 .bar{
@@ -201,6 +201,7 @@ pre.terminal{
 .skill:nth-child(5) .fill { animation-delay:0.8s; }
 .skill:nth-child(6) .fill { animation-delay:1s; }
 
+
 /* ================= TOOLBOX BOX (mirror skills box) ================= */
 .toolbox {
   margin-left: auto;
@@ -212,8 +213,7 @@ pre.terminal{
   flex-wrap: wrap;       /* allow icons to wrap if too many */
   gap: 15px;             /* spacing between icons */
   justify-content: flex-start;
-
-  background: transparent; /* keep skills box design intact */
+  background: transparent; 
 }
 
 .toolbox h3{
@@ -225,18 +225,31 @@ pre.terminal{
 
 /* ================= TOOL ICONS ================= */
 .toolbox .tool-icon {
-  width: 40px;
-  height: 40px;
+  width: 11%;
+  height: 11%;
   color: #00cbf9; /* match skills box border color */
   cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
+  animation: float 3s ease-in-out infinite;
+    transition: color 0.3s ease-in; /* smooth color change */
 }
 
+
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-6px); /* float up slightly and grow a tiny bit */
+  }
+}
 
 .toolbox .tool-icon:hover {
-  transform: scale(1.1);
-  color: #8ae9ff; /* subtle hover glow like skill bar gradient */
+  color: #a9efff; /* subtle hover glow like skill bar gradient */
 }
+
+
+
 /* ================= TOPIC LINKS ================= */
 .topics a{
   display:block;
@@ -254,22 +267,63 @@ pre.terminal{
 }
 
 
-/* glowing animation */
-@keyframes svgGlow {
-  0%, 100% {
-    color: #00cbf9; 
-    filter: drop-shadow(0 0 0px #00cbf9c0);
-  }
-  50% {
-    color: #76c6ff; /* bright glow */
-    filter: drop-shadow(0 0 12px #35f5f598) drop-shadow(0 0 20px #18b7fbaf);
-  }
+/* ================= CONNECT BOX ================= */
+.connect {
+  margin-left:auto;
+  padding:1.6rem 1.8rem;
+  border:1px solid #00cbf9;
+  border-radius:14px;
+  max-width:400px;
 }
 
-.toolbox .glow {
-  animation: svgGlow 2s ease-in-out;
+.connect h3 {
+  margin-top: 0.2rem; /* reduce space above header */
+  margin-bottom: 1.2rem; /* optional: adjust space below header */
+}
+.connect-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  
 }
 
+.connect-btn {
+  flex: 1; /* equal width */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1rem; /* horizontal padding only */
+  height: 50px; /* fixed height for all buttons */
+  border-radius: 10px;
+  background: #0a0a0a;
+  color: #00d4f9;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s;
+  border: 1px solid #00cbf9;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.connect-btn:hover {
+  background: #00cbf9;
+  color: #0a0a0a;
+}
+
+/* Make all icons the same size */
+.connect-btn svg {
+  width: 30px;  /* consistent width */
+  height: 30px; /* consistent height */
+  flex-shrink: 0;
+}
+
+/* Optional individual button colors */
+.connect-btn.discord { background:#00cbf9; color:white; }
+.connect-btn.discord:hover { background:#5b6eae; }
+
+
+.connect-btn.blog { background:#00cbf9; color:#0a0a0a; }
+.connect-btn.blog:hover { color: white; background:#000c0e; }
 
 /* ================= TOP NAVBAR ================= */
 .top-nav {
@@ -372,6 +426,9 @@ body {
     font-size: 0.95rem;
   }
 
+    .desktop-only {
+    display: none;
+  }
   
   /* Shrink navbar height */
   .top-nav {
@@ -422,7 +479,7 @@ body {
     flex-direction: column;      /* stack vertically */
     align-items: center;         /* center boxes horizontally */
     gap: 1rem;                   /* spacing between skills & toolbox */
-    margin: 1rem auto 2rem auto; /* vertical spacing + center horizontally */
+    margin: -1rem auto 0rem auto; /* vertical spacing + center horizontally */
     width: 90%;                  /* container width with side margin */
     max-width: 350px;            /* slightly smaller max width */
   }
@@ -443,6 +500,34 @@ body {
     justify-content: center;     /* center icons */
     gap: 10px;
   }
+
+
+
+  .connect {
+  width: 100%;                 /* fill container width */
+    max-width: 100%;             /* override desktop max-width */
+    min-width: 0;                /* override desktop min-width */
+    margin-left: 0;              /* remove auto margins */
+    margin-right: 0;
+    padding: 0.6rem 1rem;        /* adjust padding */
+    font-size: 0.8rem;
+  }
+
+  .connect-buttons {
+    gap: 0.5rem;          /* reduce space between buttons */
+  }
+
+  .connect-btn {
+    font-size: 0.75rem;   /* smaller text for small screens */
+    height: 45px;         /* slightly shorter buttons */
+    padding: 0 0.8rem;    /* adjust horizontal padding */
+  }
+
+  .connect-btn svg {
+    width: 24px;           /* smaller icon size */
+    height: 24px;
+  }
+
 
 
 
